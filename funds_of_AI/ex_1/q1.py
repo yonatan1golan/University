@@ -2,17 +2,18 @@ import geopy.distance
 import pandas as pd
 import regex as re
 import requests
-import os
+import os.path
 
 # defaults
-adjacency_path = os.path.join("adjacency.csv")
+adjacency_path = os.path.join("test_adjacency.csv")
 
 # global vars
 counties = {}
+detailed = False
 
 # input
-start_locations = ['Blue, Washington County, UT', 'Blue, Chicot County, AR', 'Red, Fairfield County, CT'] 
-goal_locations = ['Blue, San Diego County, CA', 'Blue, Bienville Parish, LA', 'Red, Rensselaer County, NY'] 
+start_locations = ['Red, Tel Aviv, DN', 'Blue, Imperial County, CA'] # , 'Red, Fairfield County, CT'
+goal_locations = ['Red, San Diego County, CA' , 'Blue, Mohave County, AZ'] # , 'Red, Rensselaer County, NY'
 
 ### classes   
 class County:
@@ -23,7 +24,7 @@ class County:
         self.neighbors = []
         self.parent = None
         self.visited = False
-        self.color = None
+        self.color = ''
 
         self.g = float('inf') # distance from start
         self.h = float('inf') # heuristic distance from the goal
@@ -60,14 +61,17 @@ def preparing_objects(raw_df: pd.DataFrame) -> dict: # making the dataframe into
     return counties_dict
 
 def find_path(starting_locations, goal_locations, search_method, detail_output): # finds the shortest path from the starting locations to the goal location using a search method
+    detailed = detail_output
     if search_method == 1:
         pathes = []
         for start in starting_locations:
             path = a_star(start, goal_locations)
-            pathes.append(path)
+            if not path:
+                pathes.append('No path found.')
+            else: pathes.append(path)
     else:
         pass
-    return pathes, detail_output
+    return pathes
 
 def get_county_coordinates(county_name): # returns the minimum distance between a start county and one of the goals
     url = f"https://nominatim.openstreetmap.org/search?q={county_name}&format=json"
@@ -108,12 +112,13 @@ def a_star(start, goals): # performs A* search from a starting location to one o
     frontier.append(counties[start])
 
     while frontier:
-        current = min(frontier, key = lambda county:county.f) # takes the county with the minimum f
-        if current.id in goals and not current.visited : # reached an unvisited goal node
+        current = min(frontier, key = lambda county: county.f) # takes the county with the minimum f
+        if current.id in goals and not current.visited and current.color == start_county.color : # reached an unvisited goal node
             retracePath(current)
             return path
         
         frontier.remove(current)
+        current.visited = True
         explored.add(current)
         for neighbor in current.neighbors:
             if neighbor in explored: continue
@@ -131,51 +136,68 @@ def a_star(start, goals): # performs A* search from a starting location to one o
 def get_list_per_color(lst, pattern): # returns a list for the same color
     return [loc.replace('Red, ', '').replace('Blue, ', '') for loc in lst if re.search(pattern, loc)]
 
-def print_pathes(reds, blues, detailed): # prints the pathes accordingly the detailed choice
-    # adding the party color for each track
-    red_paths = [[f"{county} (R)" for county in path] for path in reds]
-    blue_paths = [[f"{county} (B)" for county in path] for path in blues]
+def print_paths(paths):
+    # Format the paths with color indications
+    all_lists = [
+        [f"{county} (R)" if counties[county].color == 'Red' else f"{county} (B)" for county in path] if path != "No path found." else ["No path found."]
+        for path in paths
+    ]
 
-    # building the print
-    all_lists = red_paths + blue_paths
-    max_length = max(len(lst) for lst in all_lists) # maximum numbers of rows
+    # Insert start locations as the first step
+    start_locations_colored = [f"{county} (R)" if counties[county].color == 'Red' else f"{county} (B)" for county in start_locations]
+    for lst in all_lists:
+        lst.insert(0, start_locations_colored[all_lists.index(lst)])
+
+    # Determine the maximum length of the lists
+    max_length = max(len(lst) for lst in all_lists)
     previous_step = None
-    
+
+    # Iterate through the steps and print accordingly
     for i in range(max_length):
         step_elements = []
         for lst in all_lists:
             if i < len(lst):
                 step_elements.append(lst[i])
             else:
-                step_elements.append(lst[-1])  # repeats the last element if the list is shorter
-        print(f"{{{' ; '.join(step_elements)}}}")
-        
-        # calculates and prints heuristic if detailed is set to 1 and the row index is 1
-        if detailed == 1 and previous_step is not None and i == 1:
+                step_elements.append(lst[-1])  # Repeats the last element if the list is shorter
+
+        if i == 0:
+            print(f"{{{' ; '.join(step_elements)}}}")
+        elif i == 1 and detailed == 1:
             heuristics = []
             for current, prev in zip(step_elements, previous_step):
-                current_loc = current.split(' (')[0]
-                prev_loc = prev.split(' (')[0]
-                heuristic_value = heuristic_calc(prev_loc, current_loc)
-                heuristics.append(f"{heuristic_value:.2f}")
+                if "No path found." in any [current, prev]:
+                    heuristics.append("N/A")
+                else:
+                    current_loc = current.split(' (')[0]
+                    prev_loc = prev.split(' (')[0]
+                    heuristic_value = heuristic_calc(prev_loc, current_loc)
+                    heuristics.append(f"{heuristic_value:.2f}")
             print(f"Heuristic: {{{' ; '.join(heuristics)}}}")
-        previous_step = step_elements
+            previous_step = step_elements
+        else:
+            if detailed == 1 or i > 1:
+                print(f"{{{' ; '.join(step_elements)}}}")
+            previous_step = step_elements
+
+def assigning_colors_to_counties(starts, goals): # assigning color to each input location
+    global start_locations, goal_locations
+    for location in [*starts, *goals]:
+        color, county_name, state = location.split(", ")
+        county_id = f"{county_name}, {state}"
+        if county_id in counties:
+            counties[county_id].color = color
+
+    # re-arranging the input lists to be without the colors
+    start_locations_no_color = [location.split(', ', 1)[1] for location in starts] # temp
+    goal_locations_no_color = [location.split(', ', 1)[1] for location in goals] # temp
+    start_locations = start_locations_no_color
+    goal_locations = goal_locations_no_color
+
 ### functions 
 if __name__ == "__main__":
-    # initiallizing
     raw_df = read_neighbors_file(adjacency_path)
     counties = preparing_objects(raw_df) # dict: {county.name, county.state: county object}. this is the same dict as neighbors so it is enough for one of them    
-
-    # dividing the starting locations and goal locations into different lists according to their colors
-    red_starts = get_list_per_color(start_locations, r'Red,')
-    red_goals = get_list_per_color(goal_locations, r'Red,')
-    blue_starts = get_list_per_color(start_locations, r'Blue,')
-    blue_goals = get_list_per_color(goal_locations, r'Blue,')
-
-    # getting the pathes
-    red_paths, detailed = find_path(red_starts, red_goals, 1, 1)
-    blue_pathes, detailed = find_path(blue_starts, blue_goals, 1, 1)
-
-    # printing
-    ## i assume that detailed is equals in both pathes
-    print_pathes(red_paths, blue_pathes, detailed) # it usually takes around 4 minutes to find all of the pathes and only then it prints them
+    assigning_colors_to_counties(start_locations, goal_locations)
+    pathes = find_path(start_locations, goal_locations, 1, 1)
+    print_paths(pathes) # 
