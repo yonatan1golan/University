@@ -5,15 +5,16 @@ import requests
 import os.path
 
 # defaults
-adjacency_path = os.path.join("test_adjacency.csv")
+current_directory = os.path.dirname(__file__)
+adjacency_path = os.path.join(current_directory, "adjacency.csv")
 
 # global vars
 counties = {}
 detailed = False
 
 # input
-start_locations = ['Red, Tel Aviv, DN', 'Blue, Imperial County, CA'] # , 'Red, Fairfield County, CT'
-goal_locations = ['Red, San Diego County, CA' , 'Blue, Mohave County, AZ'] # , 'Red, Rensselaer County, NY'
+start_locations = ['Red, Washington County, UT'] # , 'Red, Fairfield County, CT'
+goal_locations = ['Red, San Diego County, CA'] # , 'Red, Rensselaer County, NY'
 
 ### classes   
 class County:
@@ -61,6 +62,7 @@ def preparing_objects(raw_df: pd.DataFrame) -> dict: # making the dataframe into
     return counties_dict
 
 def find_path(starting_locations, goal_locations, search_method, detail_output): # finds the shortest path from the starting locations to the goal location using a search method
+    global detailed 
     detailed = detail_output
     if search_method == 1:
         pathes = []
@@ -143,11 +145,6 @@ def print_paths(paths):
         for path in paths
     ]
 
-    # Insert start locations as the first step
-    start_locations_colored = [f"{county} (R)" if counties[county].color == 'Red' else f"{county} (B)" for county in start_locations]
-    for lst in all_lists:
-        lst.insert(0, start_locations_colored[all_lists.index(lst)])
-
     # Determine the maximum length of the lists
     max_length = max(len(lst) for lst in all_lists)
     previous_step = None
@@ -161,12 +158,12 @@ def print_paths(paths):
             else:
                 step_elements.append(lst[-1])  # Repeats the last element if the list is shorter
 
-        if i == 0:
-            print(f"{{{' ; '.join(step_elements)}}}")
-        elif i == 1 and detailed == 1:
+        print(f"{{{' ; '.join(step_elements)}}}")
+        
+        if detailed == 1 and i == 1:
             heuristics = []
             for current, prev in zip(step_elements, previous_step):
-                if "No path found." in any [current, prev]:
+                if "No path found." in [current, prev]:
                     heuristics.append("N/A")
                 else:
                     current_loc = current.split(' (')[0]
@@ -174,11 +171,8 @@ def print_paths(paths):
                     heuristic_value = heuristic_calc(prev_loc, current_loc)
                     heuristics.append(f"{heuristic_value:.2f}")
             print(f"Heuristic: {{{' ; '.join(heuristics)}}}")
-            previous_step = step_elements
-        else:
-            if detailed == 1 or i > 1:
-                print(f"{{{' ; '.join(step_elements)}}}")
-            previous_step = step_elements
+
+        previous_step = step_elements
 
 def assigning_colors_to_counties(starts, goals): # assigning color to each input location
     global start_locations, goal_locations
@@ -200,4 +194,4 @@ if __name__ == "__main__":
     counties = preparing_objects(raw_df) # dict: {county.name, county.state: county object}. this is the same dict as neighbors so it is enough for one of them    
     assigning_colors_to_counties(start_locations, goal_locations)
     pathes = find_path(start_locations, goal_locations, 1, 1)
-    print_paths(pathes) # 
+    print_paths(pathes) 
