@@ -333,20 +333,31 @@ def simulated_annealing(start, goals, max_temp): # performs a simulated annealin
         min_heuristic = min(heuristic_values)
         deltas = [hv - min_heuristic for hv in heuristic_values]
         probabilities = [math.exp(-delta / T) if delta > 0 else 1 for delta in deltas]
-        return dict(zip(neighbors, probabilities))
+        total_prob = sum(probabilities)
+        normalized_probabilities = [p / total_prob for p in probabilities]
+        return dict(zip(neighbors, normalized_probabilities))
+    
+    def retracePath(node):
+        path = []
+        while node is not None:
+            path.append(node.id)
+            node = node.parent
+        path.reverse()
+        return path
     
     current = counties[start]
-    min_temp = 0
+    min_temp = 0.1
     alpha = 0.95
-    T = max_temp / 100
-    path = []
+    T = max_temp
     info = []
     first_iteration = True
 
     while T >= min_temp:
         if current.id in goals and check_valid_solution(current):
             return retracePath(current), info
-        neighbors = current.neighbors
+        neighbors = [n for n in current.neighbors if not n.visited]
+        if not neighbors:
+            break
         neighbor_chances = calculate_probabilities(neighbors, T)
         if first_iteration:
             info.append({'current': current.id, 'neighbors': {n.id: neighbor_chances[n] for n in neighbors}})
@@ -362,7 +373,8 @@ def simulated_annealing(start, goals, max_temp): # performs a simulated annealin
             current = next_neighbor
             info.append({'current': current.id, 'neighbors': {n.id: neighbor_chances[n] for n in neighbors}})
         T *= alpha
-    return path, info
+
+    return None, info
 
 # 4
 def local_beam(start, goals, k=3): # performs a local k beam search from a start point to one of the goal points
