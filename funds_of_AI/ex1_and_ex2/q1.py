@@ -99,7 +99,9 @@ class County:
 
 ### help functions
 def read_neighbors_file(file_name: os) -> pd.DataFrame: # reads the csv file and converts it into a dataframe
-    return pd.read_csv(file_name)
+    data = pd.read_csv(file_name)
+    df = data.rename(columns={data.columns[0]: 'countyname', data.columns[1]: 'neighborname'})
+    return df
 
 def get_unique_list(df: pd.DataFrame, col_name: str) -> list: # returns the unique values in a df[col_name]
     return list(set(df[col_name]))
