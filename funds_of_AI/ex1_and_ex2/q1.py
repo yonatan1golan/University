@@ -7,9 +7,7 @@ import random
 import math
 
 # defaults
-current_directory = os.getcwd()
-parent_directory = os.path.dirname(current_directory)
-adjacency_path = os.path.join(parent_directory, "adjacency.csv")
+adjacency_path = ("adjacency.csv")
 
 # states-coordinates dictionary instead of using the API for lowering the run time 
 state_coords = {
@@ -71,8 +69,8 @@ counties = {}
 detailed = False
 
 # input
-start_locations = ['Red, Washington County, UT' , 'Blue, Fairfield County, CT'] #  
-goal_locations = ['Red, Orange County, CA' , 'Blue, Suffolk County, NY'] #  
+start_locations = ['Red, Washington County, UT', 'Blue, Fairfield County, CT'] # 
+goal_locations = ['Red, Orange County, CA' , 'Blue, Suffolk County, NY'] #
 
 ### classes   
 class County:
@@ -327,23 +325,25 @@ def simulated_annealing(start, goals, max_temp): # performs a simulated annealin
             return None
         neighbor = random.choice(valid_neighbors)
         return neighbor 
-
-    def calculate_probabilities(neighbors, T):
-        heuristic_values = [min(heuristic_calc(neighbor.id, goal) for goal in goals) for neighbor in neighbors]
-        min_heuristic = min(heuristic_values)
-        deltas = [hv - min_heuristic for hv in heuristic_values]
-        probabilities = [math.exp(-delta / T) if delta > 0 else 1 for delta in deltas]
-        total_prob = sum(probabilities)
-        normalized_probabilities = [p / total_prob for p in probabilities]
-        return dict(zip(neighbors, normalized_probabilities))
     
-    def retracePath(node):
-        path = []
-        while node is not None:
-            path.append(node.id)
-            node = node.parent
-        path.reverse()
-        return path
+    def calculate_probabilities(neighbors, T):
+        goal_neighbor = None
+        for neighbor in neighbors:
+            if neighbor.id in goals:
+                goal_neighbor = neighbor
+                break
+
+        if goal_neighbor is not None:
+            probabilities = {neighbor: 1 if neighbor == goal_neighbor else 0 for neighbor in neighbors}
+        else:
+            heuristic_values = [min(heuristic_calc(neighbor.id, goal) for goal in goals) for neighbor in neighbors]
+            min_heuristic = min(heuristic_values)
+            deltas = [hv - min_heuristic for hv in heuristic_values]
+            probabilities = [math.exp(-delta / T) if delta > 0 else 1 for delta in deltas]
+            total_prob = sum(probabilities)
+            normalized_probabilities = [p / total_prob for p in probabilities]
+            probabilities = dict(zip(neighbors, normalized_probabilities))
+        return probabilities
     
     current = counties[start]
     min_temp = 0.1
@@ -362,7 +362,8 @@ def simulated_annealing(start, goals, max_temp): # performs a simulated annealin
         if first_iteration:
             info.append({'current': current.id, 'neighbors': {n.id: neighbor_chances[n] for n in neighbors}})
             first_iteration = False
-        next_neighbor = choose_random_neighbor(current)
+        # next_neighbor = choose_random_neighbor(current)
+        next_neighbor = max(neighbors, key=lambda n: neighbor_chances[n])
         if next_neighbor is None:
             break
         delta = (min(heuristic_calc(next_neighbor.id, goal) for goal in goals) - 
@@ -512,7 +513,7 @@ if __name__ == "__main__":
         # 5: genetic algorithm
      # }
 
-    search_method = 3
-    detailed_output = 0
+    search_method = 5
+    detailed_output = 1
     pathes, infos = find_path(start_locations, goal_locations, search_method, detailed_output)
     print_paths(pathes, search_method, infos)
