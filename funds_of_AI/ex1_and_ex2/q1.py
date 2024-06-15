@@ -318,13 +318,6 @@ def hill_climbing(start, goals, max_iteration = 5): # performs a hill climbing s
 def simulated_annealing(start, goals, max_temp): # performs a simulated annealing search from a start point to one of the goals
     def check_valid_solution(current):
         return (not current.visited) and (current.color == counties[start].color)
-
-    def choose_random_neighbor(c):
-        valid_neighbors = [neighbor for neighbor in c.neighbors if not neighbor.visited]
-        if not valid_neighbors:
-            return None
-        neighbor = random.choice(valid_neighbors)
-        return neighbor 
     
     def calculate_probabilities(neighbors, T):
         goal_neighbor = None
@@ -362,7 +355,6 @@ def simulated_annealing(start, goals, max_temp): # performs a simulated annealin
         if first_iteration:
             info.append({'current': current.id, 'neighbors': {n.id: neighbor_chances[n] for n in neighbors}})
             first_iteration = False
-        # next_neighbor = choose_random_neighbor(current)
         next_neighbor = max(neighbors, key=lambda n: neighbor_chances[n])
         if next_neighbor is None:
             break
@@ -513,7 +505,7 @@ if __name__ == "__main__":
         # 5: genetic algorithm
      # }
 
-    search_method = 5
-    detailed_output = 1
+    search_method = 3
+    detailed_output = 0
     pathes, infos = find_path(start_locations, goal_locations, search_method, detailed_output)
     print_paths(pathes, search_method, infos)
