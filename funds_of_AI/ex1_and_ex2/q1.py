@@ -217,6 +217,7 @@ def print_paths(paths, search_method, info = []): # prints paths according to th
         print(f"{{{' ; '.join(step_elements)}}}")
         if detailed == 1 and i == 1:
             detail_infos = []
+            unique_infos = set()
             for current, prev in zip(step_elements, previous_step):
                 if "No path found." in [current, prev]:
                     detail_infos.append("N/A")
@@ -232,8 +233,11 @@ def print_paths(paths, search_method, info = []): # prints paths according to th
                             neighbors_info = ', '.join([f"{n_id}: {prob:.2f}" for n_id, prob in sa_info['neighbors'].items()])
                             detail_infos.append(f"{neighbors_info}")
                     elif search_method == 4:
-                        for info in infos:
-                            detail_infos.append(f"{[c.id for c in info]}")
+                        for inf in info:
+                            detail = tuple(c.id for c in inf)  # Use tuple for uniqueness in set
+                            if detail not in unique_infos:
+                                detail_infos.append(f"{list(detail)}")
+                                unique_infos.add(detail)
                     elif search_method == 5:
                         for sublist in infos:
                             for item in sublist:
@@ -507,7 +511,7 @@ if __name__ == "__main__":
         # 5: genetic algorithm
      # }
 
-    search_method = 3
-    detailed_output = 0
+    search_method = 4
+    detailed_output = 1
     pathes, infos = find_path(start_locations, goal_locations, search_method, detailed_output)
     print_paths(pathes, search_method, infos)
