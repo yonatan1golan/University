@@ -511,7 +511,7 @@ if __name__ == "__main__":
         # 5: genetic algorithm
      # }
 
-    search_method = 4
+    search_method = 1
     detailed_output = 1
     pathes, infos = find_path(start_locations, goal_locations, search_method, detailed_output)
     print_paths(pathes, search_method, infos)
