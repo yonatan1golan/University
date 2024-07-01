@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 
 # defaults
-file_path = "flightdelay.csv"
+file_path = r"C:\Users\Yonat\OneDrive\Desktop\github\University\funds_of_AI\ex3\flightdelay.csv"
 target_column = 'DEP_DEL15'
 learning_set = []
 testing_set = []
@@ -35,7 +35,7 @@ def get_data(): # get the data
     print('Getting the data....')
     global data
     if data is None:
-        data = pd.read_csv(file_path)
+        data = pd.read_csv(file_path)   
     return data
 
 def divide_datasets(data, target_column):  # will divide the dataset into a learning set and a test set
@@ -48,6 +48,7 @@ def get_attributes(data):  # returns the tree attributes <=> data columns \ targ
     return attributes
 
 def pre_process(ratio):  # reads the data and divides it into a learning set and a testing set and returns the attributes (columns \ target)
+    global learning_set, testing_set
     assert 0 <= ratio <= 1, 'Ratio must be between 0 and 1'
     data = get_data()
     learning_set = data.sample(frac=ratio, random_state=42)
@@ -188,8 +189,7 @@ def is_late(row_input):
     return predict(tree, row_dict)
 
 if __name__ == '__main__':
-    print("Building tree with ratio 0.6...")
-    tree = build_tree(ratio=0.6)
+    tree = build_tree(ratio=0.1)
     root = tree.to_anytree()
     for pre, fill, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
