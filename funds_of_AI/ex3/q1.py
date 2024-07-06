@@ -8,7 +8,7 @@ import numpy as np
 
 
 # defaults
-file_path = r'C:\Users\Yonat\OneDrive\Desktop\University\funds_of_AI\ex3\flightdelay.csv' # "flightdelay.csv"
+file_path = "flightdelay.csv"
 target_column = 'DEP_DEL15'
 learning_set = []
 testing_set = []
