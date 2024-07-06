@@ -1,34 +1,42 @@
 # imports
+from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import KBinsDiscretizer
-from multiprocessing import Pool, cpu_count
 from anytree import Node, RenderTree  # visualize
 from scipy.stats import chi2 
 import pandas as pd
 import numpy as np
-import logging
+
 
 # defaults
-logging.basicConfig(level=logging.INFO)
-file_path = "flightdelay.csv"
+file_path = r'C:\Users\Yonat\OneDrive\Desktop\University\funds_of_AI\ex3\flightdelay.csv' # "flightdelay.csv"
 target_column = 'DEP_DEL15'
 learning_set = []
 testing_set = []
 attributes = []
+original_attributes = []
 data = None
 tree = None
 
 # input
-input_data = [1, 7, '0800-0859', 2, 1, 25, 143, 'Southwest Airlines Co.', 13056, 107363, 5873, 1903352, 13382999, 6.178236301460919e-05,
-              9.889412309998219e-05, 8, 'McCarran International', 36.08, -115.152, 'NONE', 0, 0, 0, 65, 2.91]
+input_data = [
+    1, 7, '2300-2359', 5, 4, 26, 143, 'Southwest Airlines Co.', 13056, 107363, 5873, 1903352, 13382999, 6.18E-05, 9.89E-05, 17,
+    'McCarran International', 36.08, -115.152, 'Albuquerque International Sunport', 0, 0, 0, 65, 2.91
+]
 
 # classes
 class Tree:
-    def __init__(self, label):
+    def __init__(self, label, header = False, leaf = False, value = 0):
         self.label = label
         self.children = []
+        self.header = header
+        self.leaf = leaf
+        if leaf:
+            self.value = value
 
     def add_child(self, node):
         self.children.append(node)
+        if node.label in(0, 1):
+            self.leaf = True
     
     def to_anytree(self, parent=None):
         root = Node(self.label, parent=parent)
@@ -69,37 +77,44 @@ def categorize_time_block(time_block): # categorize a time block as a morning, a
         return 'Night'
 
 def categorize_attributes_values(df): # categorize attributes values
-    logging.info('Categorizing...')
-    continuous_columns = ['DISTANCE_GROUP', 'SEGMENT_NUMBER', 'CONCURRENT_FLIGHTS', 'NUMBER_OF_SEATS',
-                      'AIRPORT_FLIGHTS_MONTH', 'AIRLINE_FLIGHTS_MONTH', 'AIRLINE_AIRPORT_FLIGHTS_MONTH',
-                      'AVG_MONTHLY_PASS_AIRPORT', 'AVG_MONTHLY_PASS_AIRLINE', 'FLT_ATTENDANTS_PER_PASS',
-                      'GROUND_SERV_PER_PASS', 'PLANE_AGE', 'PRCP', 'SNOW', 'SNWD', 'TMAX', 'AWND']
-    categorial_columns = ['CARRIER_NAME', 'DEPARTING_AIRPORT', 'PREVIOUS_AIRPORT']
-
-    df['MONTH'] = df['MONTH'].apply(categorize_month)
-    df['DAY_OF_WEEK'] = df['DAY_OF_WEEK'].apply(categorize_day_of_week)
-    df['DEP_TIME_BLK'] = df['DEP_TIME_BLK'].apply(categorize_time_block)
-
-    # discretize continuous attributes
+    continuous_columns = ['DISTANCE_GROUP', 'SEGMENT_NUMBER', 'CONCURRENT_FLIGHTS',
+                          'AVG_MONTHLY_PASS_AIRPORT', 'FLT_ATTENDANTS_PER_PASS',
+                          'GROUND_SERV_PER_PASS', 'PLANE_AGE', 'PRCP', 'SNOW', 'SNWD', 'TMAX', 'AWND']
+    categorical_columns = ['CARRIER_NAME', 'DEPARTING_AIRPORT']
+    unuseful_columns = ['NUMBER_OF_SEATS', 'LATITUDE', 'LONGITUDE', 'AIRLINE_FLIGHTS_MONTH', 'AIRLINE_AIRPORT_FLIGHTS_MONTH', 'AVG_MONTHLY_PASS_AIRLINE',
+                        'PREVIOUS_AIRPORT', 'AIRPORT_FLIGHTS_MONTH']
+    if df['MONTH'].dtype != 'object':
+        df['MONTH'] = df['MONTH'].apply(categorize_month)
+    if df['DAY_OF_WEEK'].dtype != 'object':
+        df['DAY_OF_WEEK'] = df['DAY_OF_WEEK'].apply(categorize_day_of_week)
+    if df['DEP_TIME_BLK'].dtype != 'object':
+        df['DEP_TIME_BLK'] = df['DEP_TIME_BLK'].apply(categorize_time_block)
+    df = df.drop(columns=unuseful_columns)
+    
     for column in continuous_columns:
-        est = KBinsDiscretizer(n_bins=4, encode='ordinal', strategy='uniform')
-        df[column] = est.fit_transform(df[[column]])
+        if df[column].nunique() > 1:
+            est = KBinsDiscretizer(n_bins=3, encode='ordinal', strategy='uniform')
+            transformed = est.fit_transform(df[[column]])
+            df[column] = transformed.T[0]
+        else:
+            df[column] = 0  # If the column has only one unique value, assign 0 to all entries
 
-    discrete_map = {0: 'Low', 1: 'Medium', 2: 'High', 3: 'Very High'}
+    discrete_map = {0: 'Low', 1: 'Medium', 2: 'High'}
     for column in continuous_columns:
-        df[column] = df[column].map(discrete_map) # mapping the values as low, medium, high, and very high
+        df[column] = df[column].map(discrete_map)
 
-    for column in categorial_columns:
-        top_categories = df[column].value_counts().nlargest(10).index
+    for column in categorical_columns:
+        top_categories = df[column].value_counts().nlargest(5).index
         df[column] = df[column].apply(lambda x: x if x in top_categories else 'Other')
 
     return df
 
 def get_data(): # get the data
-    logging.info('Getting the data...')
-    global data
+    global data, original_attributes
     if data is None:
         data = pd.read_csv(file_path)
+        data = data.drop_duplicates().reset_index(drop=True)
+        original_attributes = get_attributes(data)
         data = categorize_attributes_values(data)
     return data
 
@@ -118,7 +133,6 @@ def pre_process(ratio):  # reads the data and divides it into a learning set and
     learning_set = data.sample(frac=ratio, random_state=42)
     testing_set = data.drop(learning_set.index)
     attributes = get_attributes(learning_set)
-    logging.info(f'The dataset was divided into {len(learning_set)}/{len(testing_set)} learning/testing sets.')
     return learning_set, testing_set, attributes
 
 def plurality_value(exs):  # returns most common value in the target column (is the flight delayed or not)
@@ -154,6 +168,36 @@ def chi2_critical(degreefreedom, alpha=0.05): # chi squared table
     assert 0 <= alpha <= 1, 'alpha value must be in the range (0, 1)'
     return chi2.ppf(1 - alpha, degreefreedom)
 
+def chi_square_prune(tree, examples, target_attribute, alpha=0.05):
+    if not isinstance(tree, Tree) or not tree.children:
+        return tree  # Return if it's a leaf node
+
+    split_attribute = tree.label.split(' = ')[0]
+    subtrees = {}
+    for child in tree.children:
+        if isinstance(child.label, str) and ' = ' in child.label:
+            attr_val = child.label.split(' = ')[1]
+            subtrees[attr_val] = child
+
+    # Prune each subtree recursively
+    for attr_val, subtree in subtrees.items():
+        subset_df = examples[examples[split_attribute] == attr_val]
+        subtrees[attr_val] = chi_square_prune(subtree, subset_df, target_attribute, alpha)
+
+    # After pruning subtrees, decide if we should prune this node
+    if len(subtrees) < 2:
+        return examples[target_attribute].mode()[0]  # Replace node with the most common target value
+
+    attr_vals = list(subtrees.keys())
+    y = examples[target_attribute]
+    y_left = examples[examples[split_attribute] == attr_vals[0]][target_attribute]
+    y_right = examples[examples[split_attribute] == attr_vals[1]][target_attribute]
+
+    if chi2_pruning(y, y_left, y_right, alpha):
+        return examples[target_attribute].mode()[0]  # Replace node with the most common target value
+
+    return tree
+
 def importance(attribute, examples): # calculating the importance of an attribute, how much more information it gives me
     y = examples[target_column]
     values = examples[attribute].unique()
@@ -167,8 +211,10 @@ def importance(attribute, examples): # calculating the importance of an attribut
 def get_values(examples, attribute):  # returns the unique values under a specific attribute in a df
     return examples[attribute].unique()
 
-def decision_tree_learning(examples, attributes, parent_examples): # builds the decision tree base on decision_tree_learning algo.
-    if examples.empty:
+def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # builds the decision tree base on decision_tree_learning algo.
+    if depth == 3:
+        return plurality_value(examples)
+    elif examples.empty:
         return plurality_value(parent_examples)
     elif same_classification(examples)[0]:
         return same_classification(examples)[1]
@@ -176,92 +222,95 @@ def decision_tree_learning(examples, attributes, parent_examples): # builds the 
         return plurality_value(examples)
     else:
         A = max(attributes, key=lambda a: importance(a, examples))
-        tree = Tree(label=A)
+        tree = Tree(label=A, header = True)
         for v in get_values(examples, A):
             exs = examples[examples[A] == v]
-            subtree = decision_tree_learning(exs, attributes.drop(A), examples)
+            new_attributes = [attr for attr in attributes if attr != A]
+            subtree = decision_tree_learning(exs, new_attributes, examples, depth = depth + 1)
             node = Tree(label=f'{A} = {v}')
             if isinstance(subtree, Tree):
                 node.add_child(subtree)
+            elif subtree in (0,1):
+                node.add_child(Tree(label=subtree, leaf = True, value = subtree))
             else:
                 node.add_child(Tree(label=subtree))
             tree.add_child(node)
-        return tree
+
+    # chi2 prunning
+    pruned_tree = chi_square_prune(tree, examples, target_column)
+    return pruned_tree
 
 def build_tree(ratio):  # builds the decision tree with a ratio for testing and learning division
-    """
-    i need to return how much does the tree is accurate
-    """
-    global learning_set, testing_set, attributes
+    global learning_set, testing_set, attributes, tree
     learning_set, testing_set, attributes = pre_process(ratio)
     tree = decision_tree_learning(learning_set, attributes, None)
     return tree
 
-def parallel_k_fold_validation(args): # parallel k fold validation
-    data, k = args
-    return k_fold_validation(data, k)
-
-def k_fold_validation(data, k): # k fold validation
-    global attributes
-    k_fold_sets = np.array_split(data.sample(frac=1, random_state=42), k)
+def k_fold_validation(data, k): # performs k-fold validation
+    global attributes, target_column
+    print(f"Starting {k}-fold validations..")
+    skf = StratifiedKFold(n_splits=k, shuffle=True, random_state=1)
     errors = []
 
-    for i in range(k):
-        logging.info(f"Processing fold {i+1}/{k}")
-        validation_set = k_fold_sets[i]
-        training_set = pd.concat([fold for j, fold in enumerate(k_fold_sets) if j != i])
-        tree = decision_tree_learning(training_set, attributes, None)
-
+    for fold, (train_index, test_index) in enumerate(skf.split(data, data[target_column]), 1):
+        train_data = data.iloc[train_index]
+        test_data = data.iloc[test_index]
+        print(f"Building tree for fold {fold}..")
+        tree = decision_tree_learning(train_data, attributes, None)
         correct = 0
-        for _, row in validation_set.iterrows():
-            prediction = predict(tree, row[:-1].to_dict())
+        print(f"Checking the accuracy for the {fold} tree for {k}-validation")
+        for _, row in test_data.iterrows():
+            prediction = predict(tree, row)
             if prediction == row[target_column]:
                 correct += 1
-        errors.append(1 - correct / len(validation_set))
-    return np.mean(errors)
+        fold_error = 1 - (correct / len(test_data))
+        errors.append(fold_error)  
+    return np.mean(errors) if errors else float('inf')
 
-def tree_error(k): # tree error calculation
-    data = get_data()
-    num_cores = cpu_count()
-    pool = Pool(num_cores)
-    k_splits = [(data, k // num_cores) for _ in range(num_cores)]
-    errors = pool.map(parallel_k_fold_validation, k_splits)
-    pool.close()
-    pool.join()
-    return np.mean(errors)
+def tree_error(k): # performs 2-fold validation and presents the average error
+    global testing_set
+    avg_error = k_fold_validation(testing_set, k)
+    avg_accuracy = (1 - avg_error) * 100
+    print(f"The average accuracy is: {avg_accuracy:.2f}%")
+    return avg_accuracy
 
-def categorize_row(row): # categorize_row
+def categorize_row(row): # categorizes the row according to the data categorization
     global attributes
-    raw_df = pd.DataFrame(columns = attributes, data = row)
+    raw_df = pd.DataFrame(data=[row], columns=original_attributes)
     raw_df = categorize_attributes_values(raw_df)
-    return raw_df[0]
+    return raw_df.iloc[0]
 
-def predict(tree, row): # predicts if the flight is late
-    row = categorize_row(row) # categorize_row
-    def traverse_tree(node, row): # traverses the tree to check if the row input is late
-        if not node.children:
-            return node.label
-        for child in node.children:
+def predict(tree, row): # predicts if the flight is late based on the tree
+    if tree.header:
+        return predict(tree.children[0], row)
+    if tree.leaf:
+        return tree.children[0].value
+    for child in tree.children:
+        if child.leaf:
+            return child.value
+        elif child.header:
+            return predict(child, row)
+        else:
             attr, value = child.label.split(' = ')
+            row = categorize_row(row)
             if row[attr] == value:
-                return traverse_tree(child, row)
-            
-    return traverse_tree(tree.to_anytree(), row)
+                return predict(tree.children[0], row)
 
 def is_late(row_input): # checks prediction for the input
     global tree
-    logging.info("Building tree for prediction...")
-    full_data = get_data()
-    row_dict = dict(zip(full_data.columns[:-1], row_input))
-    logging.info("Predicting...")
-    return predict(tree, row_dict)
+    return predict(tree, row_input)
+
+def print_tree(tree): # prints the tree in a readable form
+    root = tree.to_anytree()
+    for pre, _, node in RenderTree(root):
+        print("%s%s" % (pre, node.name))
 
 if __name__ == '__main__':
-    tree = build_tree(ratio=0.1)
-    root = tree.to_anytree()
-    for pre, fill, node in RenderTree(root):
-        print("%s%s" % (pre, node.name))
-    
-    logging.info("Predicting if the flight is late...")
+    print("Building tree..")
+    tree = build_tree(ratio=0.6)
+    print("Tree structure:")
+    print_tree(tree)
+    print("Categorizing and testing input row..")
     result = is_late(input_data)
     print(f"Prediction result: {'Late' if result else 'Not Late'}")
+    tree_error(2) # performs 2-fold validation and presents the average error
