@@ -212,7 +212,7 @@ def get_values(examples, attribute):  # returns the unique values under a specif
     return examples[attribute].unique()
 
 def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # builds the decision tree base on decision_tree_learning algo.
-    if depth == 3:
+    if depth == 10:
         return plurality_value(examples)
     elif examples.empty:
         return plurality_value(parent_examples)
@@ -240,10 +240,20 @@ def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # 
     pruned_tree = chi_square_prune(tree, examples, target_column)
     return pruned_tree
 
+def building_tree_for_prediction(prediction, ratio=0.6):
+    if prediction:
+        return build_tree(1) # return a tree based on the full data
+    else:
+        build_tree(ratio) # build and prints the tree
+        tree_error(2) # performs 2-fold validation and presents the average error
+
+
 def build_tree(ratio):  # builds the decision tree with a ratio for testing and learning division
     global learning_set, testing_set, attributes, tree
+    print("Building tree..")
     learning_set, testing_set, attributes = pre_process(ratio)
     tree = decision_tree_learning(learning_set, attributes, None)
+    print_tree(tree)
     return tree
 
 def k_fold_validation(data, k): # performs k-fold validation
@@ -271,8 +281,9 @@ def tree_error(k): # performs 2-fold validation and presents the average error
     global testing_set
     avg_error = k_fold_validation(testing_set, k)
     avg_accuracy = (1 - avg_error) * 100
-    print(f"The average accuracy is: {avg_accuracy:.2f}%")
-    return avg_accuracy
+    print(f"The average error is: {avg_error*100:.2f}%")
+    print(f"The quality of the tree is: {avg_accuracy:.2f}%")
+
 
 def categorize_row(row): # categorizes the row according to the data categorization
     global attributes
@@ -297,20 +308,18 @@ def predict(tree, row): # predicts if the flight is late based on the tree
                 return predict(tree.children[0], row)
 
 def is_late(row_input): # checks prediction for the input
-    global tree
-    return predict(tree, row_input)
+    new_tree = building_tree_for_prediction(1)
+    print("Categorizing and testing input row..")
+    prediction = predict(new_tree, row_input)
+    print(f"Prediction result: {1 if prediction else 0}")
+
 
 def print_tree(tree): # prints the tree in a readable form
+    print("Tree structure:")
     root = tree.to_anytree()
     for pre, _, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
 
 if __name__ == '__main__':
-    print("Building tree..")
-    tree = build_tree(ratio=0.6)
-    print("Tree structure:")
-    print_tree(tree)
-    print("Categorizing and testing input row..")
+    # tree = build_tree(ratio = 0.6)
     result = is_late(input_data)
-    print(f"Prediction result: {'Late' if result else 'Not Late'}")
-    tree_error(2) # performs 2-fold validation and presents the average error
