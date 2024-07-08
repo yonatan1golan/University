@@ -240,14 +240,6 @@ def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # 
     pruned_tree = chi_square_prune(tree, examples, target_column)
     return pruned_tree
 
-def building_tree_for_prediction(prediction, ratio=0.6):
-    if prediction:
-        return build_tree(1) # return a tree based on the full data
-    else:
-        build_tree(ratio) # build and prints the tree
-        tree_error(2) # performs 2-fold validation and presents the average error
-
-
 def build_tree(ratio):  # builds the decision tree with a ratio for testing and learning division
     global learning_set, testing_set, attributes, tree
     print("Building tree..")
@@ -284,7 +276,6 @@ def tree_error(k): # performs 2-fold validation and presents the average error
     print(f"The average error is: {avg_error*100:.2f}%")
     print(f"The quality of the tree is: {avg_accuracy:.2f}%")
 
-
 def categorize_row(row): # categorizes the row according to the data categorization
     global attributes
     raw_df = pd.DataFrame(data=[row], columns=original_attributes)
@@ -308,11 +299,10 @@ def predict(tree, row): # predicts if the flight is late based on the tree
                 return predict(tree.children[0], row)
 
 def is_late(row_input): # checks prediction for the input
-    new_tree = building_tree_for_prediction(1)
+    new_tree = building_tree(1)
     print("Categorizing and testing input row..")
     prediction = predict(new_tree, row_input)
     print(f"Prediction result: {1 if prediction else 0}")
-
 
 def print_tree(tree): # prints the tree in a readable form
     print("Tree structure:")
@@ -320,6 +310,13 @@ def print_tree(tree): # prints the tree in a readable form
     for pre, _, node in RenderTree(root):
         print("%s%s" % (pre, node.name))
 
+def building_tree(prediction, ratio=0.6):
+    if prediction:
+        return build_tree(1) # return a tree based on the full data
+    else:
+        build_tree(ratio) # build and prints the tree
+        tree_error(10) # performs k-fold validation and presents the average error
+        
 if __name__ == '__main__':
-    # tree = build_tree(ratio = 0.6)
+    # tree = building_tree(prediction = 0, ratio = 0.6)
     result = is_late(input_data)
