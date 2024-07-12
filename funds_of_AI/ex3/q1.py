@@ -211,10 +211,8 @@ def importance(attribute, examples): # calculating the importance of an attribut
 def get_values(examples, attribute):  # returns the unique values under a specific attribute in a df
     return examples[attribute].unique()
 
-def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # builds the decision tree base on decision_tree_learning algo.
-    if depth == 10:
-        return plurality_value(examples)
-    elif examples.empty:
+def decision_tree_learning(examples, attributes, parent_examples): # builds the decision tree base on decision_tree_learning algo.
+    if examples.empty:
         return plurality_value(parent_examples)
     elif same_classification(examples)[0]:
         return same_classification(examples)[1]
@@ -226,7 +224,7 @@ def decision_tree_learning(examples, attributes, parent_examples, depth = 0): # 
         for v in get_values(examples, A):
             exs = examples[examples[A] == v]
             new_attributes = [attr for attr in attributes if attr != A]
-            subtree = decision_tree_learning(exs, new_attributes, examples, depth = depth + 1)
+            subtree = decision_tree_learning(exs, new_attributes, examples)
             node = Tree(label=f'{A} = {v}')
             if isinstance(subtree, Tree):
                 node.add_child(subtree)
@@ -315,8 +313,8 @@ def building_tree(prediction, ratio=0.6):
         return build_tree(1) # return a tree based on the full data
     else:
         build_tree(ratio) # build and prints the tree
-        tree_error(10) # performs k-fold validation and presents the average error
+        tree_error(2) # performs k-fold validation and presents the average error
         
 if __name__ == '__main__':
-    # tree = building_tree(prediction = 0, ratio = 0.6)
-    result = is_late(input_data)
+    tree = building_tree(prediction = 0, ratio = 0.6)
+    #result = is_late(input_data)
