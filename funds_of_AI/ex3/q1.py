@@ -76,21 +76,27 @@ def categorize_time_block(time_block): # categorize a time block as a morning, a
     else: # 22:00 - 23:59 or mixed start and end times
         return 'Night'
 
+def categorize_string_values(string): # categorize string values
+    if string[0].upper() <= 'K':
+        return 'Group A-K'
+    else:
+        return 'Group L-Z'
+
 def categorize_attributes_values(df): # categorize attributes values
     continuous_columns = ['DISTANCE_GROUP', 'SEGMENT_NUMBER', 'CONCURRENT_FLIGHTS',
                           'AVG_MONTHLY_PASS_AIRPORT', 'FLT_ATTENDANTS_PER_PASS',
                           'GROUND_SERV_PER_PASS', 'PLANE_AGE', 'PRCP', 'SNOW', 'SNWD', 'TMAX', 'AWND']
     categorical_columns = ['CARRIER_NAME', 'DEPARTING_AIRPORT']
-    unuseful_columns = ['NUMBER_OF_SEATS', 'LATITUDE', 'LONGITUDE', 'AIRLINE_FLIGHTS_MONTH', 'AIRLINE_AIRPORT_FLIGHTS_MONTH', 'AVG_MONTHLY_PASS_AIRLINE',
-                        'PREVIOUS_AIRPORT', 'AIRPORT_FLIGHTS_MONTH']
-    if df['MONTH'].dtype != 'object':
-        df['MONTH'] = df['MONTH'].apply(categorize_month)
-    if df['DAY_OF_WEEK'].dtype != 'object':
-        df['DAY_OF_WEEK'] = df['DAY_OF_WEEK'].apply(categorize_day_of_week)
-    if df['DEP_TIME_BLK'].dtype != 'object':
-        df['DEP_TIME_BLK'] = df['DEP_TIME_BLK'].apply(categorize_time_block)
-    df = df.drop(columns=unuseful_columns)
+    unuseful_numerical_columns = ['NUMBER_OF_SEATS', 'LATITUDE', 'LONGITUDE', 'AIRLINE_FLIGHTS_MONTH', 'AIRLINE_AIRPORT_FLIGHTS_MONTH',
+                                  'AVG_MONTHLY_PASS_AIRLINE','AIRPORT_FLIGHTS_MONTH']
+    unuseful_string_columns = ['PREVIOUS_AIRPORT']
     
+    # categorize month, day of week and time block as discrete values
+    df['MONTH'] = df['MONTH'].apply(categorize_month)
+    df['DAY_OF_WEEK'] = df['DAY_OF_WEEK'].apply(categorize_day_of_week)
+    df['DEP_TIME_BLK'] = df['DEP_TIME_BLK'].apply(categorize_time_block)
+    
+    # categorize continuous values as discrete values
     for column in continuous_columns:
         if df[column].nunique() > 1:
             est = KBinsDiscretizer(n_bins=3, encode='ordinal', strategy='uniform')
@@ -107,6 +113,16 @@ def categorize_attributes_values(df): # categorize attributes values
         top_categories = df[column].value_counts().nlargest(5).index
         df[column] = df[column].apply(lambda x: x if x in top_categories else 'Other')
 
+    # categorize unuseful numerical columns as discrete values
+    medians = df[unuseful_numerical_columns].quantile(q=0.5, axis=0, numeric_only=False, interpolation='linear')
+    for column in unuseful_numerical_columns:
+        top_categories = df[column].value_counts().nlargest(2).index
+        df[column] = df[column].apply(lambda x: x if x in top_categories else medians[column])
+
+    # categorize unuseful string columns as discrete values
+    for column in unuseful_string_columns:
+        df[column] = df[column].apply(categorize_string_values)
+    
     return df
 
 def get_data(): # get the data
@@ -184,17 +200,18 @@ def chi_square_prune(tree, examples, target_attribute, alpha=0.05):
         subset_df = examples[examples[split_attribute] == attr_val]
         subtrees[attr_val] = chi_square_prune(subtree, subset_df, target_attribute, alpha)
 
-    # After pruning subtrees, decide if we should prune this node
-    if len(subtrees) < 2:
-        return examples[target_attribute].mode()[0]  # Replace node with the most common target value
+    if len(subtrees) != 0:
+        # after pruning subtrees, decide if we should prune this node
+        if len(subtrees) < 2:
+            return examples[target_attribute].mode()[0]  # replace node with the most common target value
 
-    attr_vals = list(subtrees.keys())
-    y = examples[target_attribute]
-    y_left = examples[examples[split_attribute] == attr_vals[0]][target_attribute]
-    y_right = examples[examples[split_attribute] == attr_vals[1]][target_attribute]
+        attr_vals = list(subtrees.keys())
+        y = examples[target_attribute]
+        y_left = examples[examples[split_attribute] == attr_vals[0]][target_attribute]
+        y_right = examples[examples[split_attribute] == attr_vals[1]][target_attribute]
 
-    if chi2_pruning(y, y_left, y_right, alpha):
-        return examples[target_attribute].mode()[0]  # Replace node with the most common target value
+        if chi2_pruning(y, y_left, y_right, alpha):
+            return examples[target_attribute].mode()[0]  # Replace node with the most common target value
 
     return tree
 
