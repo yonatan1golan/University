@@ -1,0 +1,30 @@
+RESEARCH QUESTIONS
+    1. How different social media platfroms amplifying herd behavior on financial markets?
+        a. what sites?
+        b. is there a difference between a us/israel/any other country based site?
+
+    2. ML model that predicts how is a market going to act in a certain period, based on given text of a specific person
+        a. if Elon masks says X Y Z about a certain market, how is the text he has written could affect? what is the "weight" of a tweet?
+        b. is there effect of non-important people tweets on the price of bitcoin?
+            does a lot of non relevant people tweets could predit rise or fall of the coin?
+
+    3. Herd behavior in the covid period
+        a. Did herd behavior increased investment in "safe-haven" assets (gold, bonds) during the early months of the COVID-19 pandemic?
+        b. Did certain stocks went down more than other, with correlation of their covid situation / management?
+
+    4. Can machine learning models identify patterns of herd behavior in financial markets using historical data?
+        ** lets say using data of stocks / crypto price and intersecting it with tweets
+        a. Predict the likelihood or intensity of herd behavior based on market features
+        b. Detect deviations from normal trading behavior that indicate herd activity and try to intersect 
+            these dates with trends and topic in google trends or something
+
+    5. using google trends on 90 days back on the word "bitcoin" you see kind of steady line (not much searches)
+        but since 5.11.24 there is a drastic rise, using the site "what happend on this day" on 5.11.24 trump was re-elected
+
+    6. Time-series analysis for herd behavior uses sequential data patterns, like price and volume trends, to predict or detect collective market actions
+    
+
+PROBLEMS
+    1. how do i measure if a specific action was taken because of a herd behavior effect or a logical (wanting to profit more)? because 
+        data of stock purchases are confidential of who bought them and why?
+    2.
