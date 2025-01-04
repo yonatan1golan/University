@@ -1,15 +1,21 @@
 from matplotlib.backends.backend_pdf import PdfPages
-from sklearn.preprocessing import KBinsDiscretizer
+from sklearn.exceptions import ConvergenceWarning
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import KBinsDiscretizer, MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.impute import KNNImputer
 from sklearn.tree import plot_tree
 import matplotlib.pyplot as plt
+from itertools import product
 import plotly.express as px
 import seaborn as sns
 import pandas as pd
 import numpy as np
 import warnings
 import os
+
+import json
 
 file_name = 'XY_train.csv'
 current_dir = os.getcwd()
@@ -312,11 +318,10 @@ def get_decision_tree(df: pd.DataFrame):
     # plot_3d_results(results)
     return build_tree(df, depth = 8, criterion = 'entropy', splitter = 'best')
 
-def decision_tree_section(df: pd.DataFrame):
+def decision_tree_section(train: pd.DataFrame, test: pd.DataFrame):
     """
     Gathers the decision tree section of the code
     """
-    train, test = split_train_test(df, ratio = 0.8)
     decision_tree = get_decision_tree(train)
     print(f"The accuracy of the decision tree is: {decision_tree.score(test.drop(columns=['OUTCOME']), test['OUTCOME'])}")
     feature_importance = decision_tree.feature_importances_
@@ -325,7 +330,148 @@ def decision_tree_section(df: pd.DataFrame):
     feature_importance_df = feature_importance_df.sort_values('Importance', ascending=False)
     visualize_tree(decision_tree, train.drop(columns=['OUTCOME']).columns)
 
+def nn_model_with_modified_params(x_train_scaled: pd.DataFrame, y_train: pd.Series, params: dict) -> MLPClassifier:
+    """
+    Input: train set to train NN model
+    Returns: NN model that has been trained on the train set with modified params
+    """
+    model = MLPClassifier()
+    grid_search = GridSearchCV(estimator=model, param_grid=params, cv=3, n_jobs=-1, scoring='accuracy')
+    grid_search.fit(x_train_scaled, y_train)
+    # print()
+    # print(f"The best params for the neural network model are:")
+    # print(json.dumps(grid_search.best_params_, indent=4))
+    # print()
+    return MLPClassifier(**grid_search.best_params_)
+
+def check_nn_model_accuracy(nn_model: MLPClassifier, x_train_scaled: pd.DataFrame, y_train: pd.Series, x_test_scaled: pd.DataFrame, y_test: pd.Series):
+    """
+    Input: NN model and train set
+    Returns: the accuracy of the NN model on the train set
+    """
+    nn_model.fit(x_train_scaled, y_train)
+    print(f"The accuracy of the neural network on the train set is: {nn_model.score(x_train_scaled, y_train)}")
+    print(f"The accuracy of the neural network on the test set is: {nn_model.score(x_test_scaled, y_test)}")
+
+def build_nn_model(x_train_scaled: pd.DataFrame, y_train: pd.Series, params: dict = None):
+    """
+    Input: train set to train NN model, params that can be used to modify the model
+    Returns: NN model with the given params
+    """
+    if not params:
+        return MLPClassifier()
+    return nn_model_with_modified_params(x_train_scaled, y_train, params)
+
+def plot_nn_heatmap(param_grid: dict, x_train_scaled: pd.DataFrame, y_train: pd.Series, x_test_scaled: pd.DataFrame, y_test: pd.Series):
+    """
+    Input: params that can be used to modify the model
+    Returns: heatmap of the NN model accuracy
+    """
+    param_combinations = list(product(
+        param_grid['hidden_layer_sizes'], 
+        param_grid['activation'], 
+        param_grid['alpha'], 
+        param_grid['max_iter']
+    ))
+
+    results = []
+    for params in param_combinations:
+        hidden_layer_sizes, activation, alpha, max_iter = params
+        model = MLPClassifier(
+            hidden_layer_sizes=hidden_layer_sizes,
+            activation=activation,
+            alpha=alpha,
+            max_iter=max_iter,
+            random_state=42
+        )
+        model.fit(x_train_scaled, y_train)
+        accuracy = model.score(x_test_scaled, y_test)
+        results.append({
+            'hidden_layer_sizes': hidden_layer_sizes,
+            'activation': activation,
+            'alpha': alpha,
+            'max_iter': max_iter,
+            'accuracy': accuracy
+        })
+
+    # Convert results to DataFrame
+    results_df = pd.DataFrame(results)
+    heatmap_plots = [
+            {
+                "pivot_index": "activation",
+                "pivot_columns": "hidden_layer_sizes",
+                "title": "Activation vs Hidden Layer Sizes (Fixed Alpha)",
+                "constant_param": "alpha"
+            },
+            {
+                "pivot_index": "alpha",
+                "pivot_columns": "hidden_layer_sizes",
+                "title": "Alpha vs Hidden Layer Sizes (Fixed Activation)",
+                "constant_param": "activation"
+            },
+            {
+                "pivot_index": "alpha",
+                "pivot_columns": "activation",
+                "title": "Alpha vs Activation (Fixed Hidden Layer Sizes)",
+                "constant_param": "hidden_layer_sizes"
+            }
+        ]
+
+    for plot_config in heatmap_plots:
+        constant_param = plot_config["constant_param"]
+        unique_constants = results_df[constant_param].unique()
+
+        for constant_value in unique_constants:
+            filtered_df = results_df[results_df[constant_param] == constant_value]
+            heatmap_data = filtered_df.pivot_table(
+                index=plot_config["pivot_index"],
+                columns=plot_config["pivot_columns"],
+                values="accuracy",
+                aggfunc="mean"
+            )
+
+            plt.figure(figsize=(10, 6))
+            sns.heatmap(heatmap_data, annot=True, cmap='viridis', fmt=".2f", cbar=True)
+            plt.title(f"{plot_config['title']} ({constant_param}={constant_value})")
+            plt.xlabel(plot_config["pivot_columns"])
+            plt.ylabel(plot_config["pivot_index"])
+            plt.show()
+
+def neural_network_section(train: pd.DataFrame, test: pd.DataFrame):
+    """
+    Gathers the neural network section of the code
+    """
+    # scaling the data
+    minmax_scaler = MinMaxScaler()
+    x_train = train.drop(columns=['OUTCOME'])
+    y_train = train['OUTCOME']
+    x_test = test.drop(columns=['OUTCOME'])
+    y_test = test['OUTCOME']
+
+    x_train_scaled = minmax_scaler.fit_transform(x_train)
+    x_test_scaled = minmax_scaler.transform(x_test)
+
+    params = {
+        'hidden_layer_sizes': [(50, 50), (50, 50, 50),(100, 100)],
+        'activation': ['relu', 'tanh'],
+        'alpha': [0.0001, 0.001, 0.01],
+        'learning_rate': ['constant'],
+        'max_iter': [100, 200]
+    }
+
+    base_nn_model = build_nn_model(x_train_scaled, y_train)
+    modified_nn_model = build_nn_model(x_train_scaled, y_train, params)
+    print("\nBase NN Model:")
+    check_nn_model_accuracy(base_nn_model, x_train_scaled, y_train, x_test_scaled, y_test)
+    print("\nModified NN Model:")
+    check_nn_model_accuracy(modified_nn_model, x_train_scaled, y_train, x_test_scaled, y_test)
+    plot_nn_heatmap(params, x_train_scaled, y_train, x_test_scaled, y_test)
+
+    
 if __name__ == "__main__":
     raw_file = pd.read_csv(file_path).drop(columns = ['ID'])
     data = pre_process(raw_file)
-    decision_tree_section(data)
+    train, test = split_train_test(data, ratio = 0.8)
+
+    # decision_tree_section(train, test)
+    neural_network_section(train, test)
