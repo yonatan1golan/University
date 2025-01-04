@@ -1,5 +1,5 @@
 from matplotlib.backends.backend_pdf import PdfPages
-=from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import KBinsDiscretizer, MinMaxScaler
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
