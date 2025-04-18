@@ -46,7 +46,7 @@ def create_market_returns(stocks: list[str]) -> pd.DataFrame:
         temp[f'return_{stock.name}'] = returns
         all_returns_list.append(temp.set_index('date'))
     all_returns = pd.concat(all_returns_list, axis=1)
-    return all_returns.dropna()
+    return all_returns.dropna().reset_index()
 
 def calculate_csad(data: pd.DataFrame) -> pd.Series:
     """ calculates the CSAD for each day of Tesla's data against the sample stocks"""
