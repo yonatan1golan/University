@@ -1,4 +1,5 @@
 import pandas as pd
+import datetime
 
 class CONFIG:
     WEEKDAYS_DICTONARY = {
@@ -19,7 +20,7 @@ class CONFIG:
     }
 
     TESLA_TICKER = "TSLA"
-    TESLA_EPS = pd.read_csv("part_b/data/tesla_eps.csv", parse_dates=["publish_date"])
+    TESLA_EPS = pd.read_csv("final_project/part_b/data/tesla_eps.csv", parse_dates=["publish_date"])
     NASDAQ_TICKER = "^IXIC"
     SP500_TICKER = "^GSPC"
     SAMPLE_STOCKS_FOR_CSAD = [
@@ -29,3 +30,13 @@ class CONFIG:
         "AMZN",
         "META"
     ]
+
+    FIRST_HERDING_PERIOD = {
+        "start": datetime.date(2021, 9, 1),
+        "end": datetime.date(2021, 10, 30)
+    }
+
+    FIRST_NON_HERDING_PERIOD = {
+        "start": datetime.date(2023, 6, 1),
+        "end": datetime.date(2023, 12, 31)
+    }

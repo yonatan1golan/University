@@ -1,4 +1,5 @@
 from data.stock_fetcher import StockDataFetcher
+import statsmodels.api as sm
 from config import CONFIG
 import datetime as dt
 import pandas as pd
@@ -49,20 +50,22 @@ def create_market_returns(stocks: list[str]) -> pd.DataFrame:
     return all_returns.dropna().reset_index()
 
 def calculate_csad(data: pd.DataFrame) -> pd.Series:
-    """ calculates the CSAD for each day of Tesla's data against the sample stocks"""
     market_returns = create_market_returns(CONFIG.SAMPLE_STOCKS_FOR_CSAD)
     merged_data = data[['date', 'return']].merge(market_returns, on='date', how='left')
-    merged_data = merged_data.dropna()
+    merged_data = merged_data.dropna().reset_index(drop=True)
     merged_data.rename(columns={'return': 'return_TSLA'}, inplace=True)
-    
-    # TODO: calculate the CSAD
-    csad = 0
+
+    stocks_data = [col for col in merged_data.columns if col.startswith('return_') and col != 'return_TSLA']
+    csad = sum(
+        (merged_data['return_TSLA'] - merged_data[stock]).abs() for stock in stocks_data
+    ) / len(stocks_data)
+    csad.index = merged_data['date']
     return csad
-    
-def generate_data(stock_data: StockDataFetcher):
+
+def generate_features(stock_data: StockDataFetcher):
     """ populates the data with additional features for future analysis and regression """
-    # get the stock's data
-    data = stock_data.get_data()
+    # get the stock's data starting from 2020-01-01
+    data = stock_data.get_data().where(stock_data.get_data()['date'] >= dt.date(2020, 1, 1)).dropna()
 
     # independent variables
     data['ttm_eps'] = data['date'].apply(add_ttm_eps_values)
@@ -74,22 +77,75 @@ def generate_data(stock_data: StockDataFetcher):
     data['daily_trend'] = data['close'] / data['open']
     data['weekday'] = data['date'].apply(lambda x: x.weekday())
     data['quarter'] = data['date'].apply(lambda x: (x.month - 1) // 3 + 1)
-    for i in range(1,6):
+    for i in range(1,11):
         data[f'delta_volume_{i}_days_back'] = data['volume'] - data['volume'].shift(i)
 
     # dependent variables
-    # volumn,
-    data['csad'] = calculate_csad(data)
-    # close / close nasdaq same day
-    # close / close snp500 same day
-    # stock volumn / market volumn
+    # volumn will be used as the dependent variable
+    csad = calculate_csad(data)
+    csad.name = 'csad'
+    data = data.merge(csad, left_on='date', right_index=True, how='left')
 
     return data.dropna().reset_index(drop=True)
 
+
+class Regression:
+    def __init__(self, data: pd.DataFrame, period: dict, x: list, y: str):
+        self.data = data
+        self.period = period
+        self.x = x
+        self.y = y
+        self.model = self._run()
+        self.equation = self._get_general_equation()
+
+    def print_regression_results(self):
+        """ prints the regression results """
+        print(f"\nRegression results for period {self.period['start']} to {self.period['end']}:\n{self.model.summary()}\n")
+
+    def _get_general_equation(self) -> str:
+        """Returns the general symbolic regression equation (e.g., y = b0 + b1·x1 + b2·x2 + ...)"""
+        params = list(self.model.params.keys())  # get variable names
+        response_var = self.model.model.endog_names
+
+        lines = [f"{response_var} ="]
+        coef_idx = 0
+
+        for name in params:
+            if name == 'Intercept':
+                term = f"    b0"
+            else:
+                coef_idx += 1
+                term = f"    b{coef_idx}·{name}"
+
+            lines.append(term)
+
+        return "\n".join(lines)
+    
+    def _run(self) -> sm.OLS:
+        """ runs the regression for the given period """
+        data = self.data[(self.data['date'] >= self.period['start']) & (self.data['date'] <= self.period['end'])].reset_index(drop=True)
+        X = sm.add_constant(data[self.x])
+        model = sm.OLS(data[self.y], X).fit()
+        return model
+    
 if __name__ == "__main__":
     tesla_stock = StockDataFetcher(CONFIG.TESLA_TICKER)
-    # nasdaq_stock = StockDataFetcher(CONFIG.NASDAQ_TICKER)
+    processed_tesla_data = generate_features(tesla_stock)
 
-    processed_tesla_data = generate_data(tesla_stock)
-    print(processed_tesla_data)
-    # processed_tesla_data.to_csv("tesla_processed_data.csv", index=False)
+    x_columns = processed_tesla_data.columns.difference(['volume', 'csad', 'date'])
+
+    # herding_regression = Regression(
+    #     processed_tesla_data,
+    #     CONFIG.FIRST_HERDING_PERIOD,
+    #     x = list(x_columns),
+    #     y = 'volume'
+    # )
+    # herding_regression.print_regression_results()
+
+    non_herding_regression = Regression(
+        processed_tesla_data,
+        CONFIG.FIRST_NON_HERDING_PERIOD,
+        x = list(x_columns),
+        y = 'volume'
+    )
+    print(non_herding_regression.equation)
