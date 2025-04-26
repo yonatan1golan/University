@@ -1,6 +1,5 @@
 from enviroment_class import Environment
 from post_office import PostOffice
-import random
 
 class Agent:
     def __init__(self, id, domain, env: Environment):
@@ -44,6 +43,7 @@ class Agent:
     def add_post_office(self, post_office: PostOffice):
         self.post_office = post_office
 
+    # DSA
     def _calculate_cost(self, current_assign: int, iteration:int):
         total_cost = 0
         for neighbor_id in self.neighbors:
@@ -78,3 +78,34 @@ class Agent:
             new_assign = self._choose_new_assign(prob, iteration)
             if new_assign != self.current_assign:
                 self.current_assign = new_assign
+
+    # MGM-K
+    def _share_private_knowledge(self, share_prob: float, k: int):
+        neighbor_list = list(self.neighbors)
+        if self.env.random.random() < share_prob and len(neighbor_list) > 0:
+            sample_size = min(k, len(neighbor_list))
+            return self.env.random.sample(neighbor_list, sample_size)
+        return []
+    
+    def extend_my_knowledge(self, extend_knowledge: float, k: int, iteration: int):
+        to_share_with = self._share_private_knowledge(extend_knowledge, k)
+        if len(to_share_with) > 0:
+            for neighbor_id in to_share_with:
+                self.post_office.add_message({
+                    "sender": self.id,
+                    "recipient": neighbor_id,
+                    "content": {
+                        "my_value": self.current_assign,
+                        "my_costs": self._calculate_cost(self.current_assign, iteration),
+                        "my_mails": self.mailbox[iteration]
+                    },
+                    "iteration": iteration
+                })
+        
+    def did_get_extended_knowledge(self, iteration: int) -> bool:
+        if iteration not in self.mailbox:
+            return False
+        for sender_id, message in self.mailbox[iteration].items():
+            if isinstance(message, dict) and "my_value" in message:
+                return True
+        return False

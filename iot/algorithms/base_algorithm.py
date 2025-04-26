@@ -4,7 +4,6 @@ from graph_class import Graph
 class BaseAlgo(ABC):
     def __init__(self, name: str, graph: Graph, prob: float):
         self.graph = graph
-        self.change_prob = prob
         self.name = name
 
     @abstractmethod
@@ -17,5 +16,4 @@ class BaseAlgo(ABC):
         """
         self.graph.create_graph()
         run_results = self._algorithm()
-        # self.graph.visualize_graph()
         return run_results

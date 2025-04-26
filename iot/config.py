@@ -24,7 +24,7 @@ class CONFIG:
     PROB_DSA = [0.2, 0.7, 1.0]
 
     # env
-    NUM_AGENTS = 30
-    NUM_ITERATIONS = 100
-    NUM_RUNS = 30
+    NUM_AGENTS = 3 # 30
+    NUM_ITERATIONS = 3 # 100
+    NUM_RUNS = 1 # 30
     RANDOM_SEED = 42

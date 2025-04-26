@@ -7,7 +7,7 @@ from collections import defaultdict
 
 # algorithms
 from algorithms.dsa_c_algorithm import DSA_C
-from algorithms.mgm_algorithm import MGM
+from algorithms.mgm_algorithm import MGM_K
 from algorithms.mgm_2_algorithm import MGM2
 
 def plot_results(results, title):
@@ -26,9 +26,9 @@ if __name__ == '__main__':
 
     iteration_grouped = defaultdict(list)
     for i in range(env.runs):
-        uniform_graph_k1 = Graph(CONFIG.NUM_DOMAIN, CONFIG.DENSITY['LOW'], env)
-        dsa_k1 = DSA_C(prob=CONFIG.PROB_DSA[2], graph=uniform_graph_k1) 
-        results_run = dsa_k1.run()
+        graph = Graph(CONFIG.NUM_DOMAIN, CONFIG.DENSITY['LOW'], env)
+        algorithm = MGM_K(graph = graph, k = 1, prob = CONFIG.PROB_DSA[1]) # DSA_C(prob=CONFIG.PROB_DSA[0], graph=graph)
+        results_run = algorithm.run()
         for iteration_key, iteration_value in enumerate(results_run):
             iteration_grouped[iteration_key].append(iteration_value)
 
@@ -37,5 +37,5 @@ if __name__ == '__main__':
         values = [list(d.values())[0] for d in list_of_dicts]
         averaged_results[iteration_num] = sum(values) / len(values)
 
-    plot_results(averaged_results, title="DSA-C Algorithm Results")
+    # plot_results(averaged_results, 'tt')
 

@@ -4,6 +4,7 @@ class DSA_C(BaseAlgo):
     def __init__(self, prob: float, graph):
         super().__init__('DSA_C', graph=graph, prob=prob)
         self.random = graph.env.random
+        self.change_prob = prob
 
     def _algorithm(self) -> list:
         results = []
