@@ -8,9 +8,14 @@ class BaseAlgo(ABC):
         self.name = name
 
     @abstractmethod
-    def _algorithm(self):
+    def _algorithm(self) -> list:
         pass
 
-    def run(self):
+    def run(self) -> list:
+        """
+        retrun a dictionary of the algorithm's results {iteration: cost}
+        """
         self.graph.create_graph()
-        self._algorithm()
+        run_results = self._algorithm()
+        # self.graph.visualize_graph()
+        return run_results
