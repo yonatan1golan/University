@@ -6,4 +6,4 @@ class Environment:
         self.iterations = iterations
         self.runs = runs
         self.num_agent = num_agent
-        self.random = random.Random(CONFIG.RANDOM_SEED)#CONFIG.RANDOM_SEED)
+        self.random = random.Random(CONFIG.RANDOM_SEED)

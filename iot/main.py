@@ -15,12 +15,12 @@ def plot_results(results, title):
     plt.figure(figsize=(10, 6))
 
     for algo_name, iteration_data in results.items():
-        iterations = sorted(iteration_data.keys())
+        iterations = sorted(iteration_data.keys(), key=lambda x: float(x))
         costs = [iteration_data[i] for i in iterations]
         plt.plot(iterations, costs, marker='.', label=algo_name)
 
     plt.title(title)
-    plt.xlabel('Iterations')
+    plt.xlabel('Iteration')
     plt.ylabel('Cost')
     plt.grid(True)
     plt.legend(title="Algorithm")
