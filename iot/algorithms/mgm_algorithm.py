@@ -1,34 +1,45 @@
 from algorithms.base_algorithm import BaseAlgo
-import json
 
 class MGM_K(BaseAlgo):
-    def __init__(self, graph, prob: float, k: int = 1):
-        super().__init__(f'MGM-{k}', graph, prob)
+    def __init__(self, graph, k: int = 1):
+        super().__init__(f'MGM-{k}', graph)
         self.k = k
-        self.share_prob = prob
+        self.share_prob = 0.5
 
     def _algorithm(self):
-        results = []
-        for iteration in range(0, self.graph.env.iterations):
+        results = {}
+        total_iterations = self.graph.env.iterations * 2  # for phase 1 and phase 2
+
+        for iteration in range(total_iterations):
             if iteration == 0:
                 for node in self.graph.nodes:
-                    node.change_current_assign(value=self.graph.env.random.choice(self.graph.domain))
-            else:
+                    initial_value = self.graph.env.random.choice(self.graph.domain)
+                    node.change_current_assign(value=initial_value)
+                results[0] = self.graph.calculate_global_price()
+
+            elif iteration % 2 == 1:
                 # phase 1
                 for node in self.graph.nodes:
-                    node.notify_neighbors(iteration)
-
-                # phase 2
-                for node in self.graph.nodes:
-                    node.extend_my_knowledge(extend_knowledge = self.share_prob, k = self.k, iteration=iteration)
-
+                    node.notify_neighbors(iteration=iteration - 1)
                 self.graph.post_office.deliver_messages()
 
                 for node in self.graph.nodes:
-                    got_extended_knowledge = node.did_get_extended_knowledge(iteration)
-                    if got_extended_knowledge:
-                        best_offer = node.select_best_offer(iteration)
-                        if best_offer is not None and node.is_offer_better_than_current(best_offer):
-                            pass
-            results.append({iteration: self.graph.calculate_global_price()})
+                    node.consider_change_current_assign(iteration=iteration-1)
+
+                for node in self.graph.nodes:
+                    node.notify_k_neighbors_about_gain(
+                        iteration=iteration,
+                        k=self.k,
+                        prob=self.share_prob
+                    )
+
+                results[iteration // 2] = self.graph.calculate_global_price()
+
+            else:
+                # phase 2
+                self.graph.post_office.deliver_messages()
+                for node in self.graph.nodes:
+                    node.decide_and_commit(iteration=iteration)
+                results[iteration // 2] = self.graph.calculate_global_price()
+
         return results

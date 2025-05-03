@@ -13,18 +13,22 @@ class CONFIG:
         'B': 2
     }
     DENSITY = {
-        'LOW': 0.2,
-        'MEDIUM': 0.75,
-        'HIGH': 1
+        'K1': 0.25,
+        'K2': 0.75,
+        'K3': 0.1
     }
     COST_LB = 100
     COST_UB = 200
 
     # algoritems
-    PROB_DSA = [0.2, 0.7, 1.0]
+    CHANGE_PROB = {
+        'LOW': 0.2,
+        'MEDIUM': 0.7,
+        'HIGH': 1.0
+    }
 
     # env
-    NUM_AGENTS = 3 # 30
-    NUM_ITERATIONS = 3 # 100
-    NUM_RUNS = 1 # 30
+    NUM_AGENTS = 30
+    NUM_ITERATIONS = 100
+    NUM_RUNS = 30
     RANDOM_SEED = 42

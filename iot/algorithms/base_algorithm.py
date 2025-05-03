@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from graph_class import Graph
 
 class BaseAlgo(ABC):
-    def __init__(self, name: str, graph: Graph, prob: float):
+    def __init__(self, name: str, graph: Graph):
         self.graph = graph
         self.name = name
 

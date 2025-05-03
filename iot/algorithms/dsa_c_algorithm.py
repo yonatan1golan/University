@@ -2,14 +2,12 @@ from algorithms.base_algorithm import BaseAlgo
 
 class DSA_C(BaseAlgo):
     def __init__(self, prob: float, graph):
-        super().__init__('DSA_C', graph=graph, prob=prob)
+        super().__init__('DSA_C', graph=graph)
         self.random = graph.env.random
         self.change_prob = prob
 
     def _algorithm(self) -> list:
-        results = []
-
-        # run the algorithm until the stopping criteria is met
+        results = {}
         for iteration in range(0, self.graph.env.iterations):
             if iteration == 0:
                 for node in self.graph.nodes:
@@ -23,5 +21,5 @@ class DSA_C(BaseAlgo):
                 for node in self.graph.nodes:
                     node.change_current_assign(prob=self.change_prob, iteration=iteration-1)
             
-            results.append({iteration: self.graph.calculate_global_price()})
+            results[iteration] = self.graph.calculate_global_price() 
         return results

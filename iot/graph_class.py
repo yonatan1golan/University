@@ -45,7 +45,7 @@ class Graph:
                     cost_matrix = [[round(self.env.random.uniform(CONFIG.COST_LB, CONFIG.COST_UB), 2) if i==j else 0 for j in range(n)] for i in range(n)]
                 self.costs[edge_key] = cost_matrix
                 node_i.costs_to_neighbors[neighbor.id] = cost_matrix
-                neighbor.costs_to_neighbors[node_i.id] = cost_matrix
+                neighbor.costs_to_neighbors[node_i.id] = list(map(list, zip(*cost_matrix))) # transposed matrix
 
     def _create_message_boxes_for_agents(self):
         self.post_office = PostOffice(self.nodes)
@@ -99,6 +99,3 @@ class Graph:
                     used.append([agent.id, neighbor.id])
                     total_cost += agent.costs_to_neighbors[neighbor.id][agent.current_assign][neighbor.current_assign]
         return total_cost
-    
-    def print_result(self):
-        pass
