@@ -3,3 +3,4 @@ final_project/data/Bitcoin_tweets.csv.zip
 test.py
 NLP/secrets_config.py
 iot/reference.py
+.DS_Store
