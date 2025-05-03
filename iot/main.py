@@ -35,9 +35,9 @@ if __name__ == '__main__':
     )
 
     graph_settings = {
-        'k0.25': (CONFIG.NUM_DOMAIN, CONFIG.DENSITY['K1']),
-        'k0.75': (CONFIG.NUM_DOMAIN, CONFIG.DENSITY['K2']),
-        'colors': (CONFIG.COLOR_DOMAIN, CONFIG.DENSITY['K3'])
+        'K=0.25': (CONFIG.NUM_DOMAIN, CONFIG.DENSITY['K1']),
+        'K=0.75': (CONFIG.NUM_DOMAIN, CONFIG.DENSITY['K2']),
+        'Colors': (CONFIG.COLOR_DOMAIN, CONFIG.DENSITY['K3'])
     }
 
     algorithms = {
