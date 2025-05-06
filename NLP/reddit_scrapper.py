@@ -1,16 +1,32 @@
 import praw
-import pandas as pd
-import networkx as nx
 import matplotlib.pyplot as plt
-from collections import defaultdict
+import networkx as nx
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import nltk
-import time
+from datetime import datetime, timezone
+from secrets_config import RedditSecretsConfig
+import matplotlib.colors as mcolors
+from matplotlib.colors import LinearSegmentedColormap
 
-from secrets_config import RedditSecretsConfig  # <-- Make sure you have this with your creds
 
-nltk.download('vader_lexicon')
+class CONGIF:
+    INDIVIDUALS = [
+        "Elon Musk", "Zach Kirkhorn", "Tom Zhu", "JB Straubel",
+        "Joe Biden", "Pete Buttigieg", "Lina Khan",
+        "Cathie Wood", "Jim Cramer", "Ross Gerber", "Gary Black", "Adam Jonas",
+        "Chamath Palihapitiya", "Mark Spiegel", "Michael Burry"
+    ]
+    SUBREDDITS = ['investing', 'stocks'] #'wallstreetbets', 'economy', 'politics']
+    # INTERESTING_PERIODS = {
+    #     '2020-03-01': '2020-10-30',
+    #     '2021-09-01': '2022-02-28',
+    #     '2022-07-01': '2022-12-31',
+    #     '2024-05-01': '2024-12-31',
+    #     '2025-01-01': '2025-03-31'
+    # }
 
+    POST_LIMIT = 50
+    COMMENT_LIMIT = 10
+    SENTIMENT_THRESHOLD = 0.10
 
 class RedditClient:
     def __init__(self):
@@ -20,80 +36,150 @@ class RedditClient:
             user_agent=RedditSecretsConfig.user_agent
         )
 
+    def fetch_top_posts(self, subreddit_name, keyword, post_limit=CONGIF.POST_LIMIT):
+        subreddit = self.reddit.subreddit(subreddit_name)
+        posts = []
 
-def fetch_posts(client, keyword, limit=100):
-    posts = []
-    for submission in client.reddit.subreddit('all').search(keyword.lower(), sort='new', time_filter='month', limit=limit):
-        posts.append({
-            'title': submission.title,
-            'selftext': submission.selftext,
-            'created_utc': submission.created_utc
-        })
-        time.sleep(0.5)  # avoid hitting API rate limit
-    return pd.DataFrame(posts)
+        for post in subreddit.search(keyword, limit=post_limit, sort='top'):
+            post_info = {
+                'title': post.title,
+                'created_utc': datetime.fromtimestamp(post.created_utc, tz=timezone.utc),
+                'score': post.score,
+                'num_comments': post.num_comments,
+                'comments': self._fetch_top_comments(post, CONGIF.COMMENT_LIMIT),
+            }
+            posts.append(post_info)
+        return posts
 
-
-def analyze_sentiment(text):
-    sia = SentimentIntensityAnalyzer()
-    score = sia.polarity_scores(text)['compound']
-    if score >= 0.05:
-        return 'positive'
-    elif score <= -0.05:
-        return 'negative'
-    else:
-        return 'neutral'
-
-
-def build_graph(df, individuals):
-    G = nx.Graph()
-    G.add_node('Tesla')
-    mention_data = defaultdict(lambda: {'count': 0, 'sentiments': []})
-
-    for _, row in df.iterrows():
-        text = f"{row['title']} {row['selftext']}".lower()
-        for person in individuals:
-            if person.lower() in text and 'tesla' in text:
-                sentiment = analyze_sentiment(text)
-                mention_data[person]['count'] += 1
-                mention_data[person]['sentiments'].append(sentiment)
-
-    for person, data in mention_data.items():
-        if data['count'] == 0:
-            continue
-        G.add_node(person)
-        avg_sentiment_score = sum([{'positive': 1, 'neutral': 0, 'negative': -1}[s] for s in data['sentiments']]) / len(data['sentiments'])
-        color = 'green' if avg_sentiment_score > 0.2 else 'red' if avg_sentiment_score < -0.2 else 'orange'
-        width = data['count']
-        G.add_edge('Tesla', person, weight=width, color=color)
-
-    return G
+    def _fetch_top_comments(self, post, comment_limit):
+        post.comments.replace_more(limit=0)
+        top_comments = post.comments[:comment_limit]
+        return [
+            {
+                'author': str(comment.author),
+                'body': comment.body,
+                'score': comment.score
+            }
+            for comment in top_comments if comment.body not in ['[deleted]', '[removed]']
+        ]
 
 
-def draw_graph(G):
-    pos = nx.spring_layout(G, seed=42)
-    colors = [G[u][v]['color'] for u, v in G.edges()]
-    weights = [G[u][v]['weight'] for u, v in G.edges()]
-    nx.draw(G, pos, with_labels=True, edge_color=colors, width=weights, node_color='skyblue', node_size=1500, font_size=10)
-    plt.title("Reddit Co-Mention Sentiment Graph with Tesla")
-    plt.show()
+class Processor:
+    def __init__(self):
+        self.sia = SentimentIntensityAnalyzer()
+
+    def _analyze_sentiment(self, text):
+        score = self.sia.polarity_scores(text)['compound']
+        sentiment = 'positive' if score >= CONGIF.SENTIMENT_THRESHOLD else 'negative' if score <= -CONGIF.SENTIMENT_THRESHOLD else 'neutral'
+        return score, sentiment
+
+    def _clean_text(self, text):
+        # remove emojis, special characters, etc.
+        pass
+
+    def process_posts(self, posts):
+        for post in posts:
+            score, label = self._analyze_sentiment(post['title'])
+            post['sentiment_score'] = score
+            post['sentiment_label'] = label
+            for comment in post['comments']:
+                score, label = self._analyze_sentiment(comment['body'])
+                comment['sentiment_score'] = score
+                comment['sentiment_label'] = label
+
+
+class GraphMaker:
+    def __init__(self):
+        self.graph = nx.Graph()
+        self.entities = ["Tesla"] + CONGIF.INDIVIDUALS
+        self.min_width = 0.5
+        self.max_width = 10.0
+        self.custom_cmap = LinearSegmentedColormap.from_list(
+            "custom_red_gray_green",
+            ["darkred", "gray", "darkgreen"],
+            N=256
+        )
+
+    def _find_mentions(self, text):
+        mentions = []
+        lowered = text.lower()
+        for entity in self.entities:
+            if entity.lower() in lowered:
+                mentions.append(entity)
+        return mentions
+
+    def build_graph(self, posts):
+        for post in posts:
+            mentions = self._find_mentions(post['title'])
+            self._add_edges(mentions, post['score'], post['sentiment_score'])
+
+            for comment in post['comments']:
+                comment_mentions = self._find_mentions(comment['body'])
+                self._add_edges(comment_mentions, comment['score'], comment['sentiment_score'])
+
+    def _add_edges(self, mentions, score, sentiment_score):
+        for i in range(len(mentions)):
+            for j in range(i + 1, len(mentions)):
+                a, b = mentions[i], mentions[j]
+                if self.graph.has_edge(a, b):
+                    self.graph[a][b]['weight'] += score
+                    self.graph[a][b]['sentiments'].append(sentiment_score)
+                else:
+                    self.graph.add_edge(a, b, weight=score, sentiments=[sentiment_score])
+
+    def finalize_graph(self):
+        weights = [data['weight'] for _, _, data in self.graph.edges(data=True)]
+        if weights:
+            min_w = min(weights)
+            max_w = max(weights)
+        else:
+            min_w = max_w = 1
+
+        for u, v, data in self.graph.edges(data=True):
+            # normalize weight
+            if max_w != min_w:
+                norm_weight = self.min_width + (data['weight'] - min_w) / (max_w - min_w) * (self.max_width - self.min_width)
+            else:
+                norm_weight = (self.max_width + self.min_width) / 2
+
+            avg_sentiment = sum(data['sentiments']) / len(data['sentiments'])
+
+            data['normalized_weight'] = norm_weight
+            data['color'] = self._sentiment_to_color(avg_sentiment)
+
+    def _sentiment_to_color(self, score):
+        norm = mcolors.Normalize(vmin=-1.0, vmax=1.0)
+        rgba = self.custom_cmap(norm(score)) 
+        return rgba
+
+    def visualize(self):
+        pos = nx.spring_layout(self.graph, seed=42)
+
+        edge_colors = [data['color'] for _, _, data in self.graph.edges(data=True)]
+        edge_weights = [data['normalized_weight'] for _, _, data in self.graph.edges(data=True)]
+
+        nx.draw(self.graph, pos, with_labels=True,
+                edge_color=edge_colors,
+                width=edge_weights,
+                node_color='lightblue',
+                font_size=8)
+
+        plt.title("Tesla & Influencers Co-Mention Sentiment Graph")
+        plt.show()
 
 
 if __name__ == '__main__':
-    # Step 1: Connect to Reddit
     client = RedditClient()
+    processor = Processor()
+    graphmaker = GraphMaker()
+    all_posts = []
 
-    # Step 2: Define individuals to track
-    individuals = ['Elon Musk', 'Jim Cramer', 'Cathie Wood', 'Joe Biden', 'Donald Trump']
+    for individual in CONGIF.INDIVIDUALS:
+        for subreddit in CONGIF.SUBREDDITS:
+            posts = client.fetch_top_posts(subreddit, individual)
+            processor.process_posts(posts)
+            all_posts.extend(posts)
 
-    # Step 3: Fetch posts
-    all_posts = pd.DataFrame()
-    for person in individuals:
-        print(f"Fetching posts for: {person}")
-        posts_df = fetch_posts(client, f"Tesla {person}", limit=50)
-        all_posts = pd.concat([all_posts, posts_df], ignore_index=True)
-
-    # Step 4: Build the graph
-    G = build_graph(all_posts, individuals)
-
-    # Step 5: Visualize the graph
-    draw_graph(G)
+    graphmaker.build_graph(all_posts)
+    graphmaker.finalize_graph()
+    graphmaker.visualize()
