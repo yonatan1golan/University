@@ -32,11 +32,31 @@ class CONFIG:
     ]
 
     FIRST_HERDING_PERIOD = {
-        "start": datetime.date(2021, 9, 1),
-        "end": datetime.date(2021, 10, 30)
+        "start": datetime.date(2025, 1, 27),
+        "end": datetime.date(2025, 3, 3)
+    }
+
+    SECOND_HERDING_PERIOD = {
+        "start": datetime.date(2024, 10, 7),
+        "end": datetime.date(2024, 12, 9)
+    }
+
+    THIRD_HERDING_PERIOD = {
+        "start": datetime.date(2022, 3, 28),
+        "end": datetime.date(2022, 5, 16)
     }
 
     FIRST_NON_HERDING_PERIOD = {
         "start": datetime.date(2023, 6, 1),
         "end": datetime.date(2023, 12, 31)
     }
+
+    # SECOND_NON_HERDING_PERIOD = {
+    #     "start": datetime.date(2023, 6, 1),
+    #     "end": datetime.date(2023, 12, 31)
+    # }
+
+    # THIRD_NON_HERDING_PERIOD = {
+    #     "start": datetime.date(2023, 6, 1),
+    #     "end": datetime.date(2023, 12, 31)
+    # }
