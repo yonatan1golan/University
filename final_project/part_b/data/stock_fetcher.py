@@ -14,4 +14,6 @@ class StockDataFetcher:
 
     def get_data(self):
         self.data = self.Ticker.history(period="max")
-        return self._normalize_data(self.data)
+        data = self._normalize_data(self.data)
+        data.to_csv(f"final_project/part_b/data/tesla_stock.csv", index=False)
+        return data
