@@ -1,0 +1,2 @@
+title,created_utc,score,num_comments,comments,periods,sentiment_score,sentiment_label
+"Did Your Senator Vote For The Banks, or YOU? (Vitter Amendment)",2010-05-11 23:53:25+00:00,1,2,"[{'author': 'ExxonMcCain', 'body': 'This is a bullshit post.\n\nThe people who voted for the original bailout in November of 2008 are the ones who sold us out to the banks.', 'score': -1, 'sentiment_score': -0.4404, 'sentiment_label': 'negative'}]","['early_stage', 'early_stage', 'early_stage', 'early_stage']",0.0,neutral
