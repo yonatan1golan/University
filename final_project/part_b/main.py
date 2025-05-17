@@ -7,7 +7,7 @@ import numpy as np
 
 def add_ttm_eps_values(specific_date: dt.date) -> float:
     """ adds ttm_eps values to the data, using the last 4 quarters of eps data """
-    relevant_eps = CONFIG.TESLA_EPS.where(CONFIG.TESLA_EPS['publish_date'] <= specific_date).dropna()
+    relevant_eps = CONFIG.TESLA_EPS.where(CONFIG.TESLA_EPS['publish_date'] <= pd.Timestamp(specific_date)).dropna()
     if len(relevant_eps) >= 4:
         return round(relevant_eps.tail(4)['quarterly_eps'].sum(), 2)
     return None
