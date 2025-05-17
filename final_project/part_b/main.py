@@ -7,7 +7,7 @@ import numpy as np
 
 def add_ttm_eps_values(specific_date: dt.date) -> float:
     """ adds ttm_eps values to the data, using the last 4 quarters of eps data """
-    relevant_eps = CONFIG.TESLA_EPS.where(CONFIG.TESLA_EPS['publish_date'].dt.date <= specific_date).dropna()
+    relevant_eps = CONFIG.TESLA_EPS.where(CONFIG.TESLA_EPS['publish_date'] <= specific_date).dropna()
     if len(relevant_eps) >= 4:
         return round(relevant_eps.tail(4)['quarterly_eps'].sum(), 2)
     return None
@@ -38,7 +38,7 @@ def create_market_returns(stocks: list[str]) -> pd.DataFrame:
     all_returns_list = []
     for stock in stocks:
         stock = StockDataFetcher(stock)
-        stock_data = stock.get_data()
+        stock_data = stock.data
         closing_prices = stock_data['close']
         returns = calculate_return(closing_prices).dropna()
 
@@ -65,7 +65,7 @@ def calculate_csad(data: pd.DataFrame) -> pd.Series:
 def generate_features(stock_data: StockDataFetcher):
     """ populates the data with additional features for future analysis and regression """
     # get the stock's data starting from 2020-01-01
-    data = stock_data.get_data().where(stock_data.get_data()['date'] >= dt.date(2020, 1, 1)).dropna()
+    data = stock_data.data.where(pd.to_datetime(stock_data.data['date']) >= pd.Timestamp(dt.date(2020, 1, 1))).dropna()
 
     # independent variables
     data['ttm_eps'] = data['date'].apply(add_ttm_eps_values)
@@ -73,7 +73,10 @@ def generate_features(stock_data: StockDataFetcher):
     data['rsi'] = calculate_rsi(data['close'])
     data['return'] = calculate_return(data['close'])
     data['volatility'] = data['return'].rolling(10).std()
-    data['beta'] = stock_data.Ticker.info['beta']
+    try:
+        data['beta'] = stock_data.Ticker.info['beta']
+    except (KeyError, AttributeError):
+        data['beta'] = stock_data.data['beta']    
     data['daily_trend'] = data['close'] / data['open']
     data['weekday'] = data['date'].apply(lambda x: x.weekday())
     data['quarter'] = data['date'].apply(lambda x: (x.month - 1) // 3 + 1)
@@ -143,10 +146,11 @@ class Regression:
     
 if __name__ == "__main__":
     tesla_stock = None
+    tesla_stock = StockDataFetcher(CONFIG.TESLA_TICKER)
     try:
-        tesla_stock = StockDataFetcher(CONFIG.TESLA_TICKER)
-    except: # in cases of rate limit error from yfinance
-        tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
+        tesla_stock.data = tesla_stock.get_data()
+    except:
+        tesla_stock.data = pd.read_csv("final_project/part_b/data/tesla_stock.csv").assign(beta=tesla_stock.Ticker.info['beta'])
 
     processed_tesla_data = generate_features(tesla_stock)
     x_columns = processed_tesla_data.columns.difference(['volume', 'csad', 'date'])
@@ -158,7 +162,7 @@ if __name__ == "__main__":
     pe_daily_trend_volatility = generate_interation_feature(processed_tesla_data, INTERACTIONS["pe_daily_trend_volatility"])
     weekday_return_rsi = generate_interation_feature(processed_tesla_data, INTERACTIONS["weekday_return_rsi"])
 
-    x_columns_with_interations = list(x_columns) + pe_daily_trend_volatility.name + weekday_return_rsi.name
+    x_columns_with_interations = list(x_columns) + [pe_daily_trend_volatility.name] + [weekday_return_rsi.name]
     processed_tesla_data_with_interactions = processed_tesla_data.copy()
     processed_tesla_data_with_interactions[pe_daily_trend_volatility.name] = pe_daily_trend_volatility
     processed_tesla_data_with_interactions[weekday_return_rsi.name] = weekday_return_rsi
