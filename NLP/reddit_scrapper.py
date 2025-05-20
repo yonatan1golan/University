@@ -30,6 +30,7 @@ class CONFIG:
         "Elon Musk",           # CEO of Tesla. Founder, product architect, and central to all decisions at Tesla.
         "Jeff Bezos",          # Amazon founder. Business and space rival to Musk (Blue Origin vs. SpaceX); often compared to Musk.
         "Larry Page",          # Google co-founder. Longtime friend of Musk; Google/Waymo competes with Tesla in autonomous driving.
+        "Donald Trump",        # Former U.S. President. Influences public opinion and policy; has made comments on Tesla and Musk.
         
         "Joe Biden",           # U.S. President. Initially dismissive of Tesla in EV discussions; later acknowledged its EV leadership.
         "Pete Buttigieg",      # U.S. Secretary of Transportation. Influences EV infrastructure policy affecting Tesla.
@@ -52,6 +53,7 @@ class CONFIG:
         "Jeff Bezos": ["Bezos", "Jeff", "Amazon founder", "Blue Origin", "JB"],
         "Mark Zuckerberg": ["Zuck", "Zuckerberg", "Mark", "Meta CEO", "Facebook"],
         "Larry Page": ["Larry", "Google co-founder", "Alphabet", "Page"],
+        "Donald Trump": ["Trump", "Donald", "POTUS 45", "45th President", "The Donald"],
 
         "Joe Biden": ["Biden", "President Biden", "Joe", "POTUS"],
         "Pete Buttigieg": ["Buttigieg", "Pete", "Secretary Pete", "Transport Secretary"],
