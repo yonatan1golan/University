@@ -32,6 +32,17 @@ class CONFIG:
     ]
 
     INTERESTING_PERIOD = {
-        "start": datetime.date(2024, 11, 1),
-        "end": datetime.date(2025, 3, 1)
+        "start": datetime.date(2024, 10, 1),
+        "end": datetime.date(2025, 5, 1)
+    }
+
+    CATEGORIZATION_DICTIONARY = {
+        1: "low",
+        2: "medium",
+        3: "high"
+    }
+
+    DAILY_TREND_DICTIONARY = {
+        -1: "down",
+        1: "up"
     }
