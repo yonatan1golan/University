@@ -36,15 +36,17 @@ def calculate_return(closing_prices: pd.Series) -> pd.Series:
 def create_market_returns(stocks: list[str]) -> pd.DataFrame:
     """ creates a dataframe of the market returns for the given stocks """
     all_returns_list = []
-    for stock in stocks:
-        stock = StockDataFetcher(stock)
-        stock_data = stock.data
-        closing_prices = stock_data['close']
+    for stock_name in stocks:
+        relevant_file_path = f"final_project/part_b/data/{stock_name.lower()}_stock.csv"
+        # stock = StockDataFetcher(stock)
+        stock = pd.read_csv(relevant_file_path)
+        stock['Date'] = pd.to_datetime(stock['Date'], errors='coerce')  # NaT if parsing fails
+        closing_prices = stock['Price']
         returns = calculate_return(closing_prices).dropna()
 
-        temp = pd.DataFrame(columns=['date', f'return_{stock.name}'])
-        temp['date'] = stock_data['date']
-        temp[f'return_{stock.name}'] = returns
+        temp = pd.DataFrame(columns=['date', f'return_{stock_name}'])
+        temp['date'] = stock['Date']
+        temp[f'return_{stock_name}'] = returns
         all_returns_list.append(temp.set_index('date'))
     all_returns = pd.concat(all_returns_list, axis=1)
     return all_returns.dropna().reset_index()
@@ -62,10 +64,11 @@ def calculate_csad(data: pd.DataFrame) -> pd.Series:
     csad.index = merged_data['date']
     return csad
 
-def generate_features(stock_data: StockDataFetcher):
+def generate_features(stock_data: pd.DataFrame) -> pd.DataFrame:
     """ populates the data with additional features for future analysis and regression """
     # get the stock's data starting from 2020-01-01
-    data = stock_data.data.where(pd.to_datetime(stock_data.data['date']) >= pd.Timestamp(dt.date(2020, 1, 1))).dropna()
+    stock_data['date'] = pd.to_datetime(stock_data['date'], errors='coerce')  # NaT if parsing fails
+    data = stock_data.where(stock_data['date'] >= pd.Timestamp(dt.date(2020, 1, 1))).dropna()
 
     # independent variables
     data['ttm_eps'] = data['date'].apply(add_ttm_eps_values)
@@ -73,22 +76,16 @@ def generate_features(stock_data: StockDataFetcher):
     data['rsi'] = calculate_rsi(data['close'])
     data['return'] = calculate_return(data['close'])
     data['volatility'] = data['return'].rolling(10).std()
-    try:
-        data['beta'] = stock_data.Ticker.info['beta']
-    except (KeyError, AttributeError):
-        data['beta'] = stock_data.data['beta']    
+    data['beta'] = stock_data['beta']    
     data['daily_trend'] = data['close'] / data['open']
-    data['weekday'] = data['date'].apply(lambda x: x.weekday())
-    data['quarter'] = data['date'].apply(lambda x: (x.month - 1) // 3 + 1)
+    data['weekday'] = data['date'].dt.weekday 
+    data['quarter'] = data['date'].dt.quarter 
     for i in range(1,11):
         data[f'delta_volume_{i}_days_back'] = data['volume'] - data['volume'].shift(i)
-
-    # dependent variables
-    # volumn will be used as the dependent variable
+    
     csad = calculate_csad(data)
     csad.name = 'csad'
     data = data.merge(csad, left_on='date', right_index=True, how='left')
-
     return data.dropna().reset_index(drop=True)
 
 def normalize_feature_to_z_score(data: pd.DataFrame, feature: str) -> pd.Series:
@@ -96,7 +93,7 @@ def normalize_feature_to_z_score(data: pd.DataFrame, feature: str) -> pd.Series:
     data[feature] = data[feature].astype(float)
     return (data[feature] - data[feature].mean()) / data[feature].std()
 
-def generate_interation_feature(data: pd.DataFrame, features: list[str]) -> pd.Series:
+def generate_interaction_feature(data: pd.DataFrame, features: list[str]) -> pd.Series:
     """ generates interaction features for the given features, and normalizes them to z-scores """
     normalized = [normalize_feature_to_z_score(data, feature) for feature in features]
     interaction_df = pd.concat(normalized, axis=1)
@@ -138,55 +135,47 @@ class Regression:
         return "\n".join(lines)
     
     def _run(self) -> sm.OLS:
-        """ runs the regression for the given period """
-        data = self.data[(self.data['date'] >= self.period['start']) & (self.data['date'] <= self.period['end'])].reset_index(drop=True)
-        X = sm.add_constant(data[self.x])
-        model = sm.OLS(data[self.y], X).fit()
+        """Runs the regression for the given period and handles non-numeric columns correctly."""
+        start = pd.Timestamp(self.period['start'])
+        end = pd.Timestamp(self.period['end'])
+        data = self.data[(self.data['date'] >= start) & (self.data['date'] <= end)].reset_index(drop=True)
+
+        x_columns = [
+            col for col in self.x
+            if col in data.columns and pd.api.types.is_numeric_dtype(data[col])
+        ]
+
+        X = data[x_columns].astype(float)
+        X = sm.add_constant(X)  # add intercept
+
+        y = data[self.y].astype(float)
+        model = sm.OLS(y, X).fit()
         return model
-    
+
 if __name__ == "__main__":
     tesla_stock = None
-    tesla_stock = StockDataFetcher(CONFIG.TESLA_TICKER)
-    try:
-        tesla_stock.data = tesla_stock.get_data()
-    except:
-        tesla_stock.data = pd.read_csv("final_project/part_b/data/tesla_stock.csv").assign(beta=tesla_stock.Ticker.info['beta'])
-
+    # tesla_stock = StockDataFetcher(CONFIG.TESLA_TICKER)
+    tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
     processed_tesla_data = generate_features(tesla_stock)
-    x_columns = processed_tesla_data.columns.difference(['volume', 'csad', 'date'])
+    x_columns = processed_tesla_data.columns.difference(['volume'])
     
     INTERACTIONS = {
         "pe_daily_trend_volatility": ["pe", "daily_trend", "volatility"],
         "weekday_return_rsi": ["weekday", "return", "rsi"]
     }
-    pe_daily_trend_volatility = generate_interation_feature(processed_tesla_data, INTERACTIONS["pe_daily_trend_volatility"])
-    weekday_return_rsi = generate_interation_feature(processed_tesla_data, INTERACTIONS["weekday_return_rsi"])
+    pe_daily_trend_volatility = generate_interaction_feature(processed_tesla_data, INTERACTIONS["pe_daily_trend_volatility"])
+    weekday_return_rsi = generate_interaction_feature(processed_tesla_data, INTERACTIONS["weekday_return_rsi"])
+    x_columns_with_interactions = list(x_columns) + [pe_daily_trend_volatility.name] + [weekday_return_rsi.name]
 
-    x_columns_with_interations = list(x_columns) + [pe_daily_trend_volatility.name] + [weekday_return_rsi.name]
     processed_tesla_data_with_interactions = processed_tesla_data.copy()
     processed_tesla_data_with_interactions[pe_daily_trend_volatility.name] = pe_daily_trend_volatility
     processed_tesla_data_with_interactions[weekday_return_rsi.name] = weekday_return_rsi
 
-    # herding_regression = Regression(
-    #     processed_tesla_data,
-    #     CONFIG.FIRST_HERDING_PERIOD,
-    #     x = list(x_columns),
-    #     y = 'volume'
-    # )
-    # herding_regression.print_regression_results()
-
-    # non_herding_regression = Regression(
-    #     processed_tesla_data,
-    #     CONFIG.FIRST_NON_HERDING_PERIOD,
-    #     x = list(x_columns),
-    #     y = 'volume'
-    # )
-    # print(non_herding_regression.equation)
-
-    # herding_with_interactions = Regression(
-    #     processed_tesla_data,
-    #     CONFIG.FIRST_HERDING_PERIOD,
-    #     x = list(x_columns) + [f"{INTERACTIONS[i][0]}*{INTERACTIONS[i][1]}" for i in INTERACTIONS],
-    #     y = 'volume'
-    # )
-
+    regression_model = Regression(
+        data=processed_tesla_data_with_interactions,
+        period=CONFIG.INTERESTING_PERIOD,
+        x=x_columns_with_interactions,
+        y='return'
+    )
+    
+    regression_model.print_regression_results()
