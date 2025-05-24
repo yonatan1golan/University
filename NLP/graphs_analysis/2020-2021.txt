@@ -24,4 +24,4 @@
   Closeness: Elon Musk (1.00), Donald Trump (0.70), Joe Biden (0.70)
 
 🔹 Stracture Analysis:
- {0: ['Joe Biden', 'Cathie Wood', 'Donald Trump', 'Tesla', 'Mark Zuckerberg', 'Jeff Bezos'], 1: ['Elon Musk', 'Jim Cramer', 'Chamath Palihapitiya', 'GM', 'Ford', 'Michael Burry'], 2: ['NIO', 'Pete Buttigieg', 'Bernie Sanders']}
+ {0: ['Jeff Bezos', 'Tesla', 'Donald Trump', 'Cathie Wood', 'Joe Biden', 'Mark Zuckerberg'], 1: ['Michael Burry', 'GM', 'Ford', 'Jim Cramer', 'Elon Musk', 'Chamath Palihapitiya'], 2: ['NIO', 'Bernie Sanders', 'Pete Buttigieg']}

@@ -128,7 +128,7 @@ class RedditClient:
         for individual in CONFIG.INDIVIDUALS:
             print(f"Fetching posts for {individual}...")
             for subreddit in CONFIG.SUBREDDITS:
-                posts = client._fetch_top_posts(subreddit, individual)
+                posts = self._fetch_top_posts(subreddit, individual)
                 self.all_posts.extend(posts)
             pd.DataFrame(posts).to_csv(f"NLP/posts_data/{individual.lower().replace(' ', '_')}.csv", index=False)
 

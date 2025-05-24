@@ -12,7 +12,7 @@
 
 🔹 Structural Analysis:
   Cut Vertices (Articulation Points): ['Alexandria Ocasio-Cortez', 'Elon Musk']
-  Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Elon Musk', 'Pete Buttigieg'), ('Alexandria Ocasio-Cortez', 'Bernie Sanders')]
+  Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Elon Musk', 'Pete Buttigieg'), ('Bernie Sanders', 'Alexandria Ocasio-Cortez')]
 
 🔹 Community Detection:
   Number of Communities: 4
@@ -24,4 +24,4 @@
   Closeness: Elon Musk (0.94), Tesla (0.68), Joe Biden (0.68)
 
 🔹 Stracture Analysis:
- {0: ['Joe Biden', 'Donald Trump', 'NIO', 'Ford', 'GM', 'Jeff Bezos'], 1: ['Elon Musk', 'Pete Buttigieg', 'Bernie Sanders', 'Larry Page', 'Alexandria Ocasio-Cortez'], 2: ['Mark Zuckerberg', 'Meta', 'Cathie Wood', 'Michael Burry'], 3: ['Apple', 'Jim Cramer', 'Tesla']}
+ {0: ['Jeff Bezos', 'NIO', 'GM', 'Donald Trump', 'Ford', 'Joe Biden'], 1: ['Bernie Sanders', 'Larry Page', 'Alexandria Ocasio-Cortez', 'Pete Buttigieg', 'Elon Musk'], 2: ['Meta', 'Michael Burry', 'Cathie Wood', 'Mark Zuckerberg'], 3: ['Apple', 'Tesla', 'Jim Cramer']}

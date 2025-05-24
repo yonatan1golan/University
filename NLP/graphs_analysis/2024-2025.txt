@@ -24,4 +24,4 @@
   Closeness: Elon Musk (0.93), Tesla (0.76), Donald Trump (0.72)
 
 🔹 Stracture Analysis:
- {0: ['Elon Musk', 'Alexandria Ocasio-Cortez', 'Meta', 'Gavin Newsom'], 1: ['Joe Biden', 'GM', 'Tesla', 'NIO'], 2: ['Ford', 'Donald Trump', 'Jeff Bezos', 'Bernie Sanders'], 3: ['Cathie Wood', 'Pete Buttigieg']}
+ {0: ['NIO', 'Joe Biden', 'Tesla', 'GM'], 1: ['Meta', 'Gavin Newsom', 'Elon Musk', 'Alexandria Ocasio-Cortez'], 2: ['Jeff Bezos', 'Bernie Sanders', 'Ford', 'Donald Trump'], 3: ['Cathie Wood', 'Pete Buttigieg']}

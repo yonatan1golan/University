@@ -24,4 +24,4 @@
   Closeness: Elon Musk (0.94), Cathie Wood (0.65), Tesla (0.62)
 
 🔹 Stracture Analysis:
- {0: ['Elon Musk', 'Donald Trump', 'Chamath Palihapitiya', 'Bernie Sanders', 'Larry Page', 'Joe Biden', 'GM', 'Apple'], 1: ['Cathie Wood', 'Pete Buttigieg', 'NIO', 'Mark Zuckerberg', 'Jeff Bezos'], 2: ['Ford', 'Jim Cramer', 'Tesla']}
+ {0: ['Bernie Sanders', 'Larry Page', 'GM', 'Apple', 'Joe Biden', 'Chamath Palihapitiya', 'Donald Trump', 'Elon Musk'], 1: ['Jeff Bezos', 'NIO', 'Cathie Wood', 'Pete Buttigieg', 'Mark Zuckerberg'], 2: ['Tesla', 'Ford', 'Jim Cramer']}
