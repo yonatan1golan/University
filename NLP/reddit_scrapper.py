@@ -27,44 +27,50 @@ import unicodedata
 
 class CONFIG:
     INDIVIDUALS = [
-        "Elon Musk",           # CEO of Tesla. Founder, product architect, and central to all decisions at Tesla.
-        "Jeff Bezos",          # Amazon founder. Business and space rival to Musk (Blue Origin vs. SpaceX); often compared to Musk.
-        "Larry Page",          # Google co-founder. Longtime friend of Musk; Google/Waymo competes with Tesla in autonomous driving.
-        "Donald Trump",        # Former U.S. President. Influences public opinion and policy; has made comments on Tesla and Musk.
+        # "Elon Musk",           # CEO of Tesla. Founder, product architect, and central to all decisions at Tesla.
+        # "Jeff Bezos",          # Amazon founder. Business and space rival to Musk (Blue Origin vs. SpaceX); often compared to Musk.
+        # "Larry Page",          # Google co-founder. Longtime friend of Musk; Google/Waymo competes with Tesla in autonomous driving.
+        # "Donald Trump",        # U.S. President. Influences public opinion and policy; has made comments on Tesla and Musk.
+        # "Mark Zuckerberg",     # Meta CEO. Competes with Musk in social media; has made comments on Tesla and Musk.
+        # "Joe Biden",           # U.S. President. Initially dismissive of Tesla in EV discussions; later acknowledged its EV leadership.
+        # "Cathie Wood",         # CEO of ARK Invest. Major Tesla bull and investor; forecasts extremely high valuations for Tesla.
+        # "Jim Cramer",          # CNBC host. Publicly flip-flopped on Tesla; currently supportive but controversial in Tesla circles.
+        # "Chamath Palihapitiya",# VC and SPAC investor. Public Tesla bull and Musk supporter; promoted Tesla on media.
+        # "Michael Burry",       # Famed for The Big Short. Publicly shorted Tesla; skeptical of valuation.
         
-        "Joe Biden",           # U.S. President. Initially dismissive of Tesla in EV discussions; later acknowledged its EV leadership.
-        "Pete Buttigieg",      # U.S. Secretary of Transportation. Influences EV infrastructure policy affecting Tesla.
-        "Lina Khan",           # FTC Chair. Could regulate Tesla through antitrust/privacy oversight; no direct moves yet.
-
-        "Cathie Wood",         # CEO of ARK Invest. Major Tesla bull and investor; forecasts extremely high valuations for Tesla.
-        "Jim Cramer",          # CNBC host. Publicly flip-flopped on Tesla; currently supportive but controversial in Tesla circles.
-        "Gary Black",          # Fund manager. Vocal supporter of Tesla but critical of some Musk decisions; prominent on Twitter/X.
-
-        "Chamath Palihapitiya",# VC and SPAC investor. Public Tesla bull and Musk supporter; promoted Tesla on media.
-        "Michael Burry"        # Famed for The Big Short. Publicly shorted Tesla; skeptical of valuation.
+        "Gavin Newsom",        # Governor of California. Tesla's home state; has made comments on Tesla and Musk.
+        "Alexandria Ocasio-Cortez", # U.S. Congresswoman. Criticized Musk and Tesla on social issues; represents a younger, progressive demographic.
+        "Pete Buttigieg",      # U.S. Secretary of Transportation. Has commented on Tesla's role in EV adoption and infrastructure.
+        "Bernie Sanders",      # U.S. Senator. Criticized Musk for wealth and influence; represents a progressive viewpoint on wealth inequality.
     ]
 
     SUBREDDITS = [
-        'investing', 'wallstreetbets', 'TeslaMotors', 'CathieWood', 'politics'
+        'TeslaMotors',         # Main Tesla discussion hub
+        'TeslaInvestorsClub',  # Tesla investment focused  
+        'wallstreetbets',      # Retail trading community
+        'investing',           # General investment discussions
+        'electricvehicles',    # General EV discussions
+        'technology',          # General tech discussions
+        'politics',            # U.S. political discussions
+        'RealTesla',           # Critical Tesla perspectives
+        'elonmusk'             # Elon Musk specific
     ]
 
     ALIASES = {
         "Elon Musk": ["Elon", "Musk", "EM", "ElonMusk", "SpaceX", "X.com", "Tesla CEO"],
         "Jeff Bezos": ["Bezos", "Jeff", "Amazon founder", "Blue Origin", "JB"],
-        "Mark Zuckerberg": ["Zuck", "Zuckerberg", "Mark", "Meta CEO", "Facebook"],
-        "Larry Page": ["Larry", "Google co-founder", "Alphabet", "Page"],
+        "Mark Zuckerberg": ["Zuck", "Zuckerberg", "Meta CEO", "Facebook"],
+        "Larry Page": ["Larry", "Google co-founder", "Alphabet"],
         "Donald Trump": ["Trump", "Donald", "POTUS 45", "45th President", "The Donald"],
-
-        "Joe Biden": ["Biden", "President Biden", "Joe", "POTUS"],
-        "Pete Buttigieg": ["Buttigieg", "Pete", "Secretary Pete", "Transport Secretary"],
-        "Lina Khan": ["Khan", "FTC Chair", "Lina"],
-
+        "Joe Biden": ["Biden", "President Biden", "Joe"],
         "Cathie Wood": ["Cathie", "ARK", "ARK Invest", "Cathie W", "ARKK"],
         "Jim Cramer": ["Cramer", "Mad Money", "Jim", "CNBC host"],
-        "Gary Black": ["Gary", "Black", "Future Fund", "Tesla bull"],
-
         "Chamath Palihapitiya": ["Chamath", "Chamath P", "Social Capital", "SPAC King"],
-        "Michael Burry": ["Burry", "The Big Short", "Dr. Burry", "Scion Capital"]
+        "Michael Burry": ["Burry", "The Big Short", "Dr. Burry", "Scion Capital"],
+        "Gavin Newsom": ["Newsom", "Governor Newsom", "CA Governor"],
+        "Alexandria Ocasio-Cortez": ["AOC", "Ocasio-Cortez", "Congresswoman AOC"],
+        "Pete Buttigieg": ["Buttigieg", "Mayor Pete", "Transportation Secretary"],
+        "Bernie Sanders": ["Bernie", "Senator Sanders", "Sanders"],
     }
 
     COMPARATIVE_COMPANIES = [
@@ -78,8 +84,8 @@ class CONFIG:
         "modern_period": ("2023-01-01", "2024-12-31")
     }
 
-    POST_LIMIT = 20
-    COMMENT_LIMIT = 10
+    POST_LIMIT = 50
+    COMMENT_LIMIT = 20
     SENTIMENT_THRESHOLD = 0.10
 
 
@@ -186,7 +192,7 @@ class Processor:
                 comment['sentiment_score'] = score
                 comment['sentiment_label'] = label
         return with_periods
-
+    
 class GraphMaker:
     def __init__(self):
         self.graph = nx.Graph()
@@ -195,7 +201,7 @@ class GraphMaker:
         self.max_width = 10.0
         self.custom_cmap = LinearSegmentedColormap.from_list(
             "custom_red_gray_green",
-            ["darkred", "gray", "darkgreen"],
+            ["#f80509", "#deb603", "#0bc746"],
             N=256
         )
         self.node_sentiment = defaultdict(list)
@@ -257,10 +263,113 @@ class GraphMaker:
         norm = mcolors.Normalize(vmin=-1.0, vmax=1.0)
         rgba = self.custom_cmap(norm(score))
         return rgba
-    
-    def visualize(self):
-        import matplotlib.pyplot as plt
 
+    def print_neighborhood(self):
+        for node in self.graph.nodes:
+            neighbors = list(self.graph.neighbors(node))
+            print(f"Neighbors of {node}:")
+            for neighbor in neighbors:
+                weight = self.graph[node][neighbor]['weight']
+                sentiment = sum(self.graph[node][neighbor]['sentiments']) / len(self.graph[node][neighbor]['sentiments'])
+                print(f"  {neighbor}: weight={weight}, sentiment={sentiment}")
+            print("\n")
+
+    def present_info(self):
+        print("📊 Graph Overview:\n")
+
+        print("🔹 Basic Stats:")
+        print(f"  Nodes: {len(self.graph.nodes)}")
+        print(f"  Edges: {len(self.graph.edges)}")
+        print(f"  Is Connected: {self.is_graph_connected()}")
+        print(f"  Density: {self.get_graph_density():.4f}")
+        print(f"  Diameter: {self.get_graph_diameter()}")
+        print(f"  Average Degree: {self.get_graph_average_degree():.2f}")
+        print(f"  Avg Clustering Coefficient: {self.get_graph_average_clustering():.4f}")
+        print(f"  Avg Shortest Path Length: {self.get_graph_average_shortest_path_length():.2f}")
+        print(f"  Avg Node Sentiment: {self.get_graph_average_node_sentiment():.2f}")
+
+        print("\n🔹 Structural Analysis:")
+        cut_vertices = self.get_cut_vertexes()
+        bridges = self.get_bridges()
+        print(f"  Cut Vertices (Articulation Points): {cut_vertices if cut_vertices else 'None'}")
+        print(f"  Bridges (Critical Edges): {bridges if bridges else 'None'}")
+
+        print("\n🔹 Community Detection:")
+        communities = self.get_communities()
+        print(f"  Number of Communities: {len(communities)}")
+        community_sizes = [len(c) for c in communities]
+        print(f"  Community Sizes: {community_sizes}")
+
+        print("\n🔹 Centrality Measures (Top 3 Nodes per Metric):")
+        centrality = self.get_centrality_measures()
+
+        def top_n(dictionary, n=3):
+            return sorted(dictionary.items(), key=lambda x: x[1], reverse=True)[:n]
+
+        for metric, values in centrality.items():
+            top_nodes = top_n(values)
+            top_str = ", ".join(f"{node} ({score:.2f})" for node, score in top_nodes)
+            print(f"  {metric.capitalize()}: {top_str}")
+
+    def get_cut_vertexes(self):
+        return list(nx.articulation_points(self.graph))
+
+    def get_bridges(self):
+        return list(nx.bridges(self.graph))
+
+    def get_communities(self):
+        return list(nx.algorithms.community.greedy_modularity_communities(self.graph))
+
+    def get_community_structure(self, verbose=True):
+        communities = self.get_communities()
+        community_structure = {i: list(community) for i, community in enumerate(communities)}
+        
+        if verbose:
+            print("\n🔸 Community Structure:")
+            for i, members in community_structure.items():
+                print(f"  Community {i + 1} ({len(members)} members): {', '.join(members)}")
+        
+        return community_structure
+
+    def get_centrality_measures(self):
+        return {
+            "degree": nx.degree_centrality(self.graph),
+            "betweenness": nx.betweenness_centrality(self.graph),
+            "closeness": nx.closeness_centrality(self.graph)
+        }
+
+    def get_graph_diameter(self):
+        if nx.is_connected(self.graph):
+            return nx.diameter(self.graph)
+        else:
+            return max(
+                max(lengths.values())
+                for node, lengths in nx.single_source_shortest_path_length(self.graph).items()
+            )
+
+    def get_graph_density(self):
+        return nx.density(self.graph)
+
+    def get_graph_average_clustering(self):
+        return nx.average_clustering(self.graph)
+
+    def get_graph_average_shortest_path_length(self):
+        if nx.is_connected(self.graph):
+            return nx.average_shortest_path_length(self.graph)
+        else:
+            return float('inf')
+
+    def get_graph_average_degree(self):
+        return sum(dict(self.graph.degree()).values()) / len(self.graph.nodes) if self.graph.nodes else 0
+
+    def get_graph_average_node_sentiment(self):
+        sentiments = [sum(scores) / len(scores) for scores in self.node_sentiment.values() if scores]
+        return sum(sentiments) / len(sentiments) if sentiments else 0
+
+    def is_graph_connected(self):
+        return nx.is_connected(self.graph)
+
+    def visualize(self):
         plt.figure(figsize=(18, 14))
 
         tesla_node = ["Tesla"]
@@ -268,7 +377,6 @@ class GraphMaker:
         competitor_nodes = [n for n in self.graph.nodes if n in CONFIG.COMPARATIVE_COMPANIES]
         other_nodes = [n for n in self.graph.nodes if n not in tesla_node + influencer_nodes + competitor_nodes]
 
-        # Arrange nodes in shells
         shells = [tesla_node, influencer_nodes, competitor_nodes + other_nodes]
         pos = nx.shell_layout(self.graph, shells)
 
@@ -294,10 +402,6 @@ class GraphMaker:
         plt.axis('off')
         plt.tight_layout()
         plt.show()
-
-        print("\nComparative Company Mentions:")
-        for comp, count in self.competitor_mentions.items():
-            print(f"{comp}: {count} mentions")
 
 class TextAnalysis:
     def __init__(self, posts):
@@ -351,14 +455,17 @@ if __name__ == '__main__':
     graphmaker = GraphMaker()
     all_posts = []
 
-    # client.fetch_all_posts() # uncomment to fetch new posts
-    all_posts = client.get_all_posts()
-    processed_posts = processor.process_posts(all_posts)
+    client.fetch_all_posts() # uncomment to fetch new posts
+    # all_posts = client.get_all_posts()
+    # processed_posts = processor.process_posts(all_posts)
 
-    graphmaker.build_graph(all_posts)
-    graphmaker.finalize_graph()
-    graphmaker.visualize()
+    # graphmaker.build_graph(processed_posts)
+    # # graphmaker.print_neighborhood()
+    # graphmaker.present_info()
+    # graphmaker.get_community_structure()
+    # graphmaker.finalize_graph()
+    # graphmaker.visualize()
 
-    # text_analysis = TextAnalysis(all_posts)
+    # text_analysis = TextAnalysis(processed_posts)
     # text_analysis.generate_word_cloud()
     # text_analysis.run_lda()
