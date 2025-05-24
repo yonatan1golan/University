@@ -27,17 +27,16 @@ import unicodedata
 
 class CONFIG:
     INDIVIDUALS = [
-        # "Elon Musk",           # CEO of Tesla. Founder, product architect, and central to all decisions at Tesla.
-        # "Jeff Bezos",          # Amazon founder. Business and space rival to Musk (Blue Origin vs. SpaceX); often compared to Musk.
-        # "Larry Page",          # Google co-founder. Longtime friend of Musk; Google/Waymo competes with Tesla in autonomous driving.
-        # "Donald Trump",        # U.S. President. Influences public opinion and policy; has made comments on Tesla and Musk.
-        # "Mark Zuckerberg",     # Meta CEO. Competes with Musk in social media; has made comments on Tesla and Musk.
-        # "Joe Biden",           # U.S. President. Initially dismissive of Tesla in EV discussions; later acknowledged its EV leadership.
-        # "Cathie Wood",         # CEO of ARK Invest. Major Tesla bull and investor; forecasts extremely high valuations for Tesla.
-        # "Jim Cramer",          # CNBC host. Publicly flip-flopped on Tesla; currently supportive but controversial in Tesla circles.
-        # "Chamath Palihapitiya",# VC and SPAC investor. Public Tesla bull and Musk supporter; promoted Tesla on media.
-        # "Michael Burry",       # Famed for The Big Short. Publicly shorted Tesla; skeptical of valuation.
-        
+        "Elon Musk",           # CEO of Tesla. Founder, product architect, and central to all decisions at Tesla.
+        "Jeff Bezos",          # Amazon founder. Business and space rival to Musk (Blue Origin vs. SpaceX); often compared to Musk.
+        "Larry Page",          # Google co-founder. Longtime friend of Musk; Google/Waymo competes with Tesla in autonomous driving.
+        "Donald Trump",        # U.S. President. Influences public opinion and policy; has made comments on Tesla and Musk.
+        "Mark Zuckerberg",     # Meta CEO. Competes with Musk in social media; has made comments on Tesla and Musk.
+        "Joe Biden",           # U.S. President. Initially dismissive of Tesla in EV discussions; later acknowledged its EV leadership.
+        "Cathie Wood",         # CEO of ARK Invest. Major Tesla bull and investor; forecasts extremely high valuations for Tesla.
+        "Jim Cramer",          # CNBC host. Publicly flip-flopped on Tesla; currently supportive but controversial in Tesla circles.
+        "Chamath Palihapitiya",# VC and SPAC investor. Public Tesla bull and Musk supporter; promoted Tesla on media.
+        "Michael Burry",       # Famed for The Big Short. Publicly shorted Tesla; skeptical of valuation.
         "Gavin Newsom",        # Governor of California. Tesla's home state; has made comments on Tesla and Musk.
         "Alexandria Ocasio-Cortez", # U.S. Congresswoman. Criticized Musk and Tesla on social issues; represents a younger, progressive demographic.
         "Pete Buttigieg",      # U.S. Secretary of Transportation. Has commented on Tesla's role in EV adoption and infrastructure.
@@ -78,10 +77,10 @@ class CONFIG:
     ]
 
     TIME_PERIODS = {
-        "covid_rebound": ("2020-03-01", "2020-10-31"),
-        "pre_peak": ("2021-01-01", "2021-03-31"),
-        "post_twitter": ("2022-10-01", "2022-12-31"),
-        "modern_period": ("2023-01-01", "2024-12-31")
+        "<2020": ("2010-01-01", "2019-12-31"),
+        "2020-2021": ("2020-01-01", "2021-12-31"),
+        "2022-2023": ("2022-01-01", "2023-12-31"),
+        "2024-2025": ("2024-01-01", "2025-12-31"),
     }
 
     POST_LIMIT = 50
@@ -171,12 +170,6 @@ class Processor:
                 if start <= created_utc <= end:
                     post['periods'].append(period_name)
                     break
-                elif created_utc < start:
-                    post['periods'].append('early_stage')
-                    break
-                elif created_utc > end:
-                    post['periods'].append('2025_and_beyond')
-                    break
         return copied
 
     def process_posts(self, posts):
@@ -194,9 +187,10 @@ class Processor:
         return with_periods
     
 class GraphMaker:
-    def __init__(self):
+    def __init__(self, given_period:str = None):
         self.graph = nx.Graph()
         self.entities = ["Tesla"] + CONFIG.INDIVIDUALS
+        self.period = given_period
         self.min_width = 0.5
         self.max_width = 10.0
         self.custom_cmap = LinearSegmentedColormap.from_list(
@@ -274,42 +268,45 @@ class GraphMaker:
                 print(f"  {neighbor}: weight={weight}, sentiment={sentiment}")
             print("\n")
 
-    def present_info(self):
-        print("📊 Graph Overview:\n")
-
-        print("🔹 Basic Stats:")
-        print(f"  Nodes: {len(self.graph.nodes)}")
-        print(f"  Edges: {len(self.graph.edges)}")
-        print(f"  Is Connected: {self.is_graph_connected()}")
-        print(f"  Density: {self.get_graph_density():.4f}")
-        print(f"  Diameter: {self.get_graph_diameter()}")
-        print(f"  Average Degree: {self.get_graph_average_degree():.2f}")
-        print(f"  Avg Clustering Coefficient: {self.get_graph_average_clustering():.4f}")
-        print(f"  Avg Shortest Path Length: {self.get_graph_average_shortest_path_length():.2f}")
-        print(f"  Avg Node Sentiment: {self.get_graph_average_node_sentiment():.2f}")
-
-        print("\n🔹 Structural Analysis:")
-        cut_vertices = self.get_cut_vertexes()
-        bridges = self.get_bridges()
-        print(f"  Cut Vertices (Articulation Points): {cut_vertices if cut_vertices else 'None'}")
-        print(f"  Bridges (Critical Edges): {bridges if bridges else 'None'}")
-
-        print("\n🔹 Community Detection:")
-        communities = self.get_communities()
-        print(f"  Number of Communities: {len(communities)}")
-        community_sizes = [len(c) for c in communities]
-        print(f"  Community Sizes: {community_sizes}")
-
-        print("\n🔹 Centrality Measures (Top 3 Nodes per Metric):")
-        centrality = self.get_centrality_measures()
-
+    def save_graph_info(self):
         def top_n(dictionary, n=3):
             return sorted(dictionary.items(), key=lambda x: x[1], reverse=True)[:n]
+        
+        path = f"NLP/graphs_analysis/{self.period.lower().replace(' ', '_')}.txt"
+        with open(path, 'w') as f:
+            f.write("📊 Graph Overview:\n")
+            f.write("🔹 Basic Stats:\n")
+            f.write(f"  Nodes: {len(self.graph.nodes)}\n")
+            f.write(f"  Edges: {len(self.graph.edges)}\n")
+            f.write(f"  Is Connected: {self.is_graph_connected()}\n")
+            f.write(f"  Density: {self.get_graph_density():.4f}\n")
+            f.write(f"  Diameter: {self.get_graph_diameter()}\n")
+            f.write(f"  Average Degree: {self.get_graph_average_degree():.2f}\n")
+            f.write(f"  Avg Clustering Coefficient: {self.get_graph_average_clustering():.4f}\n")
+            f.write(f"  Avg Shortest Path Length: {self.get_graph_average_shortest_path_length():.2f}\n")
+            f.write(f"  Avg Node Sentiment: {self.get_graph_average_node_sentiment():.2f}\n")
 
-        for metric, values in centrality.items():
-            top_nodes = top_n(values)
-            top_str = ", ".join(f"{node} ({score:.2f})" for node, score in top_nodes)
-            print(f"  {metric.capitalize()}: {top_str}")
+            f.write("\n🔹 Structural Analysis:\n")
+            cut_vertices = self.get_cut_vertexes()
+            bridges = self.get_bridges()
+            f.write(f"  Cut Vertices (Articulation Points): {cut_vertices if cut_vertices else 'None'}\n")
+            f.write(f"  Bridges (Critical Edges): {bridges if bridges else 'None'}\n")
+
+            f.write("\n🔹 Community Detection:\n")
+            communities = self.get_communities()
+            f.write(f"  Number of Communities: {len(communities)}\n")
+            community_sizes = [len(c) for c in communities]
+            f.write(f"  Community Sizes: {community_sizes}\n")
+
+            f.write("\n🔹 Centrality Measures (Top 3 Nodes per Metric):\n")
+            centrality = self.get_centrality_measures()
+
+            for metric, values in centrality.items():
+                top_nodes = top_n(values)
+                top_str = ", ".join(f"{node} ({score:.2f})" for node, score in top_nodes)
+                f.write(f"  {metric.capitalize()}: {top_str}\n")
+            
+            f.write(f"\n🔹 Stracture Analysis:\n {gm.get_community_structure()}") 
 
     def get_cut_vertexes(self):
         return list(nx.articulation_points(self.graph))
@@ -323,11 +320,13 @@ class GraphMaker:
     def get_community_structure(self, verbose=True):
         communities = self.get_communities()
         community_structure = {i: list(community) for i, community in enumerate(communities)}
-        
+        community_summary  = ""
         if verbose:
-            print("\n🔸 Community Structure:")
             for i, members in community_structure.items():
-                print(f"  Community {i + 1} ({len(members)} members): {', '.join(members)}")
+                community_summary += f"Community {i}: {', '.join(members)}\n"
+                community_summary += f"  Size: {len(members)}\n"
+                community_summary += f"  Members: {', '.join(members)}\n"
+                community_summary += "\n"
         
         return community_structure
 
@@ -398,24 +397,24 @@ class GraphMaker:
         nx.draw_networkx_labels(self.graph, pos, font_size=10)
         nx.draw_networkx_edges(self.graph, pos, edge_color=edge_colors, width=edge_weights, alpha=0.6)
 
-        plt.title("Tesla & Influencers Co-Mention Sentiment Graph", fontsize=16)
+        plt.title(f"Tesla & Influencers for period {self.period}", fontsize=16)
         plt.axis('off')
         plt.tight_layout()
         plt.show()
 
 class TextAnalysis:
-    def __init__(self, posts):
+    def __init__(self, posts, period=None):
         self.posts = posts
+        self.period = period
         self.averaged_scores = {}  # initialize to be set later
 
-    def _color_func(self, word, *args, **kwargs):
+    def _color_func(self, word, **kwargs):
         score = self.averaged_scores.get(word.lower(), 0)
-        rgba = GraphMaker()._sentiment_to_color(score)
+        rgba = GraphMaker(self.period)._sentiment_to_color(score)
         r, g, b, _ = [int(c * 255) for c in rgba]
         return f"rgb({r}, {g}, {b})"
 
     def generate_word_cloud(self):
-        from collections import defaultdict
         word_scores = defaultdict(list)
         all_text = ""
 
@@ -436,7 +435,7 @@ class TextAnalysis:
         plt.figure(figsize=(10, 5))
         plt.imshow(wordcloud.recolor(color_func=self._color_func), interpolation='bilinear')
         plt.axis("off")
-        plt.title("Word Cloud Colored by Sentiment")
+        plt.title(f"Word Cloud Colored by Sentimen for {self.period}")
         plt.show()
 
     def run_lda(self):
@@ -452,20 +451,26 @@ class TextAnalysis:
 if __name__ == '__main__':
     client = RedditClient()
     processor = Processor()
-    graphmaker = GraphMaker()
     all_posts = []
 
-    client.fetch_all_posts() # uncomment to fetch new posts
-    # all_posts = client.get_all_posts()
-    # processed_posts = processor.process_posts(all_posts)
+    # client.fetch_all_posts() # uncomment to fetch new posts
+    all_posts = client.get_all_posts()
+    processed_posts = processor.process_posts(all_posts)
 
-    # graphmaker.build_graph(processed_posts)
-    # # graphmaker.print_neighborhood()
-    # graphmaker.present_info()
-    # graphmaker.get_community_structure()
-    # graphmaker.finalize_graph()
-    # graphmaker.visualize()
+    posts_by_period = defaultdict(list)
+    for post in processed_posts:
+        for period in post['periods']:
+            posts_by_period[period].append(post)
 
-    # text_analysis = TextAnalysis(processed_posts)
-    # text_analysis.generate_word_cloud()
-    # text_analysis.run_lda()
+    period_graphs = {}
+    for period, posts in posts_by_period.items():
+        print(f"Processing period: {period} with {len(posts)} posts")
+        gm = GraphMaker(period)
+        gm.build_graph(posts)
+        gm.finalize_graph()
+        period_graphs[period] = gm
+        gm.save_graph_info()
+        text_analysis = TextAnalysis(posts, period)
+        text_analysis.generate_word_cloud()
+        # text_analysis.run_lda()
+        gm.visualize()

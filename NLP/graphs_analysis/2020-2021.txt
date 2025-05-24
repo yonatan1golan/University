@@ -1,0 +1,27 @@
+📊 Graph Overview:
+🔹 Basic Stats:
+  Nodes: 15
+  Edges: 38
+  Is Connected: True
+  Density: 0.3619
+  Diameter: 2
+  Average Degree: 5.07
+  Avg Clustering Coefficient: 0.6087
+  Avg Shortest Path Length: 1.64
+  Avg Node Sentiment: 0.14
+
+🔹 Structural Analysis:
+  Cut Vertices (Articulation Points): ['Elon Musk']
+  Bridges (Critical Edges): [('Elon Musk', 'Jim Cramer'), ('Elon Musk', 'Chamath Palihapitiya'), ('Elon Musk', 'Michael Burry')]
+
+🔹 Community Detection:
+  Number of Communities: 3
+  Community Sizes: [6, 6, 3]
+
+🔹 Centrality Measures (Top 3 Nodes per Metric):
+  Degree: Elon Musk (1.00), Donald Trump (0.57), Joe Biden (0.57)
+  Betweenness: Elon Musk (0.58), Joe Biden (0.04), Donald Trump (0.03)
+  Closeness: Elon Musk (1.00), Donald Trump (0.70), Joe Biden (0.70)
+
+🔹 Stracture Analysis:
+ {0: ['Joe Biden', 'Cathie Wood', 'Donald Trump', 'Tesla', 'Mark Zuckerberg', 'Jeff Bezos'], 1: ['Elon Musk', 'Jim Cramer', 'Chamath Palihapitiya', 'GM', 'Ford', 'Michael Burry'], 2: ['NIO', 'Pete Buttigieg', 'Bernie Sanders']}

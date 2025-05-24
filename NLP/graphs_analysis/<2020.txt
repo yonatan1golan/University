@@ -1,0 +1,27 @@
+📊 Graph Overview:
+🔹 Basic Stats:
+  Nodes: 16
+  Edges: 31
+  Is Connected: True
+  Density: 0.2583
+  Diameter: 3
+  Average Degree: 3.88
+  Avg Clustering Coefficient: 0.6350
+  Avg Shortest Path Length: 1.82
+  Avg Node Sentiment: 0.26
+
+🔹 Structural Analysis:
+  Cut Vertices (Articulation Points): ['Elon Musk']
+  Bridges (Critical Edges): [('Elon Musk', 'GM'), ('Elon Musk', 'Larry Page'), ('Elon Musk', 'Chamath Palihapitiya')]
+
+🔹 Community Detection:
+  Number of Communities: 3
+  Community Sizes: [8, 5, 3]
+
+🔹 Centrality Measures (Top 3 Nodes per Metric):
+  Degree: Elon Musk (0.93), Cathie Wood (0.47), Tesla (0.40)
+  Betweenness: Elon Musk (0.69), Tesla (0.09), Cathie Wood (0.07)
+  Closeness: Elon Musk (0.94), Cathie Wood (0.65), Tesla (0.62)
+
+🔹 Stracture Analysis:
+ {0: ['Elon Musk', 'Donald Trump', 'Chamath Palihapitiya', 'Bernie Sanders', 'Larry Page', 'Joe Biden', 'GM', 'Apple'], 1: ['Cathie Wood', 'Pete Buttigieg', 'NIO', 'Mark Zuckerberg', 'Jeff Bezos'], 2: ['Ford', 'Jim Cramer', 'Tesla']}

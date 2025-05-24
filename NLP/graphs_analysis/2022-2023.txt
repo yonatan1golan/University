@@ -1,0 +1,27 @@
+📊 Graph Overview:
+🔹 Basic Stats:
+  Nodes: 18
+  Edges: 44
+  Is Connected: True
+  Density: 0.2876
+  Diameter: 3
+  Average Degree: 4.89
+  Avg Clustering Coefficient: 0.6305
+  Avg Shortest Path Length: 1.81
+  Avg Node Sentiment: 0.03
+
+🔹 Structural Analysis:
+  Cut Vertices (Articulation Points): ['Alexandria Ocasio-Cortez', 'Elon Musk']
+  Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Elon Musk', 'Pete Buttigieg'), ('Alexandria Ocasio-Cortez', 'Bernie Sanders')]
+
+🔹 Community Detection:
+  Number of Communities: 4
+  Community Sizes: [6, 5, 4, 3]
+
+🔹 Centrality Measures (Top 3 Nodes per Metric):
+  Degree: Elon Musk (0.94), Tesla (0.59), Joe Biden (0.59)
+  Betweenness: Elon Musk (0.62), Alexandria Ocasio-Cortez (0.12), Tesla (0.06)
+  Closeness: Elon Musk (0.94), Tesla (0.68), Joe Biden (0.68)
+
+🔹 Stracture Analysis:
+ {0: ['Joe Biden', 'Donald Trump', 'NIO', 'Ford', 'GM', 'Jeff Bezos'], 1: ['Elon Musk', 'Pete Buttigieg', 'Bernie Sanders', 'Larry Page', 'Alexandria Ocasio-Cortez'], 2: ['Mark Zuckerberg', 'Meta', 'Cathie Wood', 'Michael Burry'], 3: ['Apple', 'Jim Cramer', 'Tesla']}
