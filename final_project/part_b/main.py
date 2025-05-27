@@ -2,7 +2,12 @@ from data.stock_fetcher import StockDataFetcher
 
 from sklearn.preprocessing import KBinsDiscretizer
 from statsmodels.stats.anova import anova_lm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+from patsy import dmatrices
+from statsmodels.stats.diagnostic import het_breuschpagan
 import statsmodels.formula.api as smf
+import matplotlib.pyplot as plt
+
 
 from config import CONFIG
 import datetime as dt
@@ -10,11 +15,12 @@ import pandas as pd
 import numpy as np
 
 class Regression:
-    def __init__(self, data: pd.DataFrame, period: dict, x: list, y: str):
+    def __init__(self, data: pd.DataFrame, period: dict, x: list, y: str, cov_type="nonrobust"):
         self.data = data
         self.period = period
         self.x = x
         self.y = y
+        self.cov_type = cov_type
         self.model = self._run()
         self.equation = self._get_general_equation()
 
@@ -44,7 +50,7 @@ class Regression:
         predictors = x_vars if x_vars is not None else self.x
         formula = f"{self.y} ~ {' + '.join(predictors)}"
 
-        model = smf.ols(formula=formula, data=data).fit()
+        model = smf.ols(formula=formula, data=data).fit(cov_type=self.cov_type)
         return model
 
     def run_anova(self):
@@ -62,10 +68,14 @@ class Regression:
         
         return anova_results.sort_values(by='explained_pct', ascending=False)
     
-    def backward_selection(self, log_path="backward_selection_log.txt"):
+    def backward_selection(self, file_name):
         """
         Performs backward selection and logs output to a file.
+
+        Returns:
+            list: the list of variables remaining after selection
         """
+        log_path = file_name + "_backward_selection_log.txt"
         remaining_vars = self.x.copy()
         with open(log_path, 'w') as log:
             while True:
@@ -90,6 +100,39 @@ class Regression:
         self.model = model
         self.equation = self._get_general_equation()
         print(f"\n✅ Backward selection complete. Full log written to '{log_path}'")
+
+        return self.x 
+
+    def vif(self) -> pd.DataFrame:
+        """
+        Calculates Variance Inflation Factor (VIF) for each feature.
+        """
+        start = pd.Timestamp(self.period['start'])
+        end = pd.Timestamp(self.period['end'])
+        data = self.data[(self.data['date'] >= start) & (self.data['date'] <= end)].copy().reset_index(drop=True)
+
+        # Construct design matrix using Patsy
+        formula = f"{self.y} ~ {' + '.join(self.x)}"
+        y, X = dmatrices(formula, data, return_type='dataframe')
+
+        vif_data = pd.DataFrame()
+        vif_data["feature"] = X.columns
+        vif_data["VIF"] = [variance_inflation_factor(X.values, i) for i in range(X.shape[1])]
+
+        return vif_data
+
+def plot_residuals_vs_fitted(model, title="Residuals vs Fitted"):
+    fitted_vals = model.fittedvalues
+    residuals = model.resid
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(fitted_vals, residuals, alpha=0.5)
+    plt.axhline(0, color='red', linestyle='--', lw=2)
+    plt.title(title)
+    plt.xlabel("Fitted values")
+    plt.ylabel("Residuals")
+    plt.grid(True)
+    plt.show()
     
 def add_ttm_eps_values(specific_date: dt.date) -> float:
     relevant_eps = CONFIG.TESLA_EPS.where(CONFIG.TESLA_EPS['publish_date'] <= pd.Timestamp(specific_date)).dropna()
@@ -189,6 +232,34 @@ def categorize(data: pd.DataFrame) -> pd.DataFrame:
     binned['daily_trend'] = binned['daily_trend'].apply(lambda x: 1 if x > 1 else -1)
     return binned
 
+def check_homoscedasticity(regression_obj):
+    """
+    Runs the Breusch-Pagan test for heteroscedasticity on a Regression object.
+
+    Parameters:
+        regression_obj (Regression): an instance of the Regression class
+
+    Returns:
+        dict: Breusch-Pagan test results including p-values and test statistics
+    """
+    residuals = regression_obj.model.resid
+    exog = regression_obj.model.model.exog
+
+    test = het_breuschpagan(residuals, exog)
+    labels = ['Lagrange multiplier statistic', 'p-value', 'f-value', 'f p-value']
+    results = dict(zip(labels, test))
+
+    print(f"\n📊 Breusch-Pagan Test for period {regression_obj.period['start']} to {regression_obj.period['end']}:")
+    for label, value in results.items():
+        print(f"{label}: {value:.4f}")
+    
+    if results['p-value'] < 0.05:
+        print("🚨 Likely heteroscedasticity detected (p < 0.05)")
+    else:
+        print("✅ Likely homoscedasticity (constant variance) (p ≥ 0.05)")
+
+    return results
+
 if __name__ == "__main__":
     tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
     processed_tesla_data = generate_features(tesla_stock)
@@ -205,7 +276,6 @@ if __name__ == "__main__":
     weekday_return_rsi = generate_interaction_feature(processed_tesla_data, INTERACTIONS["weekday_return_rsi"])
     x_columns_with_interactions = list(x_columns) + [pe_daily_trend_volatility.name, weekday_return_rsi.name]
 
-    print(x_columns)
     continuous_data = processed_tesla_data.copy()
     continuous_data[pe_daily_trend_volatility.name] = pe_daily_trend_volatility
     continuous_data[weekday_return_rsi.name] = weekday_return_rsi
@@ -215,6 +285,15 @@ if __name__ == "__main__":
     categorized_regression = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     continuous_regression = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     continous_regression_without_herding = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns.difference(potentially_herding_variables), 'volume')
-    print(continous_regression_without_herding.model.summary())
     # anova_table = categorized_regression.run_anova()
     # continuous_regression.backward_selection()
+
+    # plot_residuals_vs_fitted(continuous_regression.model, "Categorized Regression Residuals vs Fitted")
+    # check_homoscedasticity(continuous_regression)
+
+    without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
+    with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
+
+    # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
+    # hc3_anova = with_hc3_categorized.run_anova()
+    # without_hc3_continuous.backward_selection("hc3_continuous")
