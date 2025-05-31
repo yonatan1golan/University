@@ -1,0 +1,32 @@
+node_1,node_2,average_sentiment,relation_type,num_mentions,total_weight
+Bernie Sanders,Ford,0.969,Positive,2,-4
+Cathie Wood,Joe Biden,0.925,Positive,1,31446
+Cathie Wood,Pete Buttigieg,0.925,Positive,1,31446
+Joe Biden,Pete Buttigieg,0.925,Positive,1,31446
+Bernie Sanders,Donald Trump,0.919,Positive,4,786
+Elon Musk,Alexandria Ocasio-Cortez,0.913,Positive,1,-6
+Bernie Sanders,Jeff Bezos,0.797,Positive,1,5
+Tesla,Jeff Bezos,0.788,Positive,1,0
+Tesla,Cathie Wood,0.778,Positive,2,132
+Tesla,GM,-0.727,Negative,1,5
+Joe Biden,GM,-0.727,Negative,1,5
+Ford,Donald Trump,0.719,Positive,2,7
+Elon Musk,Cathie Wood,0.599,Positive,6,31584
+Donald Trump,Cathie Wood,0.517,Positive,3,31582
+Elon Musk,Meta,-0.477,Negative,1,2792
+Meta,Tesla,-0.477,Negative,1,2792
+Elon Musk,Jeff Bezos,0.468,Positive,9,450
+Donald Trump,Joe Biden,0.441,Positive,4,31457
+Elon Musk,Joe Biden,0.429,Positive,6,31518
+Elon Musk,Gavin Newsom,-0.32,Negative,4,312
+Donald Trump,NIO,0.239,Positive,4,695
+Elon Musk,Tesla,0.216,Positive,15,6221
+Elon Musk,Donald Trump,0.204,Positive,54,98618
+Donald Trump,Tesla,0.193,Positive,4,248
+Elon Musk,NIO,0.159,Positive,2,129
+Bernie Sanders,Elon Musk,0.149,Positive,17,11133
+Donald Trump,Pete Buttigieg,0.114,Positive,5,89448
+Elon Musk,Pete Buttigieg,-0.105,Negative,5,90392
+Elon Musk,Ford,0.09,Neutral,5,8
+Tesla,Joe Biden,-0.028,Neutral,3,69
+Tesla,Gavin Newsom,0.0,Neutral,1,477

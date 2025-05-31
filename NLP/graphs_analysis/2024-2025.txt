@@ -1,27 +1,43 @@
 📊 Graph Overview:
 🔹 Basic Stats:
   Nodes: 14
-  Edges: 33
+  Edges: 31
   Is Connected: True
-  Density: 0.3626
+  Density: 0.3407
   Diameter: 3
-  Average Degree: 4.71
-  Avg Clustering Coefficient: 0.7169
-  Avg Shortest Path Length: 1.67
-  Avg Node Sentiment: 0.16
+  Average Degree: 4.43
+  Avg Clustering Coefficient: 0.7128
+  Avg Shortest Path Length: 1.70
+  Avg Node Sentiment: 0.14
 
 🔹 Structural Analysis:
   Cut Vertices (Articulation Points): ['Elon Musk']
   Bridges (Critical Edges): [('Elon Musk', 'Alexandria Ocasio-Cortez')]
 
 🔹 Community Detection:
-  Number of Communities: 4
-  Community Sizes: [4, 4, 4, 2]
+  Number of Communities: 3
+  Community Sizes: [5, 5, 4]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
-  Degree: Elon Musk (0.92), Tesla (0.69), Donald Trump (0.62)
-  Betweenness: Elon Musk (0.43), Tesla (0.18), Donald Trump (0.08)
-  Closeness: Elon Musk (0.93), Tesla (0.76), Donald Trump (0.72)
+  Degree: Elon Musk (0.92), Donald Trump (0.62), Tesla (0.62)
+  Betweenness: Elon Musk (0.47), Tesla (0.16), Donald Trump (0.11)
+  Closeness: Elon Musk (0.93), Donald Trump (0.72), Tesla (0.72)
 
-🔹 Stracture Analysis:
- {0: ['NIO', 'Joe Biden', 'Tesla', 'GM'], 1: ['Meta', 'Gavin Newsom', 'Elon Musk', 'Alexandria Ocasio-Cortez'], 2: ['Jeff Bezos', 'Bernie Sanders', 'Ford', 'Donald Trump'], 3: ['Cathie Wood', 'Pete Buttigieg']}
+🔹 Node Sentiments:
+  Bernie Sanders: 0.208 (from 23 mentions)
+  Elon Musk: 0.093 (from 182 mentions)
+  Ford: 0.090 (from 5 mentions)
+  Donald Trump: 0.165 (from 81 mentions)
+  Meta: -0.477 (from 1 mentions)
+  Tesla: 0.155 (from 24 mentions)
+  Cathie Wood: 0.615 (from 7 mentions)
+  Jeff Bezos: 0.367 (from 10 mentions)
+  Joe Biden: 0.245 (from 10 mentions)
+  NIO: 0.239 (from 4 mentions)
+  GM: -0.727 (from 1 mentions)
+  Gavin Newsom: -0.222 (from 7 mentions)
+  Alexandria Ocasio-Cortez: 0.913 (from 1 mentions)
+  Pete Buttigieg: 0.043 (from 8 mentions)
+
+🔹 Structure Analysis:
+ {0: ['Jeff Bezos', 'Elon Musk', 'Meta', 'Gavin Newsom', 'Alexandria Ocasio-Cortez'], 1: ['GM', 'Pete Buttigieg', 'Cathie Wood', 'Joe Biden', 'Tesla'], 2: ['Bernie Sanders', 'Donald Trump', 'NIO', 'Ford']}

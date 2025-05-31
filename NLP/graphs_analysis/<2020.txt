@@ -8,7 +8,7 @@
   Average Degree: 3.88
   Avg Clustering Coefficient: 0.6350
   Avg Shortest Path Length: 1.82
-  Avg Node Sentiment: 0.26
+  Avg Node Sentiment: 0.25
 
 🔹 Structural Analysis:
   Cut Vertices (Articulation Points): ['Elon Musk']
@@ -23,5 +23,23 @@
   Betweenness: Elon Musk (0.69), Tesla (0.09), Cathie Wood (0.07)
   Closeness: Elon Musk (0.94), Cathie Wood (0.65), Tesla (0.62)
 
-🔹 Stracture Analysis:
- {0: ['Bernie Sanders', 'Larry Page', 'GM', 'Apple', 'Joe Biden', 'Chamath Palihapitiya', 'Donald Trump', 'Elon Musk'], 1: ['Jeff Bezos', 'NIO', 'Cathie Wood', 'Pete Buttigieg', 'Mark Zuckerberg'], 2: ['Tesla', 'Ford', 'Jim Cramer']}
+🔹 Node Sentiments:
+  Elon Musk: 0.173 (from 160 mentions)
+  Tesla: 0.446 (from 11 mentions)
+  Cathie Wood: 0.072 (from 21 mentions)
+  Joe Biden: 0.323 (from 4 mentions)
+  Jeff Bezos: 0.106 (from 30 mentions)
+  NIO: 0.087 (from 3 mentions)
+  Donald Trump: 0.222 (from 24 mentions)
+  GM: 0.784 (from 1 mentions)
+  Mark Zuckerberg: -0.191 (from 13 mentions)
+  Larry Page: 0.336 (from 3 mentions)
+  Apple: 0.000 (from 1 mentions)
+  Jim Cramer: 0.010 (from 8 mentions)
+  Ford: 0.474 (from 2 mentions)
+  Chamath Palihapitiya: 0.272 (from 1 mentions)
+  Bernie Sanders: 0.694 (from 4 mentions)
+  Pete Buttigieg: 0.206 (from 5 mentions)
+
+🔹 Structure Analysis:
+ {0: ['Larry Page', 'Bernie Sanders', 'Elon Musk', 'Chamath Palihapitiya', 'Joe Biden', 'Donald Trump', 'GM', 'Apple'], 1: ['Jeff Bezos', 'Pete Buttigieg', 'Cathie Wood', 'Mark Zuckerberg', 'NIO'], 2: ['Jim Cramer', 'Ford', 'Tesla']}

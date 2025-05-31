@@ -8,7 +8,7 @@
   Average Degree: 5.07
   Avg Clustering Coefficient: 0.6087
   Avg Shortest Path Length: 1.64
-  Avg Node Sentiment: 0.14
+  Avg Node Sentiment: 0.15
 
 🔹 Structural Analysis:
   Cut Vertices (Articulation Points): ['Elon Musk']
@@ -23,5 +23,22 @@
   Betweenness: Elon Musk (0.58), Joe Biden (0.04), Donald Trump (0.03)
   Closeness: Elon Musk (1.00), Donald Trump (0.70), Joe Biden (0.70)
 
-🔹 Stracture Analysis:
- {0: ['Jeff Bezos', 'Tesla', 'Donald Trump', 'Cathie Wood', 'Joe Biden', 'Mark Zuckerberg'], 1: ['Michael Burry', 'GM', 'Ford', 'Jim Cramer', 'Elon Musk', 'Chamath Palihapitiya'], 2: ['NIO', 'Bernie Sanders', 'Pete Buttigieg']}
+🔹 Node Sentiments:
+  Elon Musk: 0.158 (from 263 mentions)
+  Tesla: 0.434 (from 31 mentions)
+  Cathie Wood: 0.272 (from 15 mentions)
+  Donald Trump: 0.233 (from 20 mentions)
+  Jeff Bezos: 0.171 (from 62 mentions)
+  Joe Biden: 0.117 (from 22 mentions)
+  NIO: 0.118 (from 5 mentions)
+  GM: -0.309 (from 2 mentions)
+  Ford: 0.478 (from 7 mentions)
+  Mark Zuckerberg: 0.291 (from 6 mentions)
+  Jim Cramer: -0.178 (from 1 mentions)
+  Chamath Palihapitiya: 0.000 (from 1 mentions)
+  Michael Burry: 0.000 (from 1 mentions)
+  Pete Buttigieg: 0.326 (from 27 mentions)
+  Bernie Sanders: 0.066 (from 30 mentions)
+
+🔹 Structure Analysis:
+ {0: ['Jeff Bezos', 'Cathie Wood', 'Joe Biden', 'Donald Trump', 'Mark Zuckerberg', 'Tesla'], 1: ['GM', 'Michael Burry', 'Ford', 'Elon Musk', 'Chamath Palihapitiya', 'Jim Cramer'], 2: ['Pete Buttigieg', 'NIO', 'Bernie Sanders']}

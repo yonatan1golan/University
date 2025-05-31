@@ -1,27 +1,47 @@
 📊 Graph Overview:
 🔹 Basic Stats:
   Nodes: 18
-  Edges: 44
+  Edges: 43
   Is Connected: True
-  Density: 0.2876
+  Density: 0.2810
   Diameter: 3
-  Average Degree: 4.89
-  Avg Clustering Coefficient: 0.6305
-  Avg Shortest Path Length: 1.81
+  Average Degree: 4.78
+  Avg Clustering Coefficient: 0.6351
+  Avg Shortest Path Length: 1.82
   Avg Node Sentiment: 0.03
 
 🔹 Structural Analysis:
-  Cut Vertices (Articulation Points): ['Alexandria Ocasio-Cortez', 'Elon Musk']
+  Cut Vertices (Articulation Points): ['Elon Musk', 'Alexandria Ocasio-Cortez']
   Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Elon Musk', 'Pete Buttigieg'), ('Bernie Sanders', 'Alexandria Ocasio-Cortez')]
 
 🔹 Community Detection:
-  Number of Communities: 4
-  Community Sizes: [6, 5, 4, 3]
+  Number of Communities: 3
+  Community Sizes: [8, 8, 2]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
   Degree: Elon Musk (0.94), Tesla (0.59), Joe Biden (0.59)
-  Betweenness: Elon Musk (0.62), Alexandria Ocasio-Cortez (0.12), Tesla (0.06)
+  Betweenness: Elon Musk (0.64), Alexandria Ocasio-Cortez (0.12), Tesla (0.06)
   Closeness: Elon Musk (0.94), Tesla (0.68), Joe Biden (0.68)
 
-🔹 Stracture Analysis:
- {0: ['Jeff Bezos', 'NIO', 'GM', 'Donald Trump', 'Ford', 'Joe Biden'], 1: ['Bernie Sanders', 'Larry Page', 'Alexandria Ocasio-Cortez', 'Pete Buttigieg', 'Elon Musk'], 2: ['Meta', 'Michael Burry', 'Cathie Wood', 'Mark Zuckerberg'], 3: ['Apple', 'Tesla', 'Jim Cramer']}
+🔹 Node Sentiments:
+  Donald Trump: 0.006 (from 42 mentions)
+  Elon Musk: -0.010 (from 223 mentions)
+  Tesla: 0.188 (from 22 mentions)
+  Mark Zuckerberg: -0.169 (from 25 mentions)
+  Jim Cramer: -0.110 (from 7 mentions)
+  Cathie Wood: -0.200 (from 24 mentions)
+  Apple: 0.241 (from 5 mentions)
+  Jeff Bezos: -0.017 (from 16 mentions)
+  Ford: 0.224 (from 3 mentions)
+  Joe Biden: -0.061 (from 31 mentions)
+  Larry Page: -0.075 (from 4 mentions)
+  NIO: -0.069 (from 5 mentions)
+  Meta: -0.382 (from 1 mentions)
+  Bernie Sanders: 0.318 (from 2 mentions)
+  Alexandria Ocasio-Cortez: 0.012 (from 3 mentions)
+  GM: 0.525 (from 3 mentions)
+  Michael Burry: -0.104 (from 4 mentions)
+  Pete Buttigieg: 0.189 (from 2 mentions)
+
+🔹 Structure Analysis:
+ {0: ['GM', 'Jeff Bezos', 'Ford', 'Apple', 'Joe Biden', 'Donald Trump', 'NIO', 'Tesla'], 1: ['Larry Page', 'Elon Musk', 'Jim Cramer', 'Meta', 'Pete Buttigieg', 'Michael Burry', 'Cathie Wood', 'Mark Zuckerberg'], 2: ['Bernie Sanders', 'Alexandria Ocasio-Cortez']}
