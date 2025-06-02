@@ -13,6 +13,7 @@ from config import CONFIG
 import datetime as dt
 import pandas as pd
 import numpy as np
+import os
 
 class Regression:
     def __init__(self, data: pd.DataFrame, period: dict, x: list, y: str, cov_type="nonrobust"):
@@ -260,6 +261,96 @@ def check_homoscedasticity(regression_obj):
 
     return results
 
+def create_merged_delta_features(data: pd.DataFrame) -> pd.DataFrame:
+    """
+    Creates merged delta features to test if they improve regression performance.
+    """
+    data_with_merged = data.copy()
+    
+    # 1 - simple sum of all deltas
+    delta_cols = [f'delta_volume_{i}_days_back' for i in range(1, 11)]
+    data_with_merged['delta_volume_sum'] = data_with_merged[delta_cols].sum(axis=1)
+    
+    # 2- weighted sum (recent days have higher weight)
+    weights = [1.0 / i for i in range(1, 11)]  # 1.0, 0.5, 0.33, 0.25, ...
+    weighted_deltas = sum(data_with_merged[f'delta_volume_{i}_days_back'] * weights[i-1] 
+                         for i in range(1, 11))
+    data_with_merged['delta_volume_weighted'] = weighted_deltas
+    
+    # 3 - average of all deltas
+    data_with_merged['delta_volume_avg'] = data_with_merged[delta_cols].mean(axis=1)
+    
+    # 4- short term vs Long-term (1-3 days vs 4-10 days)
+    data_with_merged['delta_volume_short_term'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in range(1, 4)]].sum(axis=1)
+    data_with_merged['delta_volume_long_term'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in range(4, 11)]].sum(axis=1)
+    return data_with_merged
+
+def compare_delta_approaches(data: pd.DataFrame, period: dict, base_x_columns: list, output_dir: str = 'final_project/part_b/delta_analysis') -> dict:
+    """
+    Compares regression performance with different delta approaches.
+    
+    Args:
+        data: DataFrame with the data
+        period: Period configuration
+        base_x_columns: Base X columns for regression
+        output_dir: Directory to save approach result files
+    
+    Returns:
+        dict: Results comparing different approaches
+    """
+    
+    results = {}    
+    data_with_merged = create_merged_delta_features(data)    
+    delta_individual_cols = [f'delta_volume_{i}_days_back' for i in range(1, 11)]
+    
+    os.makedirs(output_dir, exist_ok=True)
+    approaches = {
+        'individual_deltas': base_x_columns,
+        'sum_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_sum'],
+        'weighted_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_weighted'],
+        'avg_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_avg'],
+        'short_long_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_short_term', 'delta_volume_long_term'],
+        'no_deltas': [col for col in base_x_columns if col not in delta_individual_cols]
+    }
+    
+    print("🔍 Comparing different delta approaches...\n")
+    for approach_name, x_vars in approaches.items():
+        if approach_name in ['sum_delta', 'weighted_delta', 'avg_delta', 'short_long_delta']:
+            regression = Regression(data_with_merged, period, x_vars, 'volume', 'HC3')
+        else:
+            regression = Regression(data, period, x_vars, 'volume', 'HC3')
+        
+        results[approach_name] = {
+            'r_squared': regression.model.rsquared,
+            'adj_r_squared': regression.model.rsquared_adj,
+            'aic': regression.model.aic,
+            'bic': regression.model.bic,
+            'num_features': len(x_vars),
+            'significant_vars': sum(regression.model.pvalues.drop('Intercept', errors='ignore') <= 0.05)
+        }
+        
+        log_path = os.path.join(output_dir, f'{approach_name}_results.txt')
+        with open(log_path, 'w') as approach_file:
+            approach_file.write(f"DELTA APPROACH: {approach_name.upper().replace('_', ' ')}\n")
+            approach_file.write("=" * 50 + "\n\n")
+            approach_file.write(f"R²: {results[approach_name]['r_squared']:.4f}\n")
+            approach_file.write(f"Adjusted R²: {results[approach_name]['adj_r_squared']:.4f}\n")
+            approach_file.write(f"AIC: {results[approach_name]['aic']:.2f}\n")
+            approach_file.write(f"BIC: {results[approach_name]['bic']:.2f}\n")
+            approach_file.write(f"Number of Features: {results[approach_name]['num_features']}\n")
+            approach_file.write(f"Significant Variables: {results[approach_name]['significant_vars']}\n\n")
+            
+            approach_file.write("FEATURES USED:\n")
+            approach_file.write("-" * 20 + "\n")
+            for i, var in enumerate(x_vars, 1):
+                approach_file.write(f"{i:2d}. {var}\n")
+            
+            approach_file.write(f"\nMODEL SUMMARY:\n")
+            approach_file.write("-" * 20 + "\n")
+            approach_file.write(str(regression.model.summary()))
+        print(f"Results saved to: {log_path}")
+    return results
+
 if __name__ == "__main__":
     tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
     processed_tesla_data = generate_features(tesla_stock)
@@ -294,6 +385,7 @@ if __name__ == "__main__":
     without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
 
+    # delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions)
     # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
     # hc3_anova = with_hc3_categorized.run_anova()
     # without_hc3_continuous.backward_selection("hc3_continuous")

@@ -1,0 +1,89 @@
+DELTA APPROACH: INDIVIDUAL DELTAS
+==================================================
+
+R²: 0.9265
+Adjusted R²: 0.9127
+AIC: 5195.79
+BIC: 5267.39
+Number of Features: 24
+Significant Variables: 4
+
+FEATURES USED:
+--------------------
+ 1. beta
+ 2. close
+ 3. csad
+ 4. daily_trend
+ 5. delta_volume_10_days_back
+ 6. delta_volume_1_days_back
+ 7. delta_volume_2_days_back
+ 8. delta_volume_3_days_back
+ 9. delta_volume_4_days_back
+10. delta_volume_5_days_back
+11. delta_volume_6_days_back
+12. delta_volume_7_days_back
+13. delta_volume_8_days_back
+14. delta_volume_9_days_back
+15. log_return
+16. open
+17. pe
+18. quarter
+19. rsi
+20. ttm_eps
+21. volatility
+22. weekday
+23. pe_daily_trend_volatility
+24. weekday_log_return_rsi
+
+MODEL SUMMARY:
+--------------------
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.927
+Model:                            OLS   Adj. R-squared:                  0.913
+Method:                 Least Squares   F-statistic:                     967.6
+Date:                Mon, 02 Jun 2025   Prob (F-statistic):          9.22e-118
+Time:                        19:18:01   Log-Likelihood:                -2573.9
+No. Observations:                 146   AIC:                             5196.
+Df Residuals:                     122   BIC:                             5267.
+Df Model:                          23                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                 -1.169e+07   3.69e+07     -0.317      0.751    -8.4e+07    6.06e+07
+beta                      -2.845e+07   8.98e+07     -0.317      0.751   -2.04e+08    1.48e+08
+close                     -4.978e+05   6.29e+05     -0.792      0.429   -1.73e+06    7.35e+05
+csad                       7.614e+07   6.11e+07      1.246      0.213   -4.36e+07    1.96e+08
+daily_trend                 3.89e+08   2.35e+08      1.653      0.098   -7.22e+07     8.5e+08
+delta_volume_10_days_back     0.0701      0.053      1.319      0.187      -0.034       0.174
+delta_volume_1_days_back      0.0392      0.051      0.772      0.440      -0.060       0.139
+delta_volume_2_days_back      0.0798      0.054      1.487      0.137      -0.025       0.185
+delta_volume_3_days_back      0.0738      0.064      1.152      0.249      -0.052       0.199
+delta_volume_4_days_back      0.0598      0.074      0.806      0.420      -0.086       0.205
+delta_volume_5_days_back      0.0905      0.070      1.291      0.197      -0.047       0.228
+delta_volume_6_days_back      0.0988      0.071      1.392      0.164      -0.040       0.238
+delta_volume_7_days_back      0.0978      0.073      1.338      0.181      -0.046       0.241
+delta_volume_8_days_back      0.0633      0.079      0.800      0.423      -0.092       0.218
+delta_volume_9_days_back      0.0884      0.077      1.146      0.252      -0.063       0.240
+log_return                -8.771e+07    5.7e+07     -1.539      0.124   -1.99e+08     2.4e+07
+open                       9.742e+05   6.01e+05      1.620      0.105   -2.04e+05    2.15e+06
+pe                        -1.573e+06    3.4e+05     -4.626      0.000   -2.24e+06   -9.06e+05
+quarter                    1.952e+06   1.14e+06      1.720      0.086   -2.73e+05    4.18e+06
+rsi                        4.328e+05   9.31e+04      4.651      0.000     2.5e+05    6.15e+05
+ttm_eps                   -8.096e+07   1.55e+07     -5.233      0.000   -1.11e+08   -5.06e+07
+volatility                  6.13e+08   1.16e+08      5.267      0.000    3.85e+08    8.41e+08
+weekday                   -4.858e+05   8.96e+05     -0.542      0.588   -2.24e+06    1.27e+06
+pe_daily_trend_volatility -5.496e+05   2.62e+06     -0.210      0.834   -5.68e+06    4.58e+06
+weekday_log_return_rsi     4.686e+05   1.18e+06      0.398      0.690   -1.84e+06    2.77e+06
+==============================================================================
+Omnibus:                        3.679   Durbin-Watson:                   0.439
+Prob(Omnibus):                  0.159   Jarque-Bera (JB):                3.159
+Skew:                           0.308   Prob(JB):                        0.206
+Kurtosis:                       3.375   Cond. No.                     1.33e+17
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.13e-16. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
