@@ -1,69 +1,55 @@
 DELTA APPROACH: NO DELTAS
 ==================================================
 
-R²: 0.6503
-Adjusted R²: 0.6159
-AIC: 5403.56
-BIC: 5445.33
-Number of Features: 14
-Significant Variables: 7
+R²: 0.4391
+Adjusted R²: 0.4106
+AIC: 5460.55
+BIC: 5484.42
+Number of Features: 7
+Significant Variables: 4
 
 FEATURES USED:
 --------------------
- 1. beta
- 2. close
- 3. csad
- 4. daily_trend
- 5. log_return
- 6. open
- 7. pe
- 8. quarter
- 9. rsi
-10. ttm_eps
-11. volatility
-12. weekday
-13. pe_daily_trend_volatility
-14. weekday_log_return_rsi
+ 1. daily_trend
+ 2. log_return
+ 3. open
+ 4. pe
+ 5. rsi
+ 6. ttm_eps
+ 7. volatility
 
 MODEL SUMMARY:
 --------------------
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:                 volume   R-squared:                       0.650
-Model:                            OLS   Adj. R-squared:                  0.616
-Method:                 Least Squares   F-statistic:                     179.4
-Date:                Mon, 02 Jun 2025   Prob (F-statistic):           1.41e-78
-Time:                        19:18:01   Log-Likelihood:                -2687.8
-No. Observations:                 146   AIC:                             5404.
-Df Residuals:                     132   BIC:                             5445.
-Df Model:                          13                                         
+Dep. Variable:                 volume   R-squared:                       0.439
+Model:                            OLS   Adj. R-squared:                  0.411
+Method:                 Least Squares   F-statistic:                     13.71
+Date:                Tue, 03 Jun 2025   Prob (F-statistic):           2.17e-13
+Time:                        19:51:03   Log-Likelihood:                -2722.3
+No. Observations:                 146   AIC:                             5461.
+Df Residuals:                     138   BIC:                             5484.
+Df Model:                           7                                         
 Covariance Type:                  HC3                                         
-=============================================================================================
-                                coef    std err          z      P>|z|      [0.025      0.975]
----------------------------------------------------------------------------------------------
-Intercept                 -1.032e+08   5.61e+07     -1.839      0.066   -2.13e+08    6.78e+06
-beta                      -2.513e+08   1.37e+08     -1.839      0.066   -5.19e+08    1.65e+07
-close                     -2.866e+06   9.82e+05     -2.918      0.004   -4.79e+06   -9.41e+05
-csad                       5.623e+08   8.47e+07      6.638      0.000    3.96e+08    7.28e+08
-daily_trend                1.045e+09   3.67e+08      2.851      0.004    3.27e+08    1.76e+09
-log_return                -3.164e+07   1.06e+08     -0.298      0.766    -2.4e+08    1.76e+08
-open                       3.204e+06   9.47e+05      3.383      0.001    1.35e+06    5.06e+06
-pe                        -1.462e+06   6.03e+05     -2.425      0.015   -2.64e+06   -2.81e+05
-quarter                   -3.988e+06   2.74e+06     -1.456      0.145   -9.36e+06    1.38e+06
-rsi                         9.17e+05   2.11e+05      4.340      0.000    5.03e+05    1.33e+06
-ttm_eps                   -7.614e+07   2.66e+07     -2.867      0.004   -1.28e+08   -2.41e+07
-volatility                -6.574e+07   1.83e+08     -0.358      0.720   -4.25e+08    2.94e+08
-weekday                    -1.29e+06   1.57e+06     -0.824      0.410   -4.36e+06    1.78e+06
-pe_daily_trend_volatility -5.661e+06   3.56e+06     -1.590      0.112   -1.26e+07    1.32e+06
-weekday_log_return_rsi    -8.801e+05   3.55e+06     -0.248      0.804   -7.84e+06    6.08e+06
+===============================================================================
+                  coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------
+Intercept     2.47e+08   1.93e+08      1.279      0.201   -1.31e+08    6.25e+08
+daily_trend  1.822e+08   1.89e+08      0.965      0.335   -1.88e+08    5.52e+08
+log_return   1.098e+08   1.64e+08      0.670      0.503   -2.12e+08    4.31e+08
+open         6.125e+05   2.03e+05      3.015      0.003    2.14e+05    1.01e+06
+pe          -2.152e+06   6.45e+05     -3.338      0.001   -3.42e+06   -8.88e+05
+rsi          7.533e+05   1.71e+05      4.402      0.000    4.18e+05    1.09e+06
+ttm_eps     -1.108e+08   2.73e+07     -4.060      0.000   -1.64e+08   -5.73e+07
+volatility   2.163e+08   2.09e+08      1.035      0.300   -1.93e+08    6.26e+08
 ==============================================================================
-Omnibus:                        7.176   Durbin-Watson:                   1.125
-Prob(Omnibus):                  0.028   Jarque-Bera (JB):                6.964
-Skew:                           0.526   Prob(JB):                       0.0307
-Kurtosis:                       3.192   Cond. No.                     4.68e+19
+Omnibus:                       15.402   Durbin-Watson:                   0.924
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               17.022
+Skew:                           0.752   Prob(JB):                     0.000201
+Kurtosis:                       3.731   Cond. No.                     2.90e+04
 ==============================================================================
 
 Notes:
 [1] Standard Errors are heteroscedasticity robust (HC3)
-[2] The smallest eigenvalue is 1.51e-32. This might indicate that there are
-strong multicollinearity problems or that the design matrix is singular.
+[2] The condition number is large, 2.9e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.

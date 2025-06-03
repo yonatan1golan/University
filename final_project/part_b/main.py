@@ -283,6 +283,15 @@ def create_merged_delta_features(data: pd.DataFrame) -> pd.DataFrame:
     # 4- short term vs Long-term (1-3 days vs 4-10 days)
     data_with_merged['delta_volume_short_term'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in range(1, 4)]].sum(axis=1)
     data_with_merged['delta_volume_long_term'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in range(4, 11)]].sum(axis=1)
+    
+    # 5 - sum of deltas 2 and 5 days back
+    data_with_merged['delta_volume_sum_2_5'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in (2, 5)]].sum(axis=1)
+
+    # 6 - sum of deltas 9 and 10 days back
+    data_with_merged['delta_volume_sum_9_10'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in (9, 10)]].sum(axis=1)
+
+    # 7 - sum of deltas 2, 5, 9 and 10 days back
+    data_with_merged['delta_volume_sum_2_5_9_10'] = data_with_merged[[f'delta_volume_{i}_days_back' for i in (2, 5, 9, 10)]].sum(axis=1)
     return data_with_merged
 
 def compare_delta_approaches(data: pd.DataFrame, period: dict, base_x_columns: list, output_dir: str = 'final_project/part_b/delta_analysis') -> dict:
@@ -310,12 +319,15 @@ def compare_delta_approaches(data: pd.DataFrame, period: dict, base_x_columns: l
         'weighted_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_weighted'],
         'avg_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_avg'],
         'short_long_delta': [col for col in base_x_columns if col not in delta_individual_cols] + ['delta_volume_short_term', 'delta_volume_long_term'],
-        'no_deltas': [col for col in base_x_columns if col not in delta_individual_cols]
+        'no_deltas': [col for col in base_x_columns if col not in delta_individual_cols],
+        'sum_2_5_deltas': [col for col in base_x_columns if col not in ['delta_volume_2_days_back', 'delta_volume_5_days_back']] + ['delta_volume_sum_2_5'],
+        'sum_9_10_deltas': [col for col in base_x_columns if col not in ['delta_volume_9_days_back', 'delta_volume_10_days_back']] + ['delta_volume_sum_9_10']  ,
+        'sum_2_5_9_10_deltas': [col for col in base_x_columns if col not in ['delta_volume_2_days_back', 'delta_volume_5_days_back', 'delta_volume_9_days_back', 'delta_volume_10_days_back']] + ['delta_volume_sum_2_5', 'delta_volume_sum_9_10'],
     }
     
     print("🔍 Comparing different delta approaches...\n")
     for approach_name, x_vars in approaches.items():
-        if approach_name in ['sum_delta', 'weighted_delta', 'avg_delta', 'short_long_delta']:
+        if approach_name in ['sum_delta', 'weighted_delta', 'avg_delta', 'short_long_delta', 'sum_2_5_deltas', 'sum_9_10_deltas', 'sum_2_5_9_10_deltas']:
             regression = Regression(data_with_merged, period, x_vars, 'volume', 'HC3')
         else:
             regression = Regression(data, period, x_vars, 'volume', 'HC3')
@@ -385,7 +397,7 @@ if __name__ == "__main__":
     without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
 
-    # delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions)
     # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
     # hc3_anova = with_hc3_categorized.run_anova()
-    # without_hc3_continuous.backward_selection("hc3_continuous")
+    x = without_hc3_continuous.backward_selection("hc3_continuous")
+    delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x)

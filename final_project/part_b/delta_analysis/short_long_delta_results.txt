@@ -1,73 +1,59 @@
 DELTA APPROACH: SHORT LONG DELTA
 ==================================================
 
-R²: 0.9257
-Adjusted R²: 0.9172
-AIC: 5181.37
-BIC: 5229.11
-Number of Features: 16
-Significant Variables: 6
+R²: 0.9217
+Adjusted R²: 0.9165
+AIC: 5177.07
+BIC: 5206.91
+Number of Features: 9
+Significant Variables: 8
 
 FEATURES USED:
 --------------------
- 1. beta
- 2. close
- 3. csad
- 4. daily_trend
- 5. log_return
- 6. open
- 7. pe
- 8. quarter
- 9. rsi
-10. ttm_eps
-11. volatility
-12. weekday
-13. pe_daily_trend_volatility
-14. weekday_log_return_rsi
-15. delta_volume_short_term
-16. delta_volume_long_term
+ 1. daily_trend
+ 2. log_return
+ 3. open
+ 4. pe
+ 5. rsi
+ 6. ttm_eps
+ 7. volatility
+ 8. delta_volume_short_term
+ 9. delta_volume_long_term
 
 MODEL SUMMARY:
 --------------------
                             OLS Regression Results                            
 ==============================================================================
-Dep. Variable:                 volume   R-squared:                       0.926
+Dep. Variable:                 volume   R-squared:                       0.922
 Model:                            OLS   Adj. R-squared:                  0.917
-Method:                 Least Squares   F-statistic:                     1048.
-Date:                Mon, 02 Jun 2025   Prob (F-statistic):          3.00e-126
-Time:                        19:18:01   Log-Likelihood:                -2574.7
-No. Observations:                 146   AIC:                             5181.
-Df Residuals:                     130   BIC:                             5229.
-Df Model:                          15                                         
+Method:                 Least Squares   F-statistic:                     92.53
+Date:                Tue, 03 Jun 2025   Prob (F-statistic):           1.45e-48
+Time:                        19:51:03   Log-Likelihood:                -2578.5
+No. Observations:                 146   AIC:                             5177.
+Df Residuals:                     136   BIC:                             5207.
+Df Model:                           9                                         
 Covariance Type:                  HC3                                         
-=============================================================================================
-                                coef    std err          z      P>|z|      [0.025      0.975]
----------------------------------------------------------------------------------------------
-Intercept                 -9.688e+06   3.62e+07     -0.268      0.789   -8.06e+07    6.12e+07
-beta                      -2.358e+07   8.81e+07     -0.268      0.789   -1.96e+08    1.49e+08
-close                     -4.869e+05   6.17e+05     -0.789      0.430    -1.7e+06    7.22e+05
-csad                       8.055e+07   5.71e+07      1.410      0.159   -3.14e+07    1.93e+08
-daily_trend                3.789e+08   2.28e+08      1.663      0.096   -6.78e+07    8.26e+08
-log_return                -7.951e+07   5.04e+07     -1.577      0.115   -1.78e+08    1.93e+07
-open                       9.665e+05   5.85e+05      1.652      0.099    -1.8e+05    2.11e+06
-pe                        -1.591e+06   3.21e+05     -4.957      0.000   -2.22e+06   -9.62e+05
-quarter                    1.772e+06   1.05e+06      1.681      0.093   -2.94e+05    3.84e+06
-rsi                        4.443e+05   8.53e+04      5.210      0.000    2.77e+05    6.11e+05
-ttm_eps                   -8.168e+07   1.45e+07     -5.636      0.000    -1.1e+08   -5.33e+07
-volatility                 5.944e+08   1.08e+08      5.521      0.000    3.83e+08    8.05e+08
-weekday                    -4.69e+05   7.84e+05     -0.599      0.549      -2e+06    1.07e+06
-pe_daily_trend_volatility -7.424e+05   2.47e+06     -0.300      0.764   -5.59e+06     4.1e+06
-weekday_log_return_rsi     5.401e+05   1.11e+06      0.488      0.626   -1.63e+06    2.71e+06
-delta_volume_short_term       0.0622      0.018      3.402      0.001       0.026       0.098
-delta_volume_long_term        0.0831      0.006     14.260      0.000       0.072       0.094
+===========================================================================================
+                              coef    std err          z      P>|z|      [0.025      0.975]
+-------------------------------------------------------------------------------------------
+Intercept                8.739e+07   7.83e+07      1.116      0.264    -6.6e+07    2.41e+08
+daily_trend              2.146e+08   6.36e+07      3.373      0.001    8.99e+07    3.39e+08
+log_return              -7.187e+07   4.45e+07     -1.613      0.107   -1.59e+08    1.54e+07
+open                     4.454e+05    8.9e+04      5.004      0.000    2.71e+05     6.2e+05
+pe                      -1.526e+06   2.89e+05     -5.278      0.000   -2.09e+06   -9.59e+05
+rsi                      5.201e+05    6.6e+04      7.879      0.000    3.91e+05     6.5e+05
+ttm_eps                 -7.726e+07   1.28e+07     -6.013      0.000   -1.02e+08   -5.21e+07
+volatility                 6.6e+08   9.83e+07      6.711      0.000    4.67e+08    8.53e+08
+delta_volume_short_term     0.0793      0.015      5.461      0.000       0.051       0.108
+delta_volume_long_term      0.0837      0.006     14.901      0.000       0.073       0.095
 ==============================================================================
-Omnibus:                        3.351   Durbin-Watson:                   0.441
-Prob(Omnibus):                  0.187   Jarque-Bera (JB):                2.842
-Skew:                           0.310   Prob(JB):                        0.242
-Kurtosis:                       3.288   Cond. No.                     5.44e+17
+Omnibus:                        2.163   Durbin-Watson:                   0.313
+Prob(Omnibus):                  0.339   Jarque-Bera (JB):                1.696
+Skew:                           0.228   Prob(JB):                        0.428
+Kurtosis:                       3.265   Cond. No.                     2.51e+10
 ==============================================================================
 
 Notes:
 [1] Standard Errors are heteroscedasticity robust (HC3)
-[2] The smallest eigenvalue is 4.26e-17. This might indicate that there are
-strong multicollinearity problems or that the design matrix is singular.
+[2] The condition number is large, 2.51e+10. This might indicate that there are
+strong multicollinearity or other numerical problems.

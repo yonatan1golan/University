@@ -1,0 +1,65 @@
+DELTA APPROACH: SUM 2 5 9 10 DELTAS
+==================================================
+
+R²: 0.9188
+Adjusted R²: 0.9115
+AIC: 5188.42
+BIC: 5227.20
+Number of Features: 12
+Significant Variables: 11
+
+FEATURES USED:
+--------------------
+ 1. daily_trend
+ 2. delta_volume_3_days_back
+ 3. delta_volume_6_days_back
+ 4. delta_volume_7_days_back
+ 5. log_return
+ 6. open
+ 7. pe
+ 8. rsi
+ 9. ttm_eps
+10. volatility
+11. delta_volume_sum_2_5
+12. delta_volume_sum_9_10
+
+MODEL SUMMARY:
+--------------------
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.919
+Model:                            OLS   Adj. R-squared:                  0.911
+Method:                 Least Squares   F-statistic:                     88.78
+Date:                Tue, 03 Jun 2025   Prob (F-statistic):           5.38e-47
+Time:                        19:51:03   Log-Likelihood:                -2581.2
+No. Observations:                 146   AIC:                             5188.
+Df Residuals:                     133   BIC:                             5227.
+Df Model:                          12                                         
+Covariance Type:                  HC3                                         
+============================================================================================
+                               coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------
+Intercept                 4.889e+07   7.97e+07      0.614      0.539   -1.07e+08    2.05e+08
+daily_trend               2.467e+08   6.86e+07      3.594      0.000    1.12e+08    3.81e+08
+delta_volume_3_days_back     0.1165      0.053      2.188      0.029       0.012       0.221
+delta_volume_6_days_back     0.1089      0.062      1.760      0.078      -0.012       0.230
+delta_volume_7_days_back     0.1277      0.058      2.188      0.029       0.013       0.242
+log_return               -9.582e+07   4.74e+07     -2.020      0.043   -1.89e+08   -2.85e+06
+open                      4.381e+05   8.74e+04      5.012      0.000    2.67e+05    6.09e+05
+pe                       -1.494e+06   2.79e+05     -5.364      0.000   -2.04e+06   -9.48e+05
+rsi                       5.098e+05   6.78e+04      7.516      0.000    3.77e+05    6.43e+05
+ttm_eps                  -7.569e+07   1.25e+07     -6.060      0.000      -1e+08   -5.12e+07
+volatility                 6.82e+08   9.96e+07      6.850      0.000    4.87e+08    8.77e+08
+delta_volume_sum_2_5         0.1218      0.039      3.084      0.002       0.044       0.199
+delta_volume_sum_9_10        0.0961      0.021      4.650      0.000       0.056       0.137
+==============================================================================
+Omnibus:                        0.812   Durbin-Watson:                   0.496
+Prob(Omnibus):                  0.666   Jarque-Bera (JB):                0.458
+Skew:                           0.089   Prob(JB):                        0.795
+Kurtosis:                       3.209   Cond. No.                     1.06e+10
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 1.06e+10. This might indicate that there are
+strong multicollinearity or other numerical problems.
