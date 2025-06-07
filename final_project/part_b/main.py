@@ -3,11 +3,11 @@ from data.stock_fetcher import StockDataFetcher
 from sklearn.preprocessing import KBinsDiscretizer
 from statsmodels.stats.anova import anova_lm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
+import scipy.stats as stats
 from patsy import dmatrices
 from statsmodels.stats.diagnostic import het_breuschpagan
 import statsmodels.formula.api as smf
 import matplotlib.pyplot as plt
-
 
 from config import CONFIG
 import datetime as dt
@@ -363,6 +363,36 @@ def compare_delta_approaches(data: pd.DataFrame, period: dict, base_x_columns: l
         print(f"Results saved to: {log_path}")
     return results
 
+def plot_qq(residuals, title="QQ Plot of Residuals"):
+    """
+    Generate a QQ plot to assess normality of residuals.
+    
+    Parameters:
+        residuals (pd.Series or np.ndarray): Residuals from the regression model
+        title (str): Plot title
+    """
+    plt.figure(figsize=(8, 6))
+    stats.probplot(residuals, dist="norm", plot=plt)
+    plt.title(title)
+    plt.grid(True)
+    plt.xlabel("Theoretical Quantiles")
+    plt.ylabel("Sample Quantiles")
+    plt.show()
+
+def plot_residuals_vs_fitted(model, title="Residuals vs Fitted"):
+    fitted_vals = model.fittedvalues
+    residuals = model.resid
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(fitted_vals, residuals, alpha=0.5)
+    plt.axhline(0, color='red', linestyle='--')
+    plt.title(title)
+    plt.xlabel("Fitted values")
+    plt.ylabel("Residuals")
+    plt.grid(True)
+    plt.show()
+
+
 if __name__ == "__main__":
     tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
     processed_tesla_data = generate_features(tesla_stock)
@@ -388,16 +418,23 @@ if __name__ == "__main__":
     categorized_regression = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     continuous_regression = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     continous_regression_without_herding = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns.difference(potentially_herding_variables), 'volume')
+    # plot_qq(continuous_regression.model.resid, "QQ Plot of Continuous Regression Residuals")
+    # plot_residuals_vs_fitted(continuous_regression.model, "Continuous Regression Residuals vs Fitted, before HC3 and backward selection")
+    
     # anova_table = categorized_regression.run_anova()
     # continuous_regression.backward_selection()
-
+    # delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x)
     # plot_residuals_vs_fitted(continuous_regression.model, "Categorized Regression Residuals vs Fitted")
     # check_homoscedasticity(continuous_regression)
 
-    without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
-    with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
+    # without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
 
     # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
     # hc3_anova = with_hc3_categorized.run_anova()
-    x = without_hc3_continuous.backward_selection("hc3_continuous")
-    delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x)
+    
+    with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
+    after_backward_selection_x = with_hc3_continuous.backward_selection("hc3_continuous")
+    continous_regressions_hc3_and_backward = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, after_backward_selection_x, 'volume', 'HC3')
+    # plot_residuals_vs_fitted(continous_regressions_hc3_and_backward.model, "Continuous Regression Residuals vs Fitted, after HC3 and backward selection")
+    print(f"VIF for the regressions with HC3 and backward selection:\n{continous_regressions_hc3_and_backward.vif()}\n")
+    # check_homoscedasticity(continous_regressions_hc3_and_backward)
