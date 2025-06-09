@@ -1,0 +1,634 @@
+
+🗑 Removing 'log_return' with p-value 0.9745
+
+📉 Updated model with variables: ['beta', 'close', 'csad', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'open', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility', 'weekday', 'pe_daily_trend_volatility', 'weekday_log_return_rsi']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.955
+Method:                 Least Squares   F-statistic:                     1046.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          5.39e-119
+Time:                        19:43:45   Log-Likelihood:                -2084.4
+No. Observations:                 145   AIC:                             4217.
+Df Residuals:                     121   BIC:                             4288.
+Df Model:                          23                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  1.714e+06   3.95e+07      0.043      0.965   -7.57e+07    7.91e+07
+beta                       1.063e+06   2.45e+07      0.043      0.965   -4.69e+07    4.91e+07
+close                      1.245e+04   2.28e+05      0.055      0.956   -4.34e+05    4.59e+05
+csad                      -1.559e+05   3.32e+06     -0.047      0.963   -6.65e+06    6.34e+06
+daily_trend                5.337e+06   5.49e+07      0.097      0.923   -1.02e+08    1.13e+08
+delta_volume_10_days_back     0.1282      0.023      5.498      0.000       0.083       0.174
+delta_volume_1_days_back      0.0961      0.024      4.001      0.000       0.049       0.143
+delta_volume_2_days_back      0.0902      0.019      4.842      0.000       0.054       0.127
+delta_volume_3_days_back      0.1010      0.024      4.207      0.000       0.054       0.148
+delta_volume_4_days_back      0.0873      0.023      3.860      0.000       0.043       0.132
+delta_volume_5_days_back      0.0927      0.026      3.533      0.000       0.041       0.144
+delta_volume_6_days_back      0.0928      0.026      3.633      0.000       0.043       0.143
+delta_volume_7_days_back      0.0797      0.019      4.144      0.000       0.042       0.117
+delta_volume_8_days_back      0.0957      0.020      4.871      0.000       0.057       0.134
+delta_volume_9_days_back      0.0869      0.027      3.221      0.001       0.034       0.140
+log_return                -6.204e+04   1.94e+06     -0.032      0.974   -3.86e+06    3.74e+06
+open                       9688.2985   2.25e+05      0.043      0.966   -4.31e+05    4.51e+05
+pe                        -5.254e+04    4.1e+04     -1.281      0.200   -1.33e+05    2.78e+04
+quarter                   -1.033e+05   5.29e+04     -1.954      0.051   -2.07e+05     312.383
+rsi                        4109.6553   3476.956      1.182      0.237   -2705.054    1.09e+04
+ttm_eps                   -1.727e+06   1.33e+06     -1.294      0.196   -4.34e+06    8.89e+05
+volatility                 7.673e+07   5.79e+06     13.261      0.000    6.54e+07    8.81e+07
+weekday                    1.835e+04   3.06e+04      0.600      0.549   -4.16e+04    7.83e+04
+pe_daily_trend_volatility -1.261e+04      1e+05     -0.126      0.900   -2.09e+05    1.84e+05
+weekday_log_return_rsi     2.872e+04    7.5e+04      0.383      0.702   -1.18e+05    1.76e+05
+==============================================================================
+Omnibus:                       11.189   Durbin-Watson:                   0.584
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                4.960
+Skew:                           0.193   Prob(JB):                       0.0837
+Kurtosis:                       2.180   Cond. No.                     1.16e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 5.76e-17. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'open' with p-value 0.9657
+
+📉 Updated model with variables: ['beta', 'close', 'csad', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility', 'weekday', 'pe_daily_trend_volatility', 'weekday_log_return_rsi']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.955
+Method:                 Least Squares   F-statistic:                     1152.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          6.42e-121
+Time:                        19:43:45   Log-Likelihood:                -2084.4
+No. Observations:                 145   AIC:                             4215.
+Df Residuals:                     122   BIC:                             4283.
+Df Model:                          22                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  1.737e+06   3.93e+07      0.044      0.965   -7.53e+07    7.87e+07
+beta                       1.077e+06   2.44e+07      0.044      0.965   -4.67e+07    4.88e+07
+close                      1.255e+04   2.27e+05      0.055      0.956   -4.32e+05    4.57e+05
+csad                       -1.42e+05   3.18e+06     -0.045      0.964   -6.37e+06    6.09e+06
+daily_trend                5.324e+06   5.45e+07      0.098      0.922   -1.02e+08    1.12e+08
+delta_volume_10_days_back     0.1282      0.023      5.541      0.000       0.083       0.174
+delta_volume_1_days_back      0.0962      0.024      4.036      0.000       0.049       0.143
+delta_volume_2_days_back      0.0902      0.018      4.882      0.000       0.054       0.126
+delta_volume_3_days_back      0.1010      0.024      4.255      0.000       0.054       0.147
+delta_volume_4_days_back      0.0873      0.022      3.884      0.000       0.043       0.131
+delta_volume_5_days_back      0.0927      0.026      3.539      0.000       0.041       0.144
+delta_volume_6_days_back      0.0928      0.025      3.645      0.000       0.043       0.143
+delta_volume_7_days_back      0.0796      0.019      4.150      0.000       0.042       0.117
+delta_volume_8_days_back      0.0958      0.020      4.909      0.000       0.058       0.134
+delta_volume_9_days_back      0.0868      0.027      3.230      0.001       0.034       0.139
+open                       9612.8232   2.24e+05      0.043      0.966   -4.29e+05    4.48e+05
+pe                        -5.266e+04   4.02e+04     -1.309      0.191   -1.32e+05    2.62e+04
+quarter                   -1.035e+05   5.28e+04     -1.960      0.050   -2.07e+05      12.031
+rsi                        4100.0652   3422.364      1.198      0.231   -2607.645    1.08e+04
+ttm_eps                   -1.731e+06   1.31e+06     -1.321      0.186    -4.3e+06    8.36e+05
+volatility                 7.671e+07   5.77e+06     13.304      0.000    6.54e+07     8.8e+07
+weekday                    1.832e+04   3.04e+04      0.602      0.547   -4.13e+04     7.8e+04
+pe_daily_trend_volatility -1.285e+04   9.85e+04     -0.130      0.896   -2.06e+05     1.8e+05
+weekday_log_return_rsi      2.87e+04    7.4e+04      0.388      0.698   -1.16e+05    1.74e+05
+==============================================================================
+Omnibus:                       11.171   Durbin-Watson:                   0.584
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                4.956
+Skew:                           0.193   Prob(JB):                       0.0839
+Kurtosis:                       2.181   Cond. No.                     2.60e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.15e-17. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'csad' with p-value 0.9710
+
+📉 Updated model with variables: ['beta', 'close', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility', 'weekday', 'pe_daily_trend_volatility', 'weekday_log_return_rsi']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.956
+Method:                 Least Squares   F-statistic:                     1245.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          3.46e-122
+Time:                        19:43:45   Log-Likelihood:                -2084.4
+No. Observations:                 145   AIC:                             4213.
+Df Residuals:                     123   BIC:                             4278.
+Df Model:                          21                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.421e+06   3.64e+06      0.940      0.347   -3.71e+06    1.06e+07
+beta                       2.121e+06   2.26e+06      0.940      0.347    -2.3e+06    6.54e+06
+close                      2.227e+04   1.49e+04      1.498      0.134   -6871.392    5.14e+04
+csad                      -1.151e+05   3.17e+06     -0.036      0.971   -6.32e+06    6.09e+06
+daily_trend                3.018e+06   3.51e+06      0.860      0.390   -3.86e+06     9.9e+06
+delta_volume_10_days_back     0.1282      0.023      5.678      0.000       0.084       0.172
+delta_volume_1_days_back      0.0962      0.024      4.079      0.000       0.050       0.142
+delta_volume_2_days_back      0.0902      0.018      4.915      0.000       0.054       0.126
+delta_volume_3_days_back      0.1008      0.023      4.300      0.000       0.055       0.147
+delta_volume_4_days_back      0.0875      0.022      3.937      0.000       0.044       0.131
+delta_volume_5_days_back      0.0926      0.026      3.570      0.000       0.042       0.143
+delta_volume_6_days_back      0.0928      0.025      3.662      0.000       0.043       0.143
+delta_volume_7_days_back      0.0796      0.019      4.164      0.000       0.042       0.117
+delta_volume_8_days_back      0.0958      0.019      4.983      0.000       0.058       0.133
+delta_volume_9_days_back      0.0866      0.026      3.304      0.001       0.035       0.138
+pe                        -5.293e+04   3.99e+04     -1.328      0.184   -1.31e+05    2.52e+04
+quarter                   -1.034e+05   5.24e+04     -1.972      0.049   -2.06e+05    -608.421
+rsi                        4079.0602   3334.148      1.223      0.221   -2455.750    1.06e+04
+ttm_eps                    -1.74e+06    1.3e+06     -1.339      0.181   -4.29e+06    8.08e+05
+volatility                  7.67e+07   5.74e+06     13.354      0.000    6.54e+07     8.8e+07
+weekday                    1.842e+04   3.03e+04      0.608      0.543   -4.09e+04    7.78e+04
+pe_daily_trend_volatility -1.118e+04   9.52e+04     -0.117      0.907   -1.98e+05    1.75e+05
+weekday_log_return_rsi     2.838e+04   7.36e+04      0.386      0.700   -1.16e+05    1.73e+05
+==============================================================================
+Omnibus:                       11.204   Durbin-Watson:                   0.583
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                4.957
+Skew:                           0.192   Prob(JB):                       0.0839
+Kurtosis:                       2.180   Cond. No.                     6.94e+17
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.62e-20. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'pe_daily_trend_volatility' with p-value 0.9074
+
+📉 Updated model with variables: ['beta', 'close', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility', 'weekday', 'weekday_log_return_rsi']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.956
+Method:                 Least Squares   F-statistic:                     1373.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          7.67e-124
+Time:                        19:43:45   Log-Likelihood:                -2084.4
+No. Observations:                 145   AIC:                             4211.
+Df Residuals:                     124   BIC:                             4273.
+Df Model:                          20                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.419e+06   3.61e+06      0.947      0.344   -3.66e+06    1.05e+07
+beta                        2.12e+06   2.24e+06      0.947      0.344   -2.27e+06    6.51e+06
+close                      2.225e+04   1.48e+04      1.508      0.132   -6665.218    5.12e+04
+daily_trend                3.016e+06   3.48e+06      0.867      0.386    -3.8e+06    9.83e+06
+delta_volume_10_days_back     0.1283      0.023      5.684      0.000       0.084       0.172
+delta_volume_1_days_back      0.0968      0.018      5.252      0.000       0.061       0.133
+delta_volume_2_days_back      0.0901      0.018      5.094      0.000       0.055       0.125
+delta_volume_3_days_back      0.1008      0.023      4.329      0.000       0.055       0.146
+delta_volume_4_days_back      0.0874      0.022      3.967      0.000       0.044       0.131
+delta_volume_5_days_back      0.0926      0.026      3.579      0.000       0.042       0.143
+delta_volume_6_days_back      0.0928      0.025      3.673      0.000       0.043       0.142
+delta_volume_7_days_back      0.0795      0.019      4.252      0.000       0.043       0.116
+delta_volume_8_days_back      0.0958      0.019      5.023      0.000       0.058       0.133
+delta_volume_9_days_back      0.0864      0.026      3.389      0.001       0.036       0.136
+pe                        -5.288e+04   3.96e+04     -1.337      0.181    -1.3e+05    2.47e+04
+quarter                   -1.034e+05    5.2e+04     -1.988      0.047   -2.05e+05   -1440.534
+rsi                        4085.5761   3324.048      1.229      0.219   -2429.438    1.06e+04
+ttm_eps                   -1.738e+06   1.29e+06     -1.347      0.178   -4.27e+06    7.91e+05
+volatility                 7.663e+07   5.18e+06     14.796      0.000    6.65e+07    8.68e+07
+weekday                    1.845e+04   3.01e+04      0.614      0.539   -4.05e+04    7.74e+04
+pe_daily_trend_volatility -1.087e+04   9.35e+04     -0.116      0.907   -1.94e+05    1.72e+05
+weekday_log_return_rsi      2.83e+04   7.32e+04      0.387      0.699   -1.15e+05    1.72e+05
+==============================================================================
+Omnibus:                       11.170   Durbin-Watson:                   0.585
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                4.951
+Skew:                           0.192   Prob(JB):                       0.0841
+Kurtosis:                       2.181   Cond. No.                     6.07e+17
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 2.12e-20. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'weekday_log_return_rsi' with p-value 0.7016
+
+📉 Updated model with variables: ['beta', 'close', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility', 'weekday']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.956
+Method:                 Least Squares   F-statistic:                     1535.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          1.14e-125
+Time:                        19:43:45   Log-Likelihood:                -2084.4
+No. Observations:                 145   AIC:                             4209.
+Df Residuals:                     125   BIC:                             4268.
+Df Model:                          19                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.628e+06   3.29e+06      1.103      0.270   -2.82e+06    1.01e+07
+beta                        2.25e+06   2.04e+06      1.103      0.270   -1.75e+06    6.25e+06
+close                      2.226e+04   1.46e+04      1.524      0.127   -6367.186    5.09e+04
+daily_trend                2.669e+06   2.73e+06      0.977      0.329   -2.69e+06    8.02e+06
+delta_volume_10_days_back     0.1290      0.021      6.075      0.000       0.087       0.171
+delta_volume_1_days_back      0.0963      0.017      5.555      0.000       0.062       0.130
+delta_volume_2_days_back      0.0898      0.018      5.114      0.000       0.055       0.124
+delta_volume_3_days_back      0.1005      0.023      4.359      0.000       0.055       0.146
+delta_volume_4_days_back      0.0878      0.021      4.140      0.000       0.046       0.129
+delta_volume_5_days_back      0.0922      0.025      3.625      0.000       0.042       0.142
+delta_volume_6_days_back      0.0927      0.025      3.678      0.000       0.043       0.142
+delta_volume_7_days_back      0.0797      0.018      4.318      0.000       0.044       0.116
+delta_volume_8_days_back      0.0960      0.019      5.167      0.000       0.060       0.132
+delta_volume_9_days_back      0.0860      0.024      3.512      0.000       0.038       0.134
+pe                        -5.258e+04    3.9e+04     -1.348      0.178   -1.29e+05    2.39e+04
+quarter                   -1.038e+05   5.15e+04     -2.016      0.044   -2.05e+05   -2870.392
+rsi                        4023.2420   3304.812      1.217      0.223   -2454.070    1.05e+04
+ttm_eps                   -1.727e+06   1.27e+06     -1.359      0.174   -4.22e+06    7.64e+05
+volatility                 7.654e+07   5.15e+06     14.862      0.000    6.64e+07    8.66e+07
+weekday                    1.914e+04   3.03e+04      0.631      0.528   -4.03e+04    7.86e+04
+weekday_log_return_rsi     2.752e+04   7.18e+04      0.383      0.702   -1.13e+05    1.68e+05
+==============================================================================
+Omnibus:                       10.927   Durbin-Watson:                   0.584
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                4.904
+Skew:                           0.193   Prob(JB):                       0.0861
+Kurtosis:                       2.186   Cond. No.                     5.55e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 2.54e-18. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'weekday' with p-value 0.4378
+
+📉 Updated model with variables: ['beta', 'close', 'daily_trend', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     1705.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          4.53e-127
+Time:                        19:43:45   Log-Likelihood:                -2084.5
+No. Observations:                 145   AIC:                             4207.
+Df Residuals:                     126   BIC:                             4264.
+Df Model:                          18                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.543e+06   3.23e+06      1.097      0.272   -2.78e+06    9.87e+06
+beta                       2.197e+06      2e+06      1.097      0.272   -1.73e+06    6.12e+06
+close                      2.251e+04   1.45e+04      1.557      0.119   -5827.105    5.08e+04
+daily_trend                 2.72e+06   2.68e+06      1.016      0.309   -2.53e+06    7.97e+06
+delta_volume_10_days_back     0.1288      0.021      6.150      0.000       0.088       0.170
+delta_volume_1_days_back      0.0962      0.017      5.596      0.000       0.063       0.130
+delta_volume_2_days_back      0.0898      0.017      5.156      0.000       0.056       0.124
+delta_volume_3_days_back      0.1004      0.023      4.368      0.000       0.055       0.146
+delta_volume_4_days_back      0.0885      0.021      4.260      0.000       0.048       0.129
+delta_volume_5_days_back      0.0925      0.025      3.651      0.000       0.043       0.142
+delta_volume_6_days_back      0.0920      0.025      3.669      0.000       0.043       0.141
+delta_volume_7_days_back      0.0797      0.018      4.322      0.000       0.044       0.116
+delta_volume_8_days_back      0.0964      0.019      5.196      0.000       0.060       0.133
+delta_volume_9_days_back      0.0859      0.024      3.511      0.000       0.038       0.134
+pe                         -5.26e+04   3.85e+04     -1.365      0.172   -1.28e+05    2.29e+04
+quarter                   -1.007e+05   5.13e+04     -1.961      0.050   -2.01e+05     -56.921
+rsi                        3951.9504   3279.297      1.205      0.228   -2475.354    1.04e+04
+ttm_eps                   -1.727e+06   1.25e+06     -1.377      0.169   -4.19e+06    7.32e+05
+volatility                  7.66e+07   5.08e+06     15.077      0.000    6.66e+07    8.66e+07
+weekday                    2.229e+04   2.87e+04      0.776      0.438    -3.4e+04    7.86e+04
+==============================================================================
+Omnibus:                       11.295   Durbin-Watson:                   0.588
+Prob(Omnibus):                  0.004   Jarque-Bera (JB):                5.068
+Skew:                           0.204   Prob(JB):                       0.0793
+Kurtosis:                       2.180   Cond. No.                     1.45e+17
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 3.69e-19. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'daily_trend' with p-value 0.3209
+
+📉 Updated model with variables: ['beta', 'close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'rsi', 'ttm_eps', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     1950.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          5.87e-129
+Time:                        19:43:45   Log-Likelihood:                -2084.9
+No. Observations:                 145   AIC:                             4206.
+Df Residuals:                     127   BIC:                             4259.
+Df Model:                          17                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.589e+06   3.24e+06      1.109      0.267   -2.75e+06    9.93e+06
+beta                       2.225e+06   2.01e+06      1.109      0.267   -1.71e+06    6.16e+06
+close                      2.252e+04   1.45e+04      1.549      0.121   -5982.246     5.1e+04
+daily_trend                2.631e+06   2.65e+06      0.993      0.321   -2.56e+06    7.83e+06
+delta_volume_10_days_back     0.1277      0.021      6.132      0.000       0.087       0.169
+delta_volume_1_days_back      0.0957      0.017      5.615      0.000       0.062       0.129
+delta_volume_2_days_back      0.0913      0.017      5.299      0.000       0.058       0.125
+delta_volume_3_days_back      0.1039      0.022      4.688      0.000       0.060       0.147
+delta_volume_4_days_back      0.0877      0.021      4.111      0.000       0.046       0.130
+delta_volume_5_days_back      0.0908      0.024      3.749      0.000       0.043       0.138
+delta_volume_6_days_back      0.0912      0.024      3.726      0.000       0.043       0.139
+delta_volume_7_days_back      0.0824      0.018      4.517      0.000       0.047       0.118
+delta_volume_8_days_back      0.0964      0.019      5.125      0.000       0.060       0.133
+delta_volume_9_days_back      0.0858      0.024      3.599      0.000       0.039       0.132
+pe                        -5.231e+04   3.86e+04     -1.354      0.176   -1.28e+05    2.34e+04
+quarter                   -1.008e+05   5.02e+04     -2.008      0.045   -1.99e+05   -2409.663
+rsi                        3941.0849   3282.804      1.201      0.230   -2493.093    1.04e+04
+ttm_eps                   -1.714e+06   1.26e+06     -1.364      0.173   -4.18e+06     7.5e+05
+volatility                  7.69e+07   5.01e+06     15.351      0.000    6.71e+07    8.67e+07
+==============================================================================
+Omnibus:                       10.721   Durbin-Watson:                   0.574
+Prob(Omnibus):                  0.005   Jarque-Bera (JB):                4.879
+Skew:                           0.196   Prob(JB):                       0.0872
+Kurtosis:                       2.191   Cond. No.                     2.52e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.23e-17. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'rsi' with p-value 0.3031
+
+📉 Updated model with variables: ['beta', 'close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'quarter', 'ttm_eps', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.962
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     2151.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          1.84e-129
+Time:                        19:43:45   Log-Likelihood:                -2085.5
+No. Observations:                 145   AIC:                             4205.
+Df Residuals:                     128   BIC:                             4256.
+Df Model:                          16                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  5.043e+06   2.91e+06      1.731      0.083   -6.67e+05    1.08e+07
+beta                       3.127e+06   1.81e+06      1.731      0.083   -4.14e+05    6.67e+06
+close                      2.312e+04   1.45e+04      1.592      0.111   -5353.099    5.16e+04
+delta_volume_10_days_back     0.1231      0.022      5.484      0.000       0.079       0.167
+delta_volume_1_days_back      0.0961      0.017      5.615      0.000       0.063       0.130
+delta_volume_2_days_back      0.0918      0.017      5.300      0.000       0.058       0.126
+delta_volume_3_days_back      0.1053      0.022      4.728      0.000       0.062       0.149
+delta_volume_4_days_back      0.0868      0.021      4.104      0.000       0.045       0.128
+delta_volume_5_days_back      0.0918      0.024      3.810      0.000       0.045       0.139
+delta_volume_6_days_back      0.0907      0.025      3.695      0.000       0.043       0.139
+delta_volume_7_days_back      0.0846      0.018      4.678      0.000       0.049       0.120
+delta_volume_8_days_back      0.0958      0.019      5.011      0.000       0.058       0.133
+delta_volume_9_days_back      0.0883      0.023      3.872      0.000       0.044       0.133
+pe                        -4.982e+04   3.79e+04     -1.315      0.189   -1.24e+05    2.44e+04
+quarter                   -8.986e+04   4.84e+04     -1.858      0.063   -1.85e+05    4910.024
+rsi                        3320.8671   3224.935      1.030      0.303   -2999.890    9641.624
+ttm_eps                   -1.628e+06   1.23e+06     -1.324      0.185   -4.04e+06    7.81e+05
+volatility                 7.763e+07   5.02e+06     15.459      0.000    6.78e+07    8.75e+07
+==============================================================================
+Omnibus:                       10.451   Durbin-Watson:                   0.565
+Prob(Omnibus):                  0.005   Jarque-Bera (JB):                5.215
+Skew:                           0.245   Prob(JB):                       0.0737
+Kurtosis:                       2.211   Cond. No.                     2.79e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is  1e-17. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'quarter' with p-value 0.1819
+
+📉 Updated model with variables: ['beta', 'close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'pe', 'ttm_eps', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.961
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     2590.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          7.75e-132
+Time:                        19:43:45   Log-Likelihood:                -2086.1
+No. Observations:                 145   AIC:                             4204.
+Df Residuals:                     129   BIC:                             4252.
+Df Model:                          15                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  4.543e+06   2.89e+06      1.570      0.117   -1.13e+06    1.02e+07
+beta                       2.817e+06   1.79e+06      1.570      0.117   -7.01e+05    6.33e+06
+close                      2.808e+04   1.37e+04      2.052      0.040    1260.649    5.49e+04
+delta_volume_10_days_back     0.1217      0.022      5.494      0.000       0.078       0.165
+delta_volume_1_days_back      0.0959      0.017      5.758      0.000       0.063       0.129
+delta_volume_2_days_back      0.0924      0.017      5.409      0.000       0.059       0.126
+delta_volume_3_days_back      0.1053      0.022      4.793      0.000       0.062       0.148
+delta_volume_4_days_back      0.0881      0.021      4.244      0.000       0.047       0.129
+delta_volume_5_days_back      0.0920      0.024      3.911      0.000       0.046       0.138
+delta_volume_6_days_back      0.0918      0.024      3.797      0.000       0.044       0.139
+delta_volume_7_days_back      0.0833      0.018      4.627      0.000       0.048       0.119
+delta_volume_8_days_back      0.0953      0.019      5.083      0.000       0.059       0.132
+delta_volume_9_days_back      0.0867      0.023      3.836      0.000       0.042       0.131
+pe                        -5.222e+04   3.77e+04     -1.384      0.166   -1.26e+05    2.17e+04
+quarter                    -5.56e+04   4.17e+04     -1.335      0.182   -1.37e+05     2.6e+04
+ttm_eps                   -1.695e+06   1.22e+06     -1.384      0.166   -4.09e+06    7.05e+05
+volatility                 7.823e+07   5.02e+06     15.572      0.000    6.84e+07    8.81e+07
+==============================================================================
+Omnibus:                        8.766   Durbin-Watson:                   0.566
+Prob(Omnibus):                  0.012   Jarque-Bera (JB):                4.661
+Skew:                           0.229   Prob(JB):                       0.0972
+Kurtosis:                       2.251   Cond. No.                     6.35e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.94e-18. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'pe' with p-value 0.2605
+
+📉 Updated model with variables: ['beta', 'close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'ttm_eps', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.961
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     2902.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          1.77e-131
+Time:                        19:43:45   Log-Likelihood:                -2087.1
+No. Observations:                 145   AIC:                             4204.
+Df Residuals:                     130   BIC:                             4249.
+Df Model:                          14                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  3.275e+06   2.79e+06      1.172      0.241    -2.2e+06    8.75e+06
+beta                       2.031e+06   1.73e+06      1.172      0.241   -1.36e+06    5.43e+06
+close                       2.65e+04   1.32e+04      2.011      0.044     673.600    5.23e+04
+delta_volume_10_days_back     0.1203      0.021      5.766      0.000       0.079       0.161
+delta_volume_1_days_back      0.0970      0.017      5.753      0.000       0.064       0.130
+delta_volume_2_days_back      0.0932      0.017      5.384      0.000       0.059       0.127
+delta_volume_3_days_back      0.1062      0.023      4.649      0.000       0.061       0.151
+delta_volume_4_days_back      0.0889      0.021      4.150      0.000       0.047       0.131
+delta_volume_5_days_back      0.0931      0.024      3.885      0.000       0.046       0.140
+delta_volume_6_days_back      0.0921      0.025      3.724      0.000       0.044       0.141
+delta_volume_7_days_back      0.0832      0.018      4.553      0.000       0.047       0.119
+delta_volume_8_days_back      0.0951      0.019      5.081      0.000       0.058       0.132
+delta_volume_9_days_back      0.0861      0.022      3.990      0.000       0.044       0.128
+pe                        -4.125e+04   3.67e+04     -1.125      0.261   -1.13e+05    3.06e+04
+ttm_eps                   -1.361e+06   1.19e+06     -1.140      0.254    -3.7e+06    9.78e+05
+volatility                 8.093e+07   4.69e+06     17.250      0.000    7.17e+07    9.01e+07
+==============================================================================
+Omnibus:                        9.113   Durbin-Watson:                   0.576
+Prob(Omnibus):                  0.010   Jarque-Bera (JB):                4.263
+Skew:                           0.158   Prob(JB):                        0.119
+Kurtosis:                       2.222   Cond. No.                     7.34e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.45e-18. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'ttm_eps' with p-value 0.8569
+
+📉 Updated model with variables: ['beta', 'close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.960
+Model:                            OLS   Adj. R-squared:                  0.956
+Method:                 Least Squares   F-statistic:                     3470.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          8.07e-132
+Time:                        19:43:45   Log-Likelihood:                -2088.0
+No. Observations:                 145   AIC:                             4204.
+Df Residuals:                     131   BIC:                             4246.
+Df Model:                          13                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  2.233e+05   7.09e+05      0.315      0.753   -1.17e+06    1.61e+06
+beta                       1.385e+05    4.4e+05      0.315      0.753   -7.23e+05       1e+06
+close                      1.215e+04   3387.658      3.586      0.000    5508.946    1.88e+04
+delta_volume_10_days_back     0.1211      0.022      5.612      0.000       0.079       0.163
+delta_volume_1_days_back      0.0977      0.017      5.624      0.000       0.064       0.132
+delta_volume_2_days_back      0.0928      0.017      5.350      0.000       0.059       0.127
+delta_volume_3_days_back      0.1072      0.023      4.574      0.000       0.061       0.153
+delta_volume_4_days_back      0.0895      0.022      4.099      0.000       0.047       0.132
+delta_volume_5_days_back      0.0948      0.024      3.917      0.000       0.047       0.142
+delta_volume_6_days_back      0.0925      0.025      3.767      0.000       0.044       0.141
+delta_volume_7_days_back      0.0840      0.018      4.678      0.000       0.049       0.119
+delta_volume_8_days_back      0.0952      0.019      5.094      0.000       0.059       0.132
+delta_volume_9_days_back      0.0868      0.022      3.880      0.000       0.043       0.131
+ttm_eps                   -1.385e+04   7.68e+04     -0.180      0.857   -1.64e+05    1.37e+05
+volatility                 8.227e+07   4.64e+06     17.727      0.000    7.32e+07    9.14e+07
+==============================================================================
+Omnibus:                        6.419   Durbin-Watson:                   0.570
+Prob(Omnibus):                  0.040   Jarque-Bera (JB):                3.676
+Skew:                           0.183   Prob(JB):                        0.159
+Kurtosis:                       2.311   Cond. No.                     4.85e+16
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 3.31e-18. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+🗑 Removing 'beta' with p-value 0.7611
+
+📉 Updated model with variables: ['close', 'delta_volume_10_days_back', 'delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back', 'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back', 'delta_volume_8_days_back', 'delta_volume_9_days_back', 'volatility']
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.960
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     4723.
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):          4.66e-134
+Time:                        19:43:45   Log-Likelihood:                -2088.0
+No. Observations:                 145   AIC:                             4202.
+Df Residuals:                     132   BIC:                             4241.
+Df Model:                          12                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  1.184e+05   3.89e+05      0.304      0.761   -6.45e+05    8.81e+05
+beta                       7.338e+04   2.41e+05      0.304      0.761      -4e+05    5.46e+05
+close                      1.258e+04   2328.745      5.401      0.000    8012.146    1.71e+04
+delta_volume_10_days_back     0.1211      0.021      5.650      0.000       0.079       0.163
+delta_volume_1_days_back      0.0977      0.017      5.760      0.000       0.064       0.131
+delta_volume_2_days_back      0.0929      0.017      5.411      0.000       0.059       0.127
+delta_volume_3_days_back      0.1071      0.023      4.601      0.000       0.061       0.153
+delta_volume_4_days_back      0.0895      0.022      4.114      0.000       0.047       0.132
+delta_volume_5_days_back      0.0948      0.024      3.942      0.000       0.048       0.142
+delta_volume_6_days_back      0.0926      0.024      3.793      0.000       0.045       0.140
+delta_volume_7_days_back      0.0840      0.018      4.696      0.000       0.049       0.119
+delta_volume_8_days_back      0.0953      0.019      5.111      0.000       0.059       0.132
+delta_volume_9_days_back      0.0868      0.022      3.914      0.000       0.043       0.130
+volatility                 8.247e+07   4.52e+06     18.239      0.000    7.36e+07    9.13e+07
+==============================================================================
+Omnibus:                        6.764   Durbin-Watson:                   0.572
+Prob(Omnibus):                  0.034   Jarque-Bera (JB):                3.773
+Skew:                           0.182   Prob(JB):                        0.152
+Kurtosis:                       2.299   Cond. No.                     2.26e+17
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The smallest eigenvalue is 1.53e-19. This might indicate that there are
+strong multicollinearity problems or that the design matrix is singular.
+
+
+✅ Final model with all significant variables (p <= 0.05):
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                 volume   R-squared:                       0.960
+Model:                            OLS   Adj. R-squared:                  0.957
+Method:                 Least Squares   F-statistic:                     194.3
+Date:                Mon, 09 Jun 2025   Prob (F-statistic):           4.62e-40
+Time:                        19:43:45   Log-Likelihood:                -2088.0
+No. Observations:                 145   AIC:                             4202.
+Df Residuals:                     132   BIC:                             4241.
+Df Model:                          12                                         
+Covariance Type:                  HC3                                         
+=============================================================================================
+                                coef    std err          z      P>|z|      [0.025      0.975]
+---------------------------------------------------------------------------------------------
+Intercept                  1.639e+05   5.39e+05      0.304      0.761   -8.93e+05    1.22e+06
+close                      1.258e+04   2328.745      5.401      0.000    8012.146    1.71e+04
+delta_volume_10_days_back     0.1211      0.021      5.650      0.000       0.079       0.163
+delta_volume_1_days_back      0.0977      0.017      5.760      0.000       0.064       0.131
+delta_volume_2_days_back      0.0929      0.017      5.411      0.000       0.059       0.127
+delta_volume_3_days_back      0.1071      0.023      4.601      0.000       0.061       0.153
+delta_volume_4_days_back      0.0895      0.022      4.114      0.000       0.047       0.132
+delta_volume_5_days_back      0.0948      0.024      3.942      0.000       0.048       0.142
+delta_volume_6_days_back      0.0926      0.024      3.793      0.000       0.045       0.140
+delta_volume_7_days_back      0.0840      0.018      4.696      0.000       0.049       0.119
+delta_volume_8_days_back      0.0953      0.019      5.111      0.000       0.059       0.132
+delta_volume_9_days_back      0.0868      0.022      3.914      0.000       0.043       0.130
+volatility                 8.247e+07   4.52e+06     18.239      0.000    7.36e+07    9.13e+07
+==============================================================================
+Omnibus:                        6.764   Durbin-Watson:                   0.572
+Prob(Omnibus):                  0.034   Jarque-Bera (JB):                3.773
+Skew:                           0.182   Prob(JB):                        0.152
+Kurtosis:                       2.299   Cond. No.                     8.57e+08
+==============================================================================
+
+Notes:
+[1] Standard Errors are heteroscedasticity robust (HC3)
+[2] The condition number is large, 8.57e+08. This might indicate that there are
+strong multicollinearity or other numerical problems.

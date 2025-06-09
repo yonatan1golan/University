@@ -175,8 +175,8 @@ def create_market_returns(stocks: list[str]) -> pd.DataFrame:
     all_returns = pd.concat(all_returns_list, axis=1)
     return all_returns.dropna().reset_index()
 
-def calculate_csad(data: pd.DataFrame) -> pd.Series:
-    market_returns = create_market_returns(CONFIG.SAMPLE_STOCKS_FOR_CSAD)
+def calculate_csad(data: pd.DataFrame, stocks) -> pd.Series:
+    market_returns = create_market_returns(stocks)
     merged_data = data[['date', 'log_return']].merge(market_returns, on='date', how='left')
     merged_data = merged_data.dropna().reset_index(drop=True)
     merged_data.rename(columns={'log_return': 'return_TSLA'}, inplace=True)
@@ -188,7 +188,7 @@ def calculate_csad(data: pd.DataFrame) -> pd.Series:
     csad.index = merged_data['date']
     return csad
 
-def generate_features(stock_data: pd.DataFrame) -> pd.DataFrame:
+def generate_features(stock_data: pd.DataFrame, stocks = CONFIG.SAMPLE_STOCKS_FOR_CSAD) -> pd.DataFrame:
     stock_data['date'] = pd.to_datetime(stock_data['date'], errors='coerce')
     data = stock_data.where(stock_data['date'] >= pd.Timestamp(dt.date(2020, 1, 1))).dropna()
 
@@ -204,7 +204,7 @@ def generate_features(stock_data: pd.DataFrame) -> pd.DataFrame:
     for i in range(1, 11):
         data[f'delta_volume_{i}_days_back'] = data['volume'] - data['volume'].shift(i)
 
-    csad = calculate_csad(data)
+    csad = calculate_csad(data, stocks)
     csad.name = 'csad'
     data = data.merge(csad, left_on='date', right_index=True, how='left')
     return data.dropna().reset_index(drop=True)
@@ -394,8 +394,8 @@ def plot_residuals_vs_fitted(model, title="Residuals vs Fitted"):
 
 
 if __name__ == "__main__":
-    tesla_stock = pd.read_csv("final_project/part_b/data/tesla_stock.csv")
-    processed_tesla_data = generate_features(tesla_stock)
+    ibm_data = pd.read_csv("final_project/part_b/data/ibm_stock.csv")
+    processed_tesla_data = generate_features(ibm_data)
     x_columns = processed_tesla_data.columns.difference(['volume', 'date'])
     potentially_herding_variables = ['delta_volume_1_days_back', 'delta_volume_2_days_back', 'delta_volume_3_days_back',
                                      'delta_volume_4_days_back', 'delta_volume_5_days_back', 'delta_volume_6_days_back', 'delta_volume_7_days_back',
@@ -415,26 +415,27 @@ if __name__ == "__main__":
 
     categorized_data = categorize(continuous_data)
 
-    categorized_regression = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
-    continuous_regression = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
-    continous_regression_without_herding = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns.difference(potentially_herding_variables), 'volume')
+    # continuous_regression = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
+    # continous_regression_without_herding = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns.difference(potentially_herding_variables), 'volume')
+    # continous_regression_without_herding.print_regression_results()
     # plot_qq(continuous_regression.model.resid, "QQ Plot of Continuous Regression Residuals")
     # plot_residuals_vs_fitted(continuous_regression.model, "Continuous Regression Residuals vs Fitted, before HC3 and backward selection")
     
+    # categorized_regression = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
     # anova_table = categorized_regression.run_anova()
-    # continuous_regression.backward_selection()
-    # delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x)
+    # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
+    # hc3_anova = with_hc3_categorized.run_anova()
+
+    # continuous_regression.backward_selection("ibm_continuous")
     # plot_residuals_vs_fitted(continuous_regression.model, "Categorized Regression Residuals vs Fitted")
     # check_homoscedasticity(continuous_regression)
 
+    # delta_analysis_results = compare_delta_approaches(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions)
     # without_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume')
-
-    # with_hc3_categorized = Regression(categorized_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
-    # hc3_anova = with_hc3_categorized.run_anova()
-    
     with_hc3_continuous = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, x_columns_with_interactions, 'volume', 'HC3')
-    after_backward_selection_x = with_hc3_continuous.backward_selection("hc3_continuous")
+    after_backward_selection_x = with_hc3_continuous.backward_selection("ibm_hc3_continuous")
     continous_regressions_hc3_and_backward = Regression(continuous_data, CONFIG.INTERESTING_PERIOD, after_backward_selection_x, 'volume', 'HC3')
-    # plot_residuals_vs_fitted(continous_regressions_hc3_and_backward.model, "Continuous Regression Residuals vs Fitted, after HC3 and backward selection")
+    print(f"Regression summary after backward selection:\n{continous_regressions_hc3_and_backward.print_regression_results()}\n")
+    plot_residuals_vs_fitted(continous_regressions_hc3_and_backward.model, "Continuous Regression Residuals vs Fitted, after HC3 and backward selection")
     print(f"VIF for the regressions with HC3 and backward selection:\n{continous_regressions_hc3_and_backward.vif()}\n")
-    # check_homoscedasticity(continous_regressions_hc3_and_backward)
+    check_homoscedasticity(continous_regressions_hc3_and_backward)

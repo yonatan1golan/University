@@ -21,6 +21,8 @@ class CONFIG:
 
     TESLA_TICKER = "TSLA"
     TESLA_EPS = pd.read_csv("final_project/part_b/data/tesla_eps.csv", parse_dates=["publish_date"])
+    IBM_TICKER = "IBM"
+    IBM_EPS = pd.read_csv("final_project/part_b/data/ibm_eps.csv", parse_dates=["publish_date"])
     NASDAQ_TICKER = "^IXIC"
     SP500_TICKER = "^GSPC"
     SAMPLE_STOCKS_FOR_CSAD = [
