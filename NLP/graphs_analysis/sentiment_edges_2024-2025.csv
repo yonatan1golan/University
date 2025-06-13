@@ -1,7 +1,7 @@
 node_1,node_2,average_sentiment,relation_type,num_mentions,total_weight
 Bernie Sanders,Ford,0.969,Positive,2,-4
-Cathie Wood,Joe Biden,0.925,Positive,1,31446
 Cathie Wood,Pete Buttigieg,0.925,Positive,1,31446
+Cathie Wood,Joe Biden,0.925,Positive,1,31446
 Joe Biden,Pete Buttigieg,0.925,Positive,1,31446
 Bernie Sanders,Donald Trump,0.919,Positive,4,786
 Elon Musk,Alexandria Ocasio-Cortez,0.913,Positive,1,-6
@@ -14,7 +14,7 @@ Ford,Donald Trump,0.719,Positive,2,7
 Elon Musk,Cathie Wood,0.599,Positive,6,31584
 Donald Trump,Cathie Wood,0.517,Positive,3,31582
 Elon Musk,Meta,-0.477,Negative,1,2792
-Meta,Tesla,-0.477,Negative,1,2792
+Tesla,Meta,-0.477,Negative,1,2792
 Elon Musk,Jeff Bezos,0.468,Positive,9,450
 Donald Trump,Joe Biden,0.441,Positive,4,31457
 Elon Musk,Joe Biden,0.429,Positive,6,31518

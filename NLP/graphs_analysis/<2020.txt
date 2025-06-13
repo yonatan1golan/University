@@ -35,11 +35,11 @@
   Mark Zuckerberg: -0.191 (from 13 mentions)
   Larry Page: 0.336 (from 3 mentions)
   Apple: 0.000 (from 1 mentions)
-  Jim Cramer: 0.010 (from 8 mentions)
   Ford: 0.474 (from 2 mentions)
+  Jim Cramer: 0.010 (from 8 mentions)
   Chamath Palihapitiya: 0.272 (from 1 mentions)
   Bernie Sanders: 0.694 (from 4 mentions)
   Pete Buttigieg: 0.206 (from 5 mentions)
 
 🔹 Structure Analysis:
- {0: ['Larry Page', 'Bernie Sanders', 'Elon Musk', 'Chamath Palihapitiya', 'Joe Biden', 'Donald Trump', 'GM', 'Apple'], 1: ['Jeff Bezos', 'Pete Buttigieg', 'Cathie Wood', 'Mark Zuckerberg', 'NIO'], 2: ['Jim Cramer', 'Ford', 'Tesla']}
+ {0: ['GM', 'Larry Page', 'Bernie Sanders', 'Chamath Palihapitiya', 'Elon Musk', 'Donald Trump', 'Joe Biden', 'Apple'], 1: ['Pete Buttigieg', 'Cathie Wood', 'NIO', 'Jeff Bezos', 'Mark Zuckerberg'], 2: ['Tesla', 'Ford', 'Jim Cramer']}

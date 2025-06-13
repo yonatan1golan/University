@@ -11,7 +11,7 @@
   Avg Node Sentiment: 0.03
 
 🔹 Structural Analysis:
-  Cut Vertices (Articulation Points): ['Elon Musk', 'Alexandria Ocasio-Cortez']
+  Cut Vertices (Articulation Points): ['Alexandria Ocasio-Cortez', 'Elon Musk']
   Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Elon Musk', 'Pete Buttigieg'), ('Bernie Sanders', 'Alexandria Ocasio-Cortez')]
 
 🔹 Community Detection:
@@ -24,8 +24,8 @@
   Closeness: Elon Musk (0.94), Tesla (0.68), Joe Biden (0.68)
 
 🔹 Node Sentiments:
-  Donald Trump: 0.006 (from 42 mentions)
   Elon Musk: -0.010 (from 223 mentions)
+  Donald Trump: 0.006 (from 42 mentions)
   Tesla: 0.188 (from 22 mentions)
   Mark Zuckerberg: -0.169 (from 25 mentions)
   Jim Cramer: -0.110 (from 7 mentions)
@@ -44,4 +44,4 @@
   Pete Buttigieg: 0.189 (from 2 mentions)
 
 🔹 Structure Analysis:
- {0: ['GM', 'Jeff Bezos', 'Ford', 'Apple', 'Joe Biden', 'Donald Trump', 'NIO', 'Tesla'], 1: ['Larry Page', 'Elon Musk', 'Jim Cramer', 'Meta', 'Pete Buttigieg', 'Michael Burry', 'Cathie Wood', 'Mark Zuckerberg'], 2: ['Bernie Sanders', 'Alexandria Ocasio-Cortez']}
+ {0: ['GM', 'Ford', 'Tesla', 'NIO', 'Donald Trump', 'Jeff Bezos', 'Joe Biden', 'Apple'], 1: ['Michael Burry', 'Jim Cramer', 'Pete Buttigieg', 'Meta', 'Larry Page', 'Cathie Wood', 'Elon Musk', 'Mark Zuckerberg'], 2: ['Bernie Sanders', 'Alexandria Ocasio-Cortez']}

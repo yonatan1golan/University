@@ -1,0 +1,8 @@
+Metric,Value
+total_posts,42
+total_comments,377
+total_words,12090
+unique_words,7296
+words_above_threshold,424
+average_sentiment,0.17066452088880288
+sentiment_std,0.6273783994988246

@@ -5,11 +5,11 @@ Cathie Wood,Michael Burry,-0.844,Negative,1,1021
 Elon Musk,GM,0.801,Positive,1,-22
 Tesla,GM,0.687,Positive,2,-2
 Tesla,Ford,0.687,Positive,2,-2
-Ford,Joe Biden,0.687,Positive,2,-2
 Ford,GM,0.687,Positive,2,-2
+Ford,Joe Biden,0.687,Positive,2,-2
 Joe Biden,GM,0.687,Positive,2,-2
-Tesla,Mark Zuckerberg,0.668,Positive,2,420
 Tesla,Cathie Wood,0.668,Positive,2,420
+Tesla,Mark Zuckerberg,0.668,Positive,2,420
 Mark Zuckerberg,Joe Biden,-0.627,Negative,1,0
 Cathie Wood,Joe Biden,-0.627,Negative,1,0
 Elon Musk,Alexandria Ocasio-Cortez,-0.599,Negative,1,15
@@ -33,7 +33,7 @@ Elon Musk,Cathie Wood,-0.214,Negative,17,2881
 Elon Musk,NIO,-0.125,Negative,3,29
 Elon Musk,Michael Burry,0.114,Positive,3,1041
 Mark Zuckerberg,Cathie Wood,-0.102,Negative,11,1130
-Donald Trump,Elon Musk,0.096,Neutral,26,335
+Elon Musk,Donald Trump,0.096,Neutral,26,335
 Elon Musk,Mark Zuckerberg,-0.093,Neutral,16,1582
 Tesla,Jim Cramer,-0.08,Neutral,4,2030
 Elon Musk,Ford,0.051,Neutral,2,-19

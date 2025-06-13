@@ -38,7 +38,7 @@
   Chamath Palihapitiya: 0.000 (from 1 mentions)
   Michael Burry: 0.000 (from 1 mentions)
   Pete Buttigieg: 0.326 (from 27 mentions)
-  Bernie Sanders: 0.066 (from 30 mentions)
+  Bernie Sanders: 0.069 (from 30 mentions)
 
 🔹 Structure Analysis:
- {0: ['Jeff Bezos', 'Cathie Wood', 'Joe Biden', 'Donald Trump', 'Mark Zuckerberg', 'Tesla'], 1: ['GM', 'Michael Burry', 'Ford', 'Elon Musk', 'Chamath Palihapitiya', 'Jim Cramer'], 2: ['Pete Buttigieg', 'NIO', 'Bernie Sanders']}
+ {0: ['Cathie Wood', 'Tesla', 'Donald Trump', 'Jeff Bezos', 'Joe Biden', 'Mark Zuckerberg'], 1: ['GM', 'Michael Burry', 'Ford', 'Chamath Palihapitiya', 'Elon Musk', 'Jim Cramer'], 2: ['Bernie Sanders', 'NIO', 'Pete Buttigieg']}
