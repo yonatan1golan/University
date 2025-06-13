@@ -1,30 +1,30 @@
 📊 Graph Overview:
 🔹 Basic Stats:
   Nodes: 15
-  Edges: 38
+  Edges: 35
   Is Connected: True
-  Density: 0.3619
-  Diameter: 2
-  Average Degree: 5.07
-  Avg Clustering Coefficient: 0.6087
-  Avg Shortest Path Length: 1.64
+  Density: 0.3333
+  Diameter: 4
+  Average Degree: 4.67
+  Avg Clustering Coefficient: 0.4823
+  Avg Shortest Path Length: 1.87
   Avg Node Sentiment: 0.15
 
 🔹 Structural Analysis:
-  Cut Vertices (Articulation Points): ['Elon Musk']
-  Bridges (Critical Edges): [('Elon Musk', 'Jim Cramer'), ('Elon Musk', 'Chamath Palihapitiya'), ('Elon Musk', 'Michael Burry')]
+  Cut Vertices (Articulation Points): ['Ford', 'Elon Musk']
+  Bridges (Critical Edges): [('Elon Musk', 'Jim Cramer'), ('Elon Musk', 'Chamath Palihapitiya'), ('Elon Musk', 'Michael Burry'), ('GM', 'Ford')]
 
 🔹 Community Detection:
-  Number of Communities: 3
-  Community Sizes: [6, 6, 3]
+  Number of Communities: 4
+  Community Sizes: [5, 4, 3, 3]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
-  Degree: Elon Musk (1.00), Donald Trump (0.57), Joe Biden (0.57)
-  Betweenness: Elon Musk (0.58), Joe Biden (0.04), Donald Trump (0.03)
-  Closeness: Elon Musk (1.00), Donald Trump (0.70), Joe Biden (0.70)
+  Degree: Elon Musk (0.79), Donald Trump (0.57), Joe Biden (0.57)
+  Betweenness: Elon Musk (0.47), Ford (0.14), Joe Biden (0.13)
+  Closeness: Elon Musk (0.78), Donald Trump (0.70), Joe Biden (0.70)
 
 🔹 Node Sentiments:
-  Elon Musk: 0.158 (from 263 mentions)
+  Elon Musk: 0.196 (from 177 mentions)
   Tesla: 0.434 (from 31 mentions)
   Cathie Wood: 0.272 (from 15 mentions)
   Donald Trump: 0.233 (from 20 mentions)
@@ -41,4 +41,4 @@
   Bernie Sanders: 0.069 (from 30 mentions)
 
 🔹 Structure Analysis:
- {0: ['Cathie Wood', 'Tesla', 'Donald Trump', 'Jeff Bezos', 'Joe Biden', 'Mark Zuckerberg'], 1: ['GM', 'Michael Burry', 'Ford', 'Chamath Palihapitiya', 'Elon Musk', 'Jim Cramer'], 2: ['Bernie Sanders', 'NIO', 'Pete Buttigieg']}
+ {0: ['GM', 'Ford', 'Cathie Wood', 'Donald Trump', 'Mark Zuckerberg'], 1: ['Chamath Palihapitiya', 'Elon Musk', 'Jim Cramer', 'Michael Burry'], 2: ['Tesla', 'Jeff Bezos', 'Joe Biden'], 3: ['Bernie Sanders', 'NIO', 'Pete Buttigieg']}

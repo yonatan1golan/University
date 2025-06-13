@@ -1,5 +1,5 @@
 Word,TF-IDF Score
-elon_musk,0.04791
+elon_musk,0.04773
 jeff_bezos,0.02549
 elon_musk elon_musk,0.02022
 like,0.01275
@@ -30,7 +30,7 @@ way,0.00495
 probably,0.00495
 believe,0.00493
 love,0.00491
-got,0.0047
+got,0.00479
 sporange,0.00466
 really,0.00461
 better,0.00457
