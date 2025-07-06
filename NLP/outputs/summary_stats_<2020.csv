@@ -1,8 +1,8 @@
 Metric,Value
 total_posts,58
 total_comments,374
-total_words,8698
-unique_words,5941
-words_above_threshold,283
-average_sentiment,0.25347976461612276
-sentiment_std,0.5538407876768843
+total_words,8588
+unique_words,5538
+words_above_threshold,293
+average_sentiment,0.21904742103308714
+sentiment_std,0.5685566125666216

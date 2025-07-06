@@ -1,36 +1,29 @@
 node_1,node_2,average_sentiment,relation_type,num_mentions,total_weight
-Donald Trump,Ford,0.994,Positive,1,1826
-Donald Trump,Mark Zuckerberg,0.994,Positive,1,1826
-Joe Biden,Ford,0.994,Positive,1,1826
-Joe Biden,Mark Zuckerberg,0.994,Positive,1,1826
-Ford,Mark Zuckerberg,0.994,Positive,1,1826
-Tesla,Donald Trump,0.932,Positive,1,5
-Cathie Wood,Bernie Sanders,-0.905,Negative,1,8
-Tesla,Cathie Wood,0.728,Positive,4,96
-Tesla,Jeff Bezos,0.641,Positive,2,22
-Cathie Wood,Donald Trump,0.585,Positive,3,3767
-Elon Musk,Tesla,0.564,Positive,18,1466
-NIO,Pete Buttigieg,0.533,Positive,1,2037
-Tesla,Bernie Sanders,0.518,Positive,3,21
-Elon Musk,Mark Zuckerberg,0.51,Positive,3,44
-Cathie Wood,Mark Zuckerberg,0.51,Positive,3,44
-Elon Musk,Joe Biden,0.411,Positive,4,364
-Donald Trump,Pete Buttigieg,0.393,Positive,3,72588
-Pete Buttigieg,Bernie Sanders,0.378,Positive,4,52633
-Elon Musk,Cathie Wood,0.327,Positive,9,3308
-Donald Trump,Joe Biden,0.27,Positive,3,2538
-Elon Musk,Jeff Bezos,0.262,Positive,26,3329
-Donald Trump,Bernie Sanders,-0.262,Negative,1,11
-Elon Musk,Donald Trump,0.233,Positive,4,-8
-Tesla,Mark Zuckerberg,0.226,Positive,1,27
+Donald Trump,Mark Zuckerberg,0.995,Positive,1,1826
+Donald Trump,Ford,0.995,Positive,1,1826
+Joe Biden,Mark Zuckerberg,0.995,Positive,1,1826
+Joe Biden,Ford,0.995,Positive,1,1826
+Ford,Mark Zuckerberg,0.995,Positive,1,1826
+Cathie Wood,Bernie Sanders,-0.936,Negative,1,8
+Donald Trump,Bernie Sanders,-0.765,Negative,1,11
+Cathie Wood,Mark Zuckerberg,0.529,Positive,3,44
+Elon Musk,Mark Zuckerberg,0.529,Positive,3,44
+Cathie Wood,Donald Trump,0.512,Positive,3,3767
+NIO,Pete Buttigieg,0.509,Positive,1,2037
+Donald Trump,Pete Buttigieg,0.384,Positive,3,72588
+Joe Biden,Bernie Sanders,-0.383,Negative,2,555
+Pete Buttigieg,Bernie Sanders,0.365,Positive,3,50088
+Cathie Wood,Elon Musk,0.345,Positive,9,3308
+Elon Musk,Joe Biden,0.326,Positive,4,364
+Elon Musk,Jeff Bezos,0.277,Positive,26,3329
+Elon Musk,Donald Trump,0.231,Positive,4,-8
+Joe Biden,Pete Buttigieg,0.22,Positive,5,83428
 Elon Musk,Jim Cramer,-0.178,Negative,1,1
-Joe Biden,Pete Buttigieg,0.17,Positive,5,83428
 Jeff Bezos,Joe Biden,-0.137,Negative,2,304
-NIO,Bernie Sanders,-0.125,Negative,2,2040
-Tesla,Joe Biden,0.064,Neutral,1,11
-Elon Musk,Bernie Sanders,0.06,Neutral,9,1033
-Elon Musk,NIO,-0.057,Neutral,2,16
-Joe Biden,Bernie Sanders,0.043,Neutral,3,3100
+NIO,Bernie Sanders,-0.137,Negative,2,2040
+Donald Trump,Joe Biden,0.102,Positive,3,2538
+Elon Musk,Bernie Sanders,0.079,Neutral,9,1033
+Elon Musk,NIO,-0.052,Neutral,2,16
 Elon Musk,Chamath Palihapitiya,0.0,Neutral,1,31
 Elon Musk,Michael Burry,0.0,Neutral,1,22
 GM,Ford,0.0,Neutral,1,3

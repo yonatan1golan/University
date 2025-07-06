@@ -1,45 +1,44 @@
 📊 Graph Overview:
 🔹 Basic Stats:
-  Nodes: 16
-  Edges: 29
+  Nodes: 15
+  Edges: 23
   Is Connected: True
-  Density: 0.2417
+  Density: 0.2190
   Diameter: 4
-  Average Degree: 3.62
-  Avg Clustering Coefficient: 0.5435
-  Avg Shortest Path Length: 1.97
-  Avg Node Sentiment: 0.25
+  Average Degree: 3.07
+  Avg Clustering Coefficient: 0.4586
+  Avg Shortest Path Length: 2.05
+  Avg Node Sentiment: 0.21
 
 🔹 Structural Analysis:
-  Cut Vertices (Articulation Points): ['Cathie Wood', 'Elon Musk']
-  Bridges (Critical Edges): [('Elon Musk', 'GM'), ('Elon Musk', 'Larry Page'), ('Elon Musk', 'Chamath Palihapitiya'), ('Cathie Wood', 'Pete Buttigieg')]
+  Cut Vertices (Articulation Points): ['Jim Cramer', 'Cathie Wood', 'Elon Musk']
+  Bridges (Critical Edges): [('Elon Musk', 'GM'), ('Elon Musk', 'Larry Page'), ('Elon Musk', 'Chamath Palihapitiya'), ('Cathie Wood', 'Pete Buttigieg'), ('Jim Cramer', 'Ford')]
 
 🔹 Community Detection:
-  Number of Communities: 4
-  Community Sizes: [5, 4, 4, 3]
+  Number of Communities: 2
+  Community Sizes: [13, 2]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
-  Degree: Elon Musk (0.80), Cathie Wood (0.47), Tesla (0.40)
-  Betweenness: Elon Musk (0.62), Cathie Wood (0.18), Tesla (0.12)
-  Closeness: Elon Musk (0.83), Tesla (0.62), Cathie Wood (0.62)
+  Degree: Elon Musk (0.79), Cathie Wood (0.43), Mark Zuckerberg (0.29)
+  Betweenness: Elon Musk (0.75), Cathie Wood (0.18), Jim Cramer (0.14)
+  Closeness: Elon Musk (0.82), Cathie Wood (0.61), Mark Zuckerberg (0.54)
 
 🔹 Node Sentiments:
-  Elon Musk: 0.139 (from 134 mentions)
-  Tesla: 0.446 (from 11 mentions)
-  Joe Biden: 0.323 (from 4 mentions)
-  Jeff Bezos: 0.106 (from 30 mentions)
-  NIO: 0.087 (from 3 mentions)
+  Joe Biden: 0.212 (from 4 mentions)
+  Elon Musk: 0.124 (from 134 mentions)
+  Jeff Bezos: 0.098 (from 30 mentions)
+  NIO: 0.059 (from 3 mentions)
   GM: 0.784 (from 1 mentions)
-  Cathie Wood: 0.072 (from 21 mentions)
-  Mark Zuckerberg: -0.191 (from 13 mentions)
-  Larry Page: 0.336 (from 3 mentions)
-  Donald Trump: 0.222 (from 24 mentions)
+  Cathie Wood: 0.066 (from 21 mentions)
+  Mark Zuckerberg: -0.195 (from 13 mentions)
+  Larry Page: 0.288 (from 3 mentions)
+  Donald Trump: 0.199 (from 24 mentions)
   Apple: 0.000 (from 1 mentions)
-  Ford: 0.474 (from 2 mentions)
-  Jim Cramer: 0.010 (from 8 mentions)
+  Jim Cramer: -0.021 (from 8 mentions)
+  Ford: 0.526 (from 2 mentions)
   Chamath Palihapitiya: 0.272 (from 1 mentions)
-  Bernie Sanders: 0.694 (from 4 mentions)
-  Pete Buttigieg: 0.206 (from 5 mentions)
+  Bernie Sanders: 0.703 (from 4 mentions)
+  Pete Buttigieg: 0.094 (from 5 mentions)
 
 🔹 Structure Analysis:
- {0: ['Pete Buttigieg', 'Cathie Wood', 'NIO', 'Jeff Bezos', 'Mark Zuckerberg'], 1: ['Bernie Sanders', 'Donald Trump', 'Joe Biden', 'Apple'], 2: ['Chamath Palihapitiya', 'Elon Musk', 'Larry Page', 'GM'], 3: ['Tesla', 'Ford', 'Jim Cramer']}
+ {0: ['Pete Buttigieg', 'Bernie Sanders', 'GM', 'Donald Trump', 'Elon Musk', 'Apple', 'Joe Biden', 'Larry Page', 'Jeff Bezos', 'Chamath Palihapitiya', 'Cathie Wood', 'Mark Zuckerberg', 'NIO'], 1: ['Jim Cramer', 'Ford']}

@@ -15,8 +15,8 @@
   Bridges (Critical Edges): [('Elon Musk', 'Alexandria Ocasio-Cortez')]
 
 🔹 Community Detection:
-  Number of Communities: 3
-  Community Sizes: [5, 5, 4]
+  Number of Communities: 2
+  Community Sizes: [13, 1]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
   Degree: Elon Musk (0.85), Donald Trump (0.62), Tesla (0.62)
@@ -27,8 +27,8 @@
   Bernie Sanders: 0.208 (from 23 mentions)
   Elon Musk: 0.117 (from 127 mentions)
   Donald Trump: 0.165 (from 81 mentions)
-  Tesla: 0.155 (from 24 mentions)
   Meta: -0.477 (from 1 mentions)
+  Tesla: 0.155 (from 24 mentions)
   Cathie Wood: 0.615 (from 7 mentions)
   Jeff Bezos: 0.367 (from 10 mentions)
   Ford: 0.090 (from 5 mentions)
@@ -40,4 +40,4 @@
   Pete Buttigieg: 0.043 (from 8 mentions)
 
 🔹 Structure Analysis:
- {0: ['Pete Buttigieg', 'GM', 'Cathie Wood', 'Tesla', 'Joe Biden'], 1: ['Gavin Newsom', 'Alexandria Ocasio-Cortez', 'Meta', 'Elon Musk', 'Jeff Bezos'], 2: ['Bernie Sanders', 'Ford', 'NIO', 'Donald Trump']}
+ {0: ['Pete Buttigieg', 'Bernie Sanders', 'Gavin Newsom', 'GM', 'Donald Trump', 'Tesla', 'Elon Musk', 'Meta', 'Joe Biden', 'Jeff Bezos', 'Ford', 'Cathie Wood', 'NIO'], 1: ['Alexandria Ocasio-Cortez']}

@@ -1,11 +1,11 @@
 Word,Average Sentiment,Count
-court,0.9691,5
-stake,0.9698,6
-justices,0.9798,4
-heart,0.9912,5
-loan,0.9921,11
-interest,0.9921,7
-collateral,0.9921,5
-bible,0.9943,4
-decline,0.9943,4
-christians,0.9943,5
+court,0.9734,5
+describe,0.9756,5
+nominee,0.9779,4
+collateral,0.9915,5
+interest,0.9915,7
+loan,0.9915,13
+bible,0.9946,4
+christians,0.9946,5
+decline,0.9946,4
+value_life,0.9946,4

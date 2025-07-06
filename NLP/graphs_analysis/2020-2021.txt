@@ -15,8 +15,8 @@
   Bridges (Critical Edges): [('Elon Musk', 'Jim Cramer'), ('Elon Musk', 'Chamath Palihapitiya'), ('Elon Musk', 'Michael Burry'), ('GM', 'Ford')]
 
 🔹 Community Detection:
-  Number of Communities: 4
-  Community Sizes: [5, 4, 3, 3]
+  Number of Communities: 2
+  Community Sizes: [14, 1]
 
 🔹 Centrality Measures (Top 3 Nodes per Metric):
   Degree: Elon Musk (0.79), Donald Trump (0.57), Joe Biden (0.57)
@@ -24,8 +24,8 @@
   Closeness: Elon Musk (0.78), Donald Trump (0.70), Joe Biden (0.70)
 
 🔹 Node Sentiments:
-  Elon Musk: 0.196 (from 177 mentions)
   Tesla: 0.434 (from 31 mentions)
+  Elon Musk: 0.196 (from 177 mentions)
   Cathie Wood: 0.272 (from 15 mentions)
   Donald Trump: 0.233 (from 20 mentions)
   Jeff Bezos: 0.171 (from 62 mentions)
@@ -41,4 +41,4 @@
   Bernie Sanders: 0.069 (from 30 mentions)
 
 🔹 Structure Analysis:
- {0: ['GM', 'Ford', 'Cathie Wood', 'Donald Trump', 'Mark Zuckerberg'], 1: ['Chamath Palihapitiya', 'Elon Musk', 'Jim Cramer', 'Michael Burry'], 2: ['Tesla', 'Jeff Bezos', 'Joe Biden'], 3: ['Bernie Sanders', 'NIO', 'Pete Buttigieg']}
+ {0: ['Pete Buttigieg', 'Bernie Sanders', 'GM', 'Donald Trump', 'Tesla', 'Elon Musk', 'Joe Biden', 'Jeff Bezos', 'Chamath Palihapitiya', 'Ford', 'Cathie Wood', 'Mark Zuckerberg', 'NIO', 'Michael Burry'], 1: ['Jim Cramer']}

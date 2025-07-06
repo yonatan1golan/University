@@ -1,46 +1,6 @@
 📊 Graph Overview:
 🔹 Basic Stats:
-  Nodes: 17
-  Edges: 42
-  Is Connected: True
-  Density: 0.3088
-  Diameter: 3
-  Average Degree: 4.94
-  Avg Clustering Coefficient: 0.6743
-  Avg Shortest Path Length: 1.79
-  Avg Node Sentiment: 0.03
-
-🔹 Structural Analysis:
-  Cut Vertices (Articulation Points): ['Alexandria Ocasio-Cortez', 'Elon Musk']
-  Bridges (Critical Edges): [('Elon Musk', 'Larry Page'), ('Elon Musk', 'Alexandria Ocasio-Cortez'), ('Bernie Sanders', 'Alexandria Ocasio-Cortez')]
-
-🔹 Community Detection:
-  Number of Communities: 3
-  Community Sizes: [8, 7, 2]
-
-🔹 Centrality Measures (Top 3 Nodes per Metric):
-  Degree: Elon Musk (0.94), Tesla (0.62), Joe Biden (0.62)
-  Betweenness: Elon Musk (0.59), Alexandria Ocasio-Cortez (0.12), Tesla (0.07)
-  Closeness: Elon Musk (0.94), Tesla (0.70), Joe Biden (0.70)
-
-🔹 Node Sentiments:
-  Elon Musk: -0.025 (from 168 mentions)
-  Donald Trump: 0.006 (from 42 mentions)
-  Tesla: 0.188 (from 22 mentions)
-  Jim Cramer: -0.110 (from 7 mentions)
-  Cathie Wood: -0.200 (from 24 mentions)
-  Apple: 0.241 (from 5 mentions)
-  Jeff Bezos: -0.017 (from 16 mentions)
-  Ford: 0.224 (from 3 mentions)
-  Joe Biden: -0.061 (from 31 mentions)
-  Larry Page: -0.075 (from 4 mentions)
-  NIO: -0.069 (from 5 mentions)
-  Mark Zuckerberg: -0.169 (from 25 mentions)
-  Meta: -0.382 (from 1 mentions)
-  Bernie Sanders: 0.318 (from 2 mentions)
-  Alexandria Ocasio-Cortez: 0.012 (from 3 mentions)
-  GM: 0.525 (from 3 mentions)
-  Michael Burry: -0.104 (from 4 mentions)
-
-🔹 Structure Analysis:
- {0: ['GM', 'Ford', 'Tesla', 'NIO', 'Donald Trump', 'Jeff Bezos', 'Joe Biden', 'Apple'], 1: ['Michael Burry', 'Meta', 'Larry Page', 'Cathie Wood', 'Elon Musk', 'Jim Cramer', 'Mark Zuckerberg'], 2: ['Bernie Sanders', 'Alexandria Ocasio-Cortez']}
+  Nodes: 16
+  Edges: 31
+  Is Connected: False
+  Density: 0.2583
